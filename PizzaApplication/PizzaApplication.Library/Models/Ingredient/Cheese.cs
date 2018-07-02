@@ -26,6 +26,16 @@ namespace PizzaApplication.Library
 
         }
 
+        public Cheese(string cheeseType, string cheeseThickness)
+        {
+            IngredientType = "Cheese";
+            CheeseType = cheeseType;
+            CheeseThickness = cheeseThickness;
+            IngredientName = $"{CheeseThickness} {CheeseType}";
+            IngredientPrice = CalculateIngredientPrice(CheeseType, CheeseThickness);
+
+        }
+
         // methods
         public decimal CalculateIngredientPrice()
         {
