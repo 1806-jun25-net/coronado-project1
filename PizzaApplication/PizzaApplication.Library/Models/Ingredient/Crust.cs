@@ -26,6 +26,16 @@ namespace PizzaApplication.Library
 
         }
 
+        public Crust(string crustSize, string crustThickness)
+        {
+            IngredientType = "Crust";
+            CrustSize = crustSize;
+            CrustThickness = crustThickness;
+            IngredientName = $"{CrustSize} {CrustThickness}";
+            IngredientPrice = CalculateIngredientPrice(CrustSize, CrustThickness);
+
+        }
+
         // methods
         public void SetCrustSize(int i)
         {
