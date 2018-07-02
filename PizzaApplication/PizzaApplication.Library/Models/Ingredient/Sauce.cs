@@ -26,6 +26,16 @@ namespace PizzaApplication.Library
 
         }
 
+        public Sauce(string sauceType, string sauceThickness)
+        {
+            IngredientType = "Sauce";
+            SauceType = sauceType;
+            SauceThickness = sauceThickness;
+            IngredientName = $"{SauceType} {SauceThickness}";
+            IngredientPrice = CalculateIngredientPrice(SauceType, SauceThickness);
+
+        }
+
         // methods
         public decimal CalculateIngredientPrice()
         {
