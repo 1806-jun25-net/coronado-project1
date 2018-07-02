@@ -7,7 +7,7 @@ namespace PizzaApplication.Library
 {
     public class Pizza : IPizza
     {
-        //fields
+        // fields
         public Crust PizzaCrust  = new Crust();
         public Sauce PizzaSauce = new Sauce();
         public Cheese PizzaCheese = new Cheese();
@@ -15,8 +15,39 @@ namespace PizzaApplication.Library
         public IEnumerable<IIngredient> PizzaComposition = new List<IIngredient>();
         public decimal PizzaPrice { get; set; }
 
+        // constructor
+        public Pizza()
+        {
+            AssemblePizza();
+            CalculatePizzaPrice();
+        }
 
+        public Pizza(Crust crust, Sauce sauce, Cheese cheese, List<Topping> toppingList)
+        {
+            PizzaCrust = crust;
+            PizzaSauce = sauce;
+            PizzaCheese = cheese;
+            ToppingList = toppingList;
+            AssemblePizza();
+            CalculatePizzaPrice();
+        }
+        
         // methods
+        public void SetCrust(string crustSize, string crustThickness)
+        {
+            PizzaCrust = new Crust(crustSize, crustThickness);
+        }
+
+        public void SetSauce(string sauceType, string sauceThickness)
+        {
+            PizzaSauce = new Sauce(sauceType, sauceThickness);
+        }
+
+        public void SetCheese(string cheeseType, string cheeseThickness)
+        {
+            PizzaCheese = new Cheese(cheeseType, cheeseThickness);
+        }
+
         private void AddIngredient(IIngredient ingredient)
         {
             if (ingredient != null)
