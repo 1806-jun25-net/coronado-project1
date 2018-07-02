@@ -30,6 +30,15 @@ namespace PizzaApplication.Library
 
         }
 
+        public Topping(string toppingType)
+        {
+            IngredientType = "Topping";
+            ToppingType = ToppingType;
+            IngredientName = $"{ToppingType}";
+            IngredientPrice = CalculateIngredientPrice(ToppingType);
+
+        }
+
         // methods
         public decimal CalculateIngredientPrice()
         {
