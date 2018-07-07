@@ -6,24 +6,23 @@ namespace PizzaApplication.Library
 {
     public class Crust : IIngredient
     {
-        // fields
+        // fields and properties
         public string IngredientType { get; set; }
         public string IngredientName { get; set; }
-        public decimal IngredientPrice { get; set; }
-        public string CrustSize { get; set; }
-        public string CrustThickness { get; set; }
+        public decimal IngredientPrice { get; set; } = 0.00m;
+        public string CrustSize { get; set; } = "";
+        public string CrustThickness { get; set; } = "";
         public List<string> CrustSizeOptions = new List<string> { "Personal(8\")", "Small(10\")", "Medium(12\")", "Large(14\")" };
-        public List<string> CrustThicknessOptions = new List<string> { "Thin Crust", "Regular Crust", "Thick Crust" };
+        public List<string> CrustThicknessOptions = new List<string> { "Thin Crust", "Standard Crust", "Thick Crust" };
 
         // constructor
         public Crust()
         {
             IngredientType = "Crust";
-            CrustSize = CrustSizeOptions[3];
-            CrustThickness = CrustThicknessOptions[1];
+            CrustSize = CrustSizeOptions[0];
+            CrustThickness = CrustThicknessOptions[0];
             IngredientName = $"{CrustSize} {CrustThickness}";
             IngredientPrice = CalculateIngredientPrice(CrustSize, CrustThickness);
-
         }
 
         public Crust(string crustSize, string crustThickness)
@@ -37,9 +36,14 @@ namespace PizzaApplication.Library
         }
 
         // methods
-        public void SetCrustSize(int i)
+        public void SetCrustSize(string option)
         {
-            CrustSize = CrustSizeOptions[i];
+            CrustSize = option;
+        }
+
+        public void SetCrustThickness(string option)
+        {
+            CrustThickness = option;
         }
 
         public decimal CalculateIngredientPrice()
@@ -53,13 +57,13 @@ namespace PizzaApplication.Library
             switch (crustSize)
             {
                 case "Personal(8\")":
-                    ingredientPrice += 2.00m;
+                    ingredientPrice += 3.50m;
                     break;
                 case "Small(10\")":
-                    ingredientPrice += 4.00m;
+                    ingredientPrice += 5.50m;
                     break;
                 case "Medium(12\")":
-                    ingredientPrice += 6.00m;
+                    ingredientPrice += 7.00m;
                     break;
                 case "Large(14\")":
                     ingredientPrice += 8.00m;

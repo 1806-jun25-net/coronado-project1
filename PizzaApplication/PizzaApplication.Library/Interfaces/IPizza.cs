@@ -7,7 +7,7 @@ namespace PizzaApplication.Library
     public interface IPizza
     {
         // methods
-        void AssemblePizza();
+        void BuildPizza();
         void CalculatePizzaPrice();
 
     }

@@ -6,12 +6,12 @@ namespace PizzaApplication.Library
 {
     public class Sauce : IIngredient
     {
-        // fields
+        // fields and properties
         public string IngredientType { get; set; }
         public string IngredientName { get; set; }
-        public decimal IngredientPrice { get; set; }
-        public string SauceType { get; set; }
-        public string SauceThickness { get; set; }
+        public decimal IngredientPrice { get; set; } = 0.00m;
+        public string SauceType { get; set; } = "";
+        public string SauceThickness { get; set; } = "";
         public List<string> SauceTypeOptions = new List<string> { "Tomato Sauce", "White Sauce" };
         public List<string> SauceThicknessOptions = new List<string> { "Light", "Regular", "Extra" };
 
@@ -20,8 +20,8 @@ namespace PizzaApplication.Library
         {
             IngredientType = "Sauce";
             SauceType = SauceTypeOptions[0];
-            SauceThickness = SauceThicknessOptions[1];
-            IngredientName = $"{SauceType} {SauceThickness}";
+            SauceThickness = SauceThicknessOptions[0];
+            IngredientName = $"{SauceType}({SauceThickness})";
             IngredientPrice = CalculateIngredientPrice(SauceType, SauceThickness);
 
         }
@@ -31,7 +31,7 @@ namespace PizzaApplication.Library
             IngredientType = "Sauce";
             SauceType = sauceType;
             SauceThickness = sauceThickness;
-            IngredientName = $"{SauceType} {SauceThickness}";
+            IngredientName = $"{SauceType}({SauceThickness})";
             IngredientPrice = CalculateIngredientPrice(SauceType, SauceThickness);
 
         }
