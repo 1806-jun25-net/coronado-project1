@@ -8,9 +8,9 @@ namespace PizzaApplication.Library
     {
         // field
 
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Location { get; set; }
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
+        public string Location { get; set; } = "";
         public string DefaultLocation { get; set; } = "Reston";
         public Order CustomerOrder = new Order();
 

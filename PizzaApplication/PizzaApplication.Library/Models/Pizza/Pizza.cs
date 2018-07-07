@@ -7,7 +7,7 @@ namespace PizzaApplication.Library
 {
     public class Pizza : IPizza
     {
-        // fields
+        // fields and properties
         public Crust PizzaCrust { get; set; } = new Crust();
         public Sauce PizzaSauce { get; set; } = new Sauce();
         public Cheese PizzaCheese { get; set; } = new Cheese();
