@@ -9,7 +9,9 @@ namespace PizzaApplication.Library
         // fields and properties
         public string IngredientType { get; set; }
         public string IngredientName { get; set; }
+        public string IngredientInventoryName { get; set; }
         public decimal IngredientPrice { get; set; } = 0.00m;
+        public double IngredientInventoryCost { get; set; } = 1.00;
         public string ToppingType { get; set; } = "";
         public List<string> ToppingTypeOptions = new List<string>
         {
@@ -26,8 +28,8 @@ namespace PizzaApplication.Library
             IngredientType = "Topping";
             ToppingType = ToppingTypeOptions[0];
             IngredientName = $"{ToppingType}";
+            IngredientInventoryName = $"{ToppingType}";
             IngredientPrice = CalculateIngredientPrice(ToppingType);
-
         }
 
         public Topping(string toppingType)
@@ -35,8 +37,8 @@ namespace PizzaApplication.Library
             IngredientType = "Topping";
             ToppingType = toppingType;
             IngredientName = $"{ToppingType}";
+            IngredientInventoryName = $"{ToppingType}";
             IngredientPrice = CalculateIngredientPrice(ToppingType);
-
         }
 
         // methods
