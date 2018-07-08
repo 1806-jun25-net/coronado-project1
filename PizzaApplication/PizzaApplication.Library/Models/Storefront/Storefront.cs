@@ -8,11 +8,17 @@ namespace PizzaApplication.Library
     {
         // fields and properties
         public string StoreLocation { get; set; }
-        public Inventory StoreInventory { get; set; }
+        public Inventory StoreInventory { get; set; } = new Inventory();
         public StorefrontOrderHistory StoreOrderHistory { get; set; }
 
+        // constructors
+        public Storefront(string location)
+        {
+            StoreLocation = location;
+        }
+
         // methods
-        public bool CheckIfOrderCanBeFulfilled(Order order)
+        public bool CheckIfInventoryIsSufficient(Order order)
         {
             var check = false;
 
