@@ -9,7 +9,7 @@ namespace PizzaApplication.Library
         // fields and properties
         public Customer OrderCustomer { get; set; }
         public string OrderName { get; set; }
-        public string OrderLocation { get; set; } = "Store Location";
+        public Storefront OrderLocation { get; set; }
         public DateTime OrderTime { get; set; }
         public decimal OrderPrice { get; set; } = 0.00m;
         public decimal OrderPriceLimit { get; set; } = 150.00m; //made limit $150 because the $500 limit in the project requirements was too high for my pricing model
@@ -22,10 +22,10 @@ namespace PizzaApplication.Library
         {            
         }
 
-        public Order(Customer customer, string location)
+        public Order(Customer customer, Storefront storefront)
         {
             OrderCustomer = customer;
-            OrderLocation = location;
+            OrderLocation = storefront;
             OrderTime = DateTime.Now;
             NameOrder();
         }
@@ -33,7 +33,7 @@ namespace PizzaApplication.Library
         // methods
         public void NameOrder()
         {            
-            OrderName = $"{OrderPizzaCount} Pizza(s), ${OrderPrice}, to {OrderLocation}, for {OrderCustomer.FirstName} {OrderCustomer.LastName}, at {OrderTime}";
+            OrderName = $"{OrderPizzaCount} Pizza(s), ${OrderPrice}, to {OrderLocation.StoreLocation}, for {OrderCustomer.FirstName} {OrderCustomer.LastName}, at {OrderTime}";
         }
 
         public void AddPizza(Pizza pizza)

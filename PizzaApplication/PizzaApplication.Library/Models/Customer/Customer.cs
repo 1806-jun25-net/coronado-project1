@@ -10,8 +10,8 @@ namespace PizzaApplication.Library
 
         public string FirstName { get; set; } = "";
         public string LastName { get; set; } = "";
-        public string Location { get; set; } = "";
-        public string DefaultLocation { get; set; } = "Reston";
+        public Storefront Location { get; set; }
+        public Storefront DefaultLocation { get; set; }
         public Order CustomerOrder = new Order();
 
         // methods
