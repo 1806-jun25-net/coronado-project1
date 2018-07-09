@@ -7,6 +7,7 @@ namespace PizzaApplication.Library
     public class Order
     {
         // fields and properties
+        public int ID { get; set; }
         public Customer OrderCustomer { get; set; }
         public string OrderName { get; set; }
         public Storefront OrderLocation { get; set; }

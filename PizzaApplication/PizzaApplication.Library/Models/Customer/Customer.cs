@@ -6,13 +6,14 @@ namespace PizzaApplication.Library
 {
     public class Customer
     {
-        // field
-
+        // fields and properties
+        public int ID { get; set; }
         public string FirstName { get; set; } = "";
         public string LastName { get; set; } = "";
         public Storefront Location { get; set; }
         public Storefront DefaultLocation { get; set; }
         public Order CustomerOrder = new Order();
+        public CustomerOrderHistory OrderHistory = new CustomerOrderHistory();
 
         // methods
         public Customer()
@@ -26,5 +27,10 @@ namespace PizzaApplication.Library
             LastName = lastName;
         }
 
+        public void AddOrder(Order order)
+        {
+            CustomerOrder = order;
+            OrderHistory.AddOrderToHistory(order);
+        }
     }
 }
