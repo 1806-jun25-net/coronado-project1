@@ -6,5 +6,7 @@ namespace PizzaApplication.Library
 {
     public interface IOrderHistory
     {
+        List<Order> OrderList { get; set; }
+        void AddOrderToHistory(Order order);
     }
 }
