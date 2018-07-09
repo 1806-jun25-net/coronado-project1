@@ -220,78 +220,88 @@ namespace PizzaApplication.Library
             var optionList = new List<string>();
             string option;
             var currentOrder = new Order(customer, storefront);
+            var retry = true;
 
-            // loop while pizza limit is below max
-            while (currentOrder.OrderPizzaCount < currentOrder.OrderPizzaLimit)
+            while (retry) // reruns until order is valid
             {
-                // run pizza builder
-                var currentPizza = PizzaBuilder();
-
-                // check if pizza can be fulfilled:
-                // 1. if there are enough ingredients in store inventory
-                // 2. if pizza cost is within order price limit
-
-                bool check = true;
-
-                // check if storefront inventory can fulfill pizza
-                foreach (var ingredient in currentPizza.PizzaComposition)
+                // loop while pizza limit is below max
+                while (currentOrder.OrderPizzaCount < currentOrder.OrderPizzaLimit)
                 {
-                    if (storefront.StoreInventory.CheckIfInventoryIsSufficient(ingredient.IngredientInventoryName, ingredient.IngredientInventoryCost))
-                    {
-                        storefront.StoreInventory.DeductInventoryCount(ingredient.IngredientInventoryName, ingredient.IngredientInventoryCost);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Sorry, there is not enough {ingredient.IngredientInventoryName} in the {storefront.StoreLocation} storefront's inventory.");
-                        check = false;
-                    }
-                    
-                }
-                
-                if (check)
-                {
-                    // check if pizza is within order price limit
-                    var addP = currentPizza.PizzaPrice;
-                    var totalP = currentOrder.OrderPrice;
-                    var limitP = currentOrder.OrderPriceLimit;
+                    // run pizza builder
+                    var currentPizza = PizzaBuilder();
 
-                    if (totalP + addP < limitP) check = true;
-                    else check = false;
+                    // check if pizza can be fulfilled:
+                    // 1. if there are enough ingredients in store inventory
+                    // 2. if pizza cost is within order price limit
+
+                    bool check = true;
+
+                    // check if storefront inventory can fulfill pizza
+                    foreach (var ingredient in currentPizza.PizzaComposition)
+                    {
+                        if (storefront.StoreInventory.CheckIfInventoryIsSufficient(ingredient.IngredientInventoryName, ingredient.IngredientInventoryCost))
+                        {
+                            storefront.StoreInventory.DeductTempInventoryCount(ingredient.IngredientInventoryName, ingredient.IngredientInventoryCost);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Sorry, there is not enough {ingredient.IngredientInventoryName} in the {storefront.StoreLocation} storefront's inventory.");
+                            check = false;
+                        }
+                    }
 
                     if (check)
                     {
-                        // pizza price is within price limit
-                        // add pizza to order
-                        currentOrder.AddPizza(currentPizza);
+                        // check if pizza is within order price limit
+                        var addP = currentPizza.PizzaPrice;
+                        var totalP = currentOrder.OrderPrice;
+                        var limitP = currentOrder.OrderPriceLimit;
+
+                        if (totalP + addP < limitP) check = true;
+                        else check = false;
+
+                        if (check)
+                        {
+                            // pizza price is within price limit
+                            // add pizza to order
+                            currentOrder.AddPizza(currentPizza);
+                        }
+                        else
+                        {
+                            // pizza price not within price limit
+                            var diffP = limitP - ((totalP + addP) * -1);
+                            Console.WriteLine($"Your pizza exceeds the ${currentOrder.OrderPriceLimit} order limit by ${diffP}.");
+                            Console.WriteLine("Please try again or complete your order.");
+                        }
+                    }
+
+                    if (currentOrder.OrderPizzaCount < currentOrder.OrderPizzaLimit)
+                    {
+                        // get user input about adding new pizzas
+                        Console.WriteLine($"\nWould you like to add another pizza? ({currentOrder.OrderPizzaCount}/{currentOrder.OrderPizzaLimit})");
+                        Console.WriteLine("Enter: (Yes/No)");
+                        optionList = new List<string> { "Yes", "No" };
+                        option = PickOptionFromOptionList(optionList);
+                        if (option == "Yes") continue;
+                        else if (option == "No") break;
                     }
                     else
                     {
-                        // pizza price not within price limit
-                        var diffP = limitP - ((totalP + addP) * -1);
-                        Console.WriteLine($"Your pizza exceeds the ${currentOrder.OrderPriceLimit} order limit by ${diffP}.");
-                        Console.WriteLine("Please try again or complete your order.");
-                    }                    
+                        Console.WriteLine("You have reached the maximum amount of pizzas.");
+                    }
                 }
 
-                if (currentOrder.OrderPizzaCount < currentOrder.OrderPizzaLimit)
-                {
-                    // get user input about adding new pizzas
-                    Console.WriteLine($"\nWould you like to add another pizza? ({currentOrder.OrderPizzaCount}/{currentOrder.OrderPizzaLimit})");
-                    Console.WriteLine("Enter: (Yes/No)");
-                    optionList = new List<string> { "Yes", "No" };
-                    option = PickOptionFromOptionList(optionList);
-                    if (option == "Yes") continue;
-                    else if (option == "No") break;
-                }
-                else
-                {
-                    Console.WriteLine("You have reached the maximum amount of pizzas.");
-                }
+                // final check if storefront inventory can fulfill order
+                var finalCheck = storefront.CanOrderBeFulfilled(currentOrder);
+                storefront.SetInventory(finalCheck);
+
+                if (finalCheck) retry = false;
+                else retry = true;
             }
 
             // finalize order
             currentOrder.BuildOrder();
-            currentOrder.PrintOrder();
+            currentOrder.PrintOrder();           
 
             return currentOrder;
         }
