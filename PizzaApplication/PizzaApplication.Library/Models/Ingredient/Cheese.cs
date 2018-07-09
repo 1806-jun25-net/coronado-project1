@@ -13,7 +13,7 @@ namespace PizzaApplication.Library
         public decimal IngredientPrice { get; set; } = 0.00m;
         public double IngredientInventoryCost { get; set; } = 1.00;
         public string CheeseType { get; set; } = "Cheese";
-        public string CheeseThickness { get; set; } = "";        
+        public string CheeseThickness { get; set; } = "";
         public List<string> CheeseTypeOptions = new List<string> { "Cheese" };
         public List<string> CheeseThicknessOptions = new List<string> { "Light", "Regular", "Extra" };
 
@@ -25,7 +25,7 @@ namespace PizzaApplication.Library
             CheeseThickness = CheeseThicknessOptions[0];
             IngredientName = $"{CheeseType}({CheeseThickness})";
             IngredientPrice = CalculateIngredientPrice(CheeseType, CheeseThickness);
-
+            IngredientInventoryCost = CalculateIngredientInventoryCost(CheeseThickness);
         }
 
         public Cheese(string cheeseThickness)
@@ -35,7 +35,7 @@ namespace PizzaApplication.Library
             CheeseThickness = cheeseThickness;
             IngredientName = $"{CheeseType}({CheeseThickness})";
             IngredientPrice = CalculateIngredientPrice(CheeseType, CheeseThickness);
-
+            IngredientInventoryCost = CalculateIngredientInventoryCost(CheeseThickness);
         }
 
         public Cheese(string cheeseType, string cheeseThickness)
@@ -45,7 +45,7 @@ namespace PizzaApplication.Library
             CheeseThickness = cheeseThickness;
             IngredientName = $"{CheeseType}({CheeseThickness})";
             IngredientPrice = CalculateIngredientPrice(CheeseType, CheeseThickness);
-
+            IngredientInventoryCost = CalculateIngredientInventoryCost(CheeseThickness);
         }
 
         // methods

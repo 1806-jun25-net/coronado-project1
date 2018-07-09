@@ -25,6 +25,7 @@ namespace PizzaApplication.Library
             CrustThickness = CrustThicknessOptions[0];
             IngredientName = $"{CrustSize} {CrustThickness}";
             IngredientPrice = CalculateIngredientPrice(CrustSize, CrustThickness);
+            IngredientInventoryCost = CalculateIngredientInventoryCost(CrustSize, CrustThickness);
         }
 
         public Crust(string crustSize, string crustThickness)
@@ -34,7 +35,7 @@ namespace PizzaApplication.Library
             CrustThickness = crustThickness;
             IngredientName = $"{CrustSize} {CrustThickness}";
             IngredientPrice = CalculateIngredientPrice(CrustSize, CrustThickness);
-
+            IngredientInventoryCost = CalculateIngredientInventoryCost(CrustSize, CrustThickness);
         }
 
         // methods
@@ -88,6 +89,43 @@ namespace PizzaApplication.Library
                     break;
             }
             return ingredientPrice;
+        }
+
+        public double CalculateIngredientInventoryCost(string crustSize, string crustThickness)
+        {
+            double inventoryCost = 1.00;
+            switch (crustSize)
+            {
+                case "Personal(8\")":
+                    inventoryCost -= 0.25;
+                    break;
+                case "Small(10\")":
+                    inventoryCost += 0.00;
+                    break;
+                case "Medium(12\")":
+                    inventoryCost += 0.00;
+                    break;
+                case "Large(14\")":
+                    inventoryCost += 0.25;
+                    break;
+                default:
+                    break;
+            }
+            switch (crustThickness)
+            {
+                case "Thin Crust":
+                    inventoryCost -= 0.25;
+                    break;
+                case "Regular Crust":
+                    inventoryCost += 0.00;
+                    break;
+                case "Thick Crust":
+                    inventoryCost += 0.25;
+                    break;
+                default:
+                    break;
+            }
+            return inventoryCost;
         }
     }
 }
