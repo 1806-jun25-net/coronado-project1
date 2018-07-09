@@ -154,7 +154,7 @@ namespace PizzaApplication.UI
                 // call order builder
                 // which calls pizza builder up to 12 times
                 var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
-                currentCustomer.CustomerOrder = currentOrder;
+                currentCustomer.AddOrder(currentOrder);
             }
         }
     }
