@@ -16,9 +16,9 @@ namespace PizzaApplication.UI
 
             // store locations
             List<Storefront> storeList = new List<Storefront>();
-            var RestonStorefront = new Storefront("Reston");
-            var HerndonStorefront = new Storefront("Herndon");
-            var SterlingStorefront = new Storefront("Sterling");
+            Storefront RestonStorefront;
+            Storefront HerndonStorefront;
+            Storefront SterlingStorefront;
             Storefront currentStorefront;
 
             // attempt deserialization of storefronts
@@ -28,14 +28,19 @@ namespace PizzaApplication.UI
             {
                 storeResult = desStoreListTask.Result; // synchronously sits around until the result is ready
             }
-            catch (AggregateException ex)
+            catch (AggregateException)
             {
                 Console.WriteLine("store-data.xml wasn't found.");
-                storeList.Add(RestonStorefront);
-                storeList.Add(HerndonStorefront);
-                storeList.Add(SterlingStorefront);
             }
             storeList.AddRange(storeResult);
+
+            RestonStorefront = new Storefront("Reston");
+            HerndonStorefront = new Storefront("Herndon");
+            SterlingStorefront = new Storefront("Sterling");
+
+            RestonStorefront = ProcessStorefront(RestonStorefront, storeList);
+            HerndonStorefront = ProcessStorefront(HerndonStorefront, storeList);
+            SterlingStorefront = ProcessStorefront(SterlingStorefront, storeList);
 
             // customer
             Customer currentCustomer;
@@ -48,7 +53,7 @@ namespace PizzaApplication.UI
             {
                 customerResult = desCustomerListTask.Result; // synchronously sits around until the result is ready
             }
-            catch (AggregateException ex)
+            catch (AggregateException)
             {
                 Console.WriteLine("customer-data.xml wasn't found.");
             }
@@ -63,7 +68,7 @@ namespace PizzaApplication.UI
             var lastName = HelperIO.ReadLine();
 
             currentCustomer = new Customer(firstName, lastName);
-
+            
             var index = (MatchCustomerToIndex(currentCustomer, customerList)); // check if customer already exists in customer list
             if (index != -1) // means index was found for customer in list
             {
@@ -73,7 +78,7 @@ namespace PizzaApplication.UI
             else // no index found for customer, need to add new customer to the list
             {
                 customerList.Add(currentCustomer);
-                currentStorefront = NewUserFlow(currentCustomer, RestonStorefront, HerndonStorefront, SterlingStorefront);                
+                currentStorefront = NewUserFlow(currentCustomer, RestonStorefront, HerndonStorefront, SterlingStorefront);
             }
 
             // call order builder
@@ -81,7 +86,7 @@ namespace PizzaApplication.UI
             var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
             currentCustomer.AddOrder(currentOrder);
             currentStorefront.AddOrder(currentOrder);
-            
+
             SerializeToFile(@"customer-data.xml", customerList);
             SerializeToFile(@"store-data.xml", storeList);
         }
@@ -104,6 +109,37 @@ namespace PizzaApplication.UI
             return index;
         }
 
+        static int MatchStorefrontToIndex(Storefront storefront, List<Storefront> list)
+        {
+            int index = -1;
+
+            foreach (var item in list)
+            {
+                string itemID = item.StoreLocation;
+                if (storefront.StoreLocation == item.StoreLocation)
+                {
+                    index = list.IndexOf(item);
+                    break;
+                }
+            }
+
+            return index;
+        }
+
+        static Storefront ProcessStorefront(Storefront storefront, List<Storefront> list)
+        {
+            var index = (MatchStorefrontToIndex(storefront, list)); // check if storefront already exists in storefront list
+            if (index != -1) // means index was found for customer in list
+            {
+                storefront = list[index]; // set currentCustomer reference to the indexed Customer
+            }
+            else // no index found for storefront, need to add new storefront to the list
+            {
+                list.Add(storefront);
+            }
+            return storefront;
+        }
+
         static Storefront NewUserFlow(Customer currentCustomer, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
         {
             Console.WriteLine($"\nHello, {currentCustomer.FirstName}!");
@@ -111,24 +147,11 @@ namespace PizzaApplication.UI
             Console.WriteLine("\nPlease select a store location:");
             Console.WriteLine("Reston, Herndon, Sterling");
 
-            var currentStorefront = new Storefront();
+            Storefront currentStorefront;
             var optionList = new List<string> { "Reston", "Herndon", "Sterling" };
             var option = HelperPizza.PickOptionFromOptionList(optionList);
 
-            switch (option)
-            {
-                case "Reston":
-                    currentStorefront = RestonStorefront;
-                    break;
-                case "Herndon":
-                    currentStorefront = HerndonStorefront;
-                    break;
-                case "Sterling":
-                    currentStorefront = SterlingStorefront;
-                    break;
-                default:
-                    break;
-            }
+            currentStorefront = PickCurrentStorefront(option, RestonStorefront, HerndonStorefront, SterlingStorefront);
 
             currentCustomer.DefaultLocation = currentStorefront.StoreLocation;
 
@@ -150,20 +173,8 @@ namespace PizzaApplication.UI
             var option = HelperPizza.PickOptionFromOptionList(optionList);
             if (option == "Yes")
             {
-                switch (currentCustomer.DefaultLocation)
-                {
-                    case "Reston":
-                        currentStorefront = RestonStorefront;
-                        break;
-                    case "Herndon":
-                        currentStorefront = HerndonStorefront;
-                        break;
-                    case "Sterling":
-                        currentStorefront = SterlingStorefront;
-                        break;
-                    default:
-                        break;
-                }
+
+                currentStorefront = PickCurrentStorefront(currentCustomer.DefaultLocation, RestonStorefront, HerndonStorefront, SterlingStorefront);
                 Console.WriteLine($"\nOk, you are ordering at {currentCustomer.DefaultLocation}.");
 
                 // call order builder
@@ -178,20 +189,7 @@ namespace PizzaApplication.UI
                 optionList = new List<string> { "Reston", "Herndon", "Sterling" };
                 var location = HelperPizza.PickOptionFromOptionList(optionList);
 
-                switch (location)
-                {
-                    case "Reston":
-                        currentStorefront = RestonStorefront;
-                        break;
-                    case "Herndon":
-                        currentStorefront = HerndonStorefront;
-                        break;
-                    case "Sterling":
-                        currentStorefront = SterlingStorefront;
-                        break;
-                    default:
-                        break;
-                }
+                currentStorefront = PickCurrentStorefront(location, RestonStorefront, HerndonStorefront, SterlingStorefront);
 
                 Console.WriteLine($"\nYour current default location is {currentCustomer.DefaultLocation}.");
                 Console.WriteLine($"Do you want to set {location} as your default location?");
@@ -208,6 +206,27 @@ namespace PizzaApplication.UI
                 {
                     Console.WriteLine($"\nOk, {currentCustomer.DefaultLocation} is still your default location.");
                 }
+            }
+            return currentStorefront;
+        }
+
+        static Storefront PickCurrentStorefront(string option, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
+        {
+            Storefront currentStorefront;
+            switch (option)
+            {
+                case "Reston":
+                    currentStorefront = RestonStorefront;
+                    break;
+                case "Herndon":
+                    currentStorefront = HerndonStorefront;
+                    break;
+                case "Sterling":
+                    currentStorefront = SterlingStorefront;
+                    break;
+                default:
+                    currentStorefront = RestonStorefront;
+                    break;
             }
             return currentStorefront;
         }
