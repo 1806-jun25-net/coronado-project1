@@ -2,20 +2,28 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
-    public class Pizza : IPizza
+    public class Pizza
     {
         // fields and properties
+        [XmlAttribute]
         public int ID { get; set; }
+        [XmlAttribute]
+        public string PizzaName { get; set; }
+
         public Crust PizzaCrust { get; set; } = new Crust();
         public Sauce PizzaSauce { get; set; } = new Sauce();
         public Cheese PizzaCheese { get; set; } = new Cheese();
-        public IEnumerable<Topping> ToppingList = new List<Topping>();
-        public int MaxToppings { get; set; } = 6;
-        public IEnumerable<IIngredient> PizzaComposition = new List<IIngredient>();
+        public List<Topping> ToppingList = new List<Topping>();        
         public decimal PizzaPrice { get; set; } = 0.00m;
+        [XmlIgnore]
+        public int MaxToppings { get; set; } = 6;
+        [XmlIgnore]
+        public List<IIngredient> PizzaComposition = new List<IIngredient>();
+        
 
         // constructor
         public Pizza()
@@ -59,16 +67,14 @@ namespace PizzaApplication.Library
         private void AddIngredient(IIngredient ingredient)
         {
             if (ingredient != null)
-            {
-                var pizzaComposition = (List<IIngredient>)PizzaComposition;
-                pizzaComposition.Add(ingredient);
+            {                
+                PizzaComposition.Add(ingredient);
             }
         }
 
         public void BuildPizza()
         {
-            var pizzaComposition = (List<IIngredient>)PizzaComposition;
-            pizzaComposition.Clear();
+            PizzaComposition.Clear();
             AddIngredient(PizzaCrust);
             AddIngredient(PizzaSauce);
             AddIngredient(PizzaCheese);
@@ -80,39 +86,39 @@ namespace PizzaApplication.Library
                 }
             }
             CalculatePizzaPrice();
+            NamePizza();
         }
 
         public void BuildPizza(Crust crust)
-        {
-            var pizzaComposition = (List<IIngredient>)PizzaComposition;
-            pizzaComposition.Clear();
+        {            
+            PizzaComposition.Clear();
             AddIngredient(PizzaCrust = crust);
             CalculatePizzaPrice();
+            NamePizza();
         }
 
         public void BuildPizza(Crust crust, Sauce sauce)
         {
-            var pizzaComposition = (List<IIngredient>)PizzaComposition;
-            pizzaComposition.Clear();
+            PizzaComposition.Clear();
             AddIngredient(PizzaCrust = crust);
             AddIngredient(PizzaSauce = sauce);
             CalculatePizzaPrice();
+            NamePizza();
         }
 
         public void BuildPizza(Crust crust, Sauce sauce, Cheese cheese)
         {
-            var pizzaComposition = (List<IIngredient>)PizzaComposition;
-            pizzaComposition.Clear();
+            PizzaComposition.Clear();
             AddIngredient(PizzaCrust = crust);
             AddIngredient(PizzaSauce = sauce);
             AddIngredient(PizzaCheese = cheese);
             CalculatePizzaPrice();
+            NamePizza();
         }
 
         public void BuildPizza(Crust crust, Sauce sauce, Cheese cheese, List<Topping> toppingList)
         {
-            var pizzaComposition = (List<IIngredient>)PizzaComposition;
-            pizzaComposition.Clear();
+            PizzaComposition.Clear();
             AddIngredient(PizzaCrust = crust);
             AddIngredient(PizzaSauce = sauce);
             AddIngredient(PizzaCheese = cheese);            
@@ -125,6 +131,23 @@ namespace PizzaApplication.Library
                 }
             }
             CalculatePizzaPrice();
+            NamePizza();
+        }
+
+        public void NamePizza()
+        {
+            PizzaName = $"{PizzaCrust.CrustSize} {PizzaCrust.CrustThickness} Pizza with {PizzaSauce.SauceType}({PizzaSauce.SauceThickness}), {PizzaCheese.CheeseType}({PizzaCheese.CheeseThickness}), ";
+            if (ToppingList.Count() > 0)
+            {
+                var toppingListString = "";
+                foreach (var topping in ToppingList)
+                {
+                    toppingListString += $"{topping.ToppingType}, ";
+                }                
+                PizzaName += toppingListString;
+            }
+            PizzaName = PizzaName.Trim(' ');
+            PizzaName = PizzaName.Trim(',');
         }
 
         public void PrintPizza()

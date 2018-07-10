@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Collections.Generic;
 using PizzaApplication.Library;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace PizzaApplication.UI
 {
@@ -15,43 +17,60 @@ namespace PizzaApplication.UI
             var RestonStorefront = new Storefront("Reston");
             var HerndonStorefront = new Storefront("Herndon");
             var SterlingStorefront = new Storefront("Sterling");
+            List<Storefront> storeList = new List<Storefront>();
+            storeList.Add(RestonStorefront);
+            storeList.Add(HerndonStorefront);
+            storeList.Add(SterlingStorefront);
 
             // customer
-            Customer currentCustomer = new Customer();
+            Customer currentCustomer;
+            List<Customer> customerList = new List<Customer>();
 
             // variables
             var currentStorefront = RestonStorefront;
-            var optionList = new List<string>();
-            string option;
 
             // main ui flow
             Console.WriteLine("Welcome to the Pizza Store Console Application!");
-            Console.WriteLine("\nAre you a new or returning user?");
-            Console.WriteLine("Enter: (New/Returning)\n");
 
-            optionList = new List<string> { "New", "Returning" };
-            option = HelperPizza.PickOptionFromOptionList(optionList);
-
-            if (option == "New")
-            {
-                NewUserFlow(currentCustomer, currentStorefront, RestonStorefront, HerndonStorefront, SterlingStorefront);
-            }
-            else if (option == "Returning")
-            {
-                ReturningUserFlow(currentCustomer, currentStorefront, RestonStorefront, HerndonStorefront, SterlingStorefront);                                
-            }
-        }
-
-        static void NewUserFlow(Customer currentCustomer, Storefront currentStorefront, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
-        {
-            Console.WriteLine("\nWelcome, new user!" +
-                    "\nEnter your first name.\n");
+            Console.WriteLine("\nEnter your first name.\n");
             var firstName = HelperIO.ReadLine();
             Console.WriteLine("\nEnter your last name.\n");
             var lastName = HelperIO.ReadLine();
 
             currentCustomer = new Customer(firstName, lastName);
 
+            if (CheckIfCustomerIsInList(currentCustomer, customerList)) ReturningUserFlow(currentCustomer, currentStorefront, RestonStorefront, HerndonStorefront, SterlingStorefront);
+            else  NewUserFlow(currentCustomer, currentStorefront, RestonStorefront, HerndonStorefront, SterlingStorefront);
+
+            // call order builder
+            // which calls pizza builder up to 12 times
+            var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
+            currentCustomer.AddOrder(currentOrder);
+            currentStorefront.AddOrder(currentOrder);
+
+            customerList.Add(currentCustomer);
+            SerializeToFile(@"customer-data.xml", customerList);
+            SerializeToFile(@"store-data.xml", storeList);
+        }            
+
+        static bool CheckIfCustomerIsInList(Customer customer, List<Customer> list)
+        {
+            var check = false;
+
+            foreach (var item in list)
+            {
+                if (customer == item)
+                {
+                    check = true;
+                    break;
+                }
+            }
+
+            return check;
+        }
+
+        static void NewUserFlow(Customer currentCustomer, Storefront currentStorefront, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
+        {
             Console.WriteLine($"\nHello, {currentCustomer.FirstName}!");
 
             Console.WriteLine("\nPlease select a store location:");
@@ -77,24 +96,11 @@ namespace PizzaApplication.UI
 
             currentCustomer.DefaultLocation = currentStorefront;
 
-            Console.WriteLine($"\nOk, {option} has been set as your default location.");
-
-            // call order builder
-            // which calls pizza builder up to 12 times
-            var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
+            Console.WriteLine($"\nOk, {option} has been set as your default location.");            
         }
 
         static void ReturningUserFlow(Customer currentCustomer, Storefront currentStorefront, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
-        {
-            Console.WriteLine("\nEnter your first name.\n");
-            var firstName = HelperIO.ReadLine();
-            Console.WriteLine("\nEnter your last name.\n");
-            var lastName = HelperIO.ReadLine();
-
-            currentCustomer = new Customer(firstName, lastName);
-
-            // (TO DO) check if this is a valid returning user
-
+        {           
             Console.WriteLine($"Welcome back, {currentCustomer.FirstName}!");
 
             Console.WriteLine($"\nYour current default location is {currentCustomer.DefaultLocation.StoreLocation}.");
@@ -150,11 +156,70 @@ namespace PizzaApplication.UI
                 {
                     Console.WriteLine($"\nOk, {currentCustomer.DefaultLocation.StoreLocation} is still your default location.");
                 }
+            }
+        }
 
-                // call order builder
-                // which calls pizza builder up to 12 times
-                var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
-                currentCustomer.AddOrder(currentOrder);
+        private static void SerializeToFile(string fileName, List<Customer> customerList)
+        {
+            var serializer = new XmlSerializer(typeof(List<Customer>));
+            FileStream fileStream = null;
+
+            try
+            {
+                fileStream = new FileStream(fileName, FileMode.Create);
+                serializer.Serialize(fileStream, customerList);
+            }
+            catch (PathTooLongException ex)
+            {
+                Console.WriteLine($"Path {fileName} was too long! {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Some other error with file I/O: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                throw; // re-throws the same exception
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    fileStream.Dispose();
+                }
+            }
+        }
+
+        private static void SerializeToFile(string fileName, List<Storefront> storeList)
+        {
+            var serializer = new XmlSerializer(typeof(List<Storefront>));
+            FileStream fileStream = null;
+
+            try
+            {
+                fileStream = new FileStream(fileName, FileMode.Create);
+                serializer.Serialize(fileStream, storeList);
+            }
+            catch (PathTooLongException ex)
+            {
+                Console.WriteLine($"Path {fileName} was too long! {ex.Message}");
+            }
+            catch (IOException ex)
+            {
+                Console.WriteLine($"Some other error with file I/O: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                throw; // re-throws the same exception
+            }
+            finally
+            {
+                if (fileStream != null)
+                {
+                    fileStream.Dispose();
+                }
             }
         }
     }

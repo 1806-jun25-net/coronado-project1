@@ -1,26 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
     public class Crust : IIngredient
     {
         // fields and properties
-        public string IngredientType { get; set; }
-        public string IngredientName { get; set; }
-        public string IngredientInventoryName { get; set; } = "Dough";
-        public decimal IngredientPrice { get; set; } = 0.00m;
-        public double IngredientInventoryCost { get; set; } = 1.00;
+        [XmlAttribute]
+        public string IngredientType { get; set; } = "Crust";
         public string CrustSize { get; set; } = "";
         public string CrustThickness { get; set; } = "";
+        [XmlIgnore]
+        public string IngredientName { get; set; } = "";
+        [XmlIgnore]
+        public string IngredientInventoryName { get; set; } = "Dough";
+        [XmlIgnore]
+        public decimal IngredientPrice { get; set; } = 0.00m;
+        [XmlIgnore]
+        public double IngredientInventoryCost { get; set; } = 1.00;        
+        [XmlIgnore]
         public List<string> CrustSizeOptions = new List<string> { "Personal(8\")", "Small(10\")", "Medium(12\")", "Large(14\")" };
+        [XmlIgnore]
         public List<string> CrustThicknessOptions = new List<string> { "Thin Crust", "Standard Crust", "Thick Crust" };
 
         // constructor
         public Crust()
         {
-            IngredientType = "Crust";
             CrustSize = CrustSizeOptions[0];
             CrustThickness = CrustThicknessOptions[0];
             IngredientName = $"{CrustSize} {CrustThickness}";
@@ -30,7 +37,6 @@ namespace PizzaApplication.Library
 
         public Crust(string crustSize, string crustThickness)
         {
-            IngredientType = "Crust";
             CrustSize = crustSize;
             CrustThickness = crustThickness;
             IngredientName = $"{CrustSize} {CrustThickness}";

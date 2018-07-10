@@ -1,19 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
     public class Customer
     {
         // fields and properties
+        [XmlAttribute]
         public int ID { get; set; }
+        [XmlAttribute]        
         public string FirstName { get; set; } = "";
+        [XmlAttribute]
         public string LastName { get; set; } = "";
+
+        public Order LatestOrder = new Order();
+        public List<Order> OrderHistory = new List<Order>();        
+        [XmlIgnore]
         public Storefront Location { get; set; }
-        public Storefront DefaultLocation { get; set; }
-        public Order CustomerOrder = new Order();
-        public CustomerOrderHistory OrderHistory = new CustomerOrderHistory();
+        [XmlIgnore]
+        public Storefront DefaultLocation { get; set; }        
 
         // methods
         public Customer()
@@ -29,8 +36,8 @@ namespace PizzaApplication.Library
 
         public void AddOrder(Order order)
         {
-            CustomerOrder = order;
-            OrderHistory.AddOrderToHistory(order);
+            LatestOrder = order;
+            OrderHistory.Add(order);
         }
     }
 }

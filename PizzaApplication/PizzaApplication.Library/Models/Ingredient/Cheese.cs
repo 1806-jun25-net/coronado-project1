@@ -1,26 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
     public class Cheese : IIngredient
     {
         // fields and properties
-        public string IngredientType { get; set; }
-        public string IngredientName { get; set; }
-        public string IngredientInventoryName { get; set; } = "Cheese";
-        public decimal IngredientPrice { get; set; } = 0.00m;
-        public double IngredientInventoryCost { get; set; } = 1.00;
-        public string CheeseType { get; set; } = "Cheese";
+        [XmlAttribute]
+        public string IngredientType { get; set; } = "Cheese";        
         public string CheeseThickness { get; set; } = "";
+        [XmlIgnore]
+        public string IngredientName { get; set; } = "";
+        [XmlIgnore]
+        public string IngredientInventoryName { get; set; } = "Cheese";
+        [XmlIgnore]
+        public decimal IngredientPrice { get; set; } = 0.00m;
+        [XmlIgnore]
+        public double IngredientInventoryCost { get; set; } = 1.00;
+        [XmlIgnore]
+        public string CheeseType { get; set; } = "Cheese";
+        [XmlIgnore]
         public List<string> CheeseTypeOptions = new List<string> { "Cheese" };
+        [XmlIgnore]
         public List<string> CheeseThicknessOptions = new List<string> { "Light", "Regular", "Extra" };
+
+        
 
         // constructor
         public Cheese()
         {
-            IngredientType = "Cheese";
             CheeseType = CheeseTypeOptions[0];
             CheeseThickness = CheeseThicknessOptions[0];
             IngredientName = $"{CheeseType}({CheeseThickness})";
@@ -30,7 +40,6 @@ namespace PizzaApplication.Library
 
         public Cheese(string cheeseThickness)
         {
-            IngredientType = "Cheese";
             CheeseType = CheeseTypeOptions[0];
             CheeseThickness = cheeseThickness;
             IngredientName = $"{CheeseType}({CheeseThickness})";
@@ -40,7 +49,6 @@ namespace PizzaApplication.Library
 
         public Cheese(string cheeseType, string cheeseThickness)
         {
-            IngredientType = "Cheese";
             CheeseType = cheeseType;
             CheeseThickness = cheeseThickness;
             IngredientName = $"{CheeseType}({CheeseThickness})";

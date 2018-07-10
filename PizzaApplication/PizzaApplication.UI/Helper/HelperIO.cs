@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Globalization; // to use Title Case method
 
-namespace PizzaApplication.Library
+namespace PizzaApplication.UI
 {
     public static class HelperIO
     {

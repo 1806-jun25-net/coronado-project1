@@ -1,9 +1,10 @@
-﻿using System;
+﻿using PizzaApplication.Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PizzaApplication.Library
+namespace PizzaApplication.UI
 {
     public static class HelperPizza
     {

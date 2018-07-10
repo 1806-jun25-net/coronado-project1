@@ -1,26 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
     public class Sauce : IIngredient
     {
         // fields and properties
-        public string IngredientType { get; set; }
-        public string IngredientName { get; set; }
-        public string IngredientInventoryName { get; set; }
-        public decimal IngredientPrice { get; set; } = 0.00m;
-        public double IngredientInventoryCost { get; set; } = 1.00;
+        [XmlAttribute]
+        public string IngredientType { get; set; } = "Sauce";
         public string SauceType { get; set; } = "";
         public string SauceThickness { get; set; } = "";
+        [XmlIgnore]
+        public string IngredientName { get; set; } = "";
+        [XmlIgnore]
+        public string IngredientInventoryName { get; set; }
+        [XmlIgnore]
+        public decimal IngredientPrice { get; set; } = 0.00m;
+        [XmlIgnore]
+        public double IngredientInventoryCost { get; set; } = 1.00;        
+        [XmlIgnore]
         public List<string> SauceTypeOptions = new List<string> { "Tomato Sauce", "White Sauce" };
+        [XmlIgnore]
         public List<string> SauceThicknessOptions = new List<string> { "Light", "Regular", "Extra" };
 
         // constructor
         public Sauce()
         {
-            IngredientType = "Sauce";
             SauceType = SauceTypeOptions[0];
             SauceThickness = SauceThicknessOptions[0];
             IngredientName = $"{SauceType}({SauceThickness})";
@@ -31,7 +38,6 @@ namespace PizzaApplication.Library
 
         public Sauce(string sauceType, string sauceThickness)
         {
-            IngredientType = "Sauce";
             SauceType = sauceType;
             SauceThickness = sauceThickness;
             IngredientName = $"{SauceType}({SauceThickness})";

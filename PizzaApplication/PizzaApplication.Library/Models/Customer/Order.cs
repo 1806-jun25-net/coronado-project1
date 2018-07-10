@@ -1,22 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
     public class Order
     {
         // fields and properties
+        [XmlAttribute]
         public int ID { get; set; }
-        public Customer OrderCustomer { get; set; }
+        [XmlAttribute]
         public string OrderName { get; set; }
-        public Storefront OrderLocation { get; set; }
+        public string CustomerName { get; set; }        
+        public string OrderLocation { get; set; }
         public DateTime OrderTime { get; set; }
         public decimal OrderPrice { get; set; } = 0.00m;
+        public int OrderPizzaCount { get; set; } = 0;        
+        public List<Pizza> PizzaList = new List<Pizza>();
+
+        [XmlIgnore]
         public decimal OrderPriceLimit { get; set; } = 150.00m; //made limit $150 because the $500 limit in the project requirements was too high for my pricing model
-        public int OrderPizzaCount { get; set; } = 0;
-        public int OrderPizzaLimit { get; set; } = 12;
-        public IEnumerable<Pizza> PizzaList = new List<Pizza>();
+        [XmlIgnore]
+        public int OrderPizzaLimit { get; set; } = 12;        
 
         // constructors
         public Order()
@@ -25,8 +31,8 @@ namespace PizzaApplication.Library
 
         public Order(Customer customer, Storefront storefront)
         {
-            OrderCustomer = customer;
-            OrderLocation = storefront;
+            CustomerName = $"{customer.FirstName} {customer.LastName}";
+            OrderLocation = storefront.StoreLocation;
             OrderTime = DateTime.Now;
             NameOrder();
         }
@@ -34,13 +40,12 @@ namespace PizzaApplication.Library
         // methods
         public void NameOrder()
         {            
-            OrderName = $"{OrderPizzaCount} Pizza(s), ${OrderPrice}, to {OrderLocation.StoreLocation}, for {OrderCustomer.FirstName} {OrderCustomer.LastName}, at {OrderTime}";
+            OrderName = $"{OrderPizzaCount} Pizza(s), ${OrderPrice}, to {OrderLocation}, for {CustomerName}, at {OrderTime}";
         }
 
         public void AddPizza(Pizza pizza)
-        {
-            var pizzaList = (List<Pizza>)PizzaList;
-            pizzaList.Add(pizza);
+        {            
+            PizzaList.Add(pizza);
             OrderPrice += pizza.PizzaPrice;
             OrderPizzaCount++;
         }

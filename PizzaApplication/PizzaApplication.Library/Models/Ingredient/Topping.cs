@@ -1,18 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
     public class Topping : IIngredient
     {
         // fields and properties
-        public string IngredientType { get; set; }
-        public string IngredientName { get; set; }
-        public string IngredientInventoryName { get; set; }
-        public decimal IngredientPrice { get; set; } = 0.00m;
-        public double IngredientInventoryCost { get; set; } = 1.00;
+        [XmlAttribute]
+        public string IngredientType { get; set; } = "Topping";
         public string ToppingType { get; set; } = "";
+        [XmlIgnore]
+        public string IngredientName { get; set; } = "";
+        [XmlIgnore]
+        public string IngredientInventoryName { get; set; }
+        [XmlIgnore]
+        public decimal IngredientPrice { get; set; } = 0.00m;
+        [XmlIgnore]
+        public double IngredientInventoryCost { get; set; } = 1.00;        
+        [XmlIgnore]
         public List<string> ToppingTypeOptions = new List<string>
         {
             "Pepperoni", "Ham", "Chicken", "Beef",
@@ -24,8 +31,7 @@ namespace PizzaApplication.Library
 
         // constructor
         public Topping()
-        {
-            IngredientType = "Topping";
+        {            
             ToppingType = ToppingTypeOptions[0];
             IngredientName = $"{ToppingType}";
             IngredientInventoryName = $"{ToppingType}";
@@ -34,7 +40,6 @@ namespace PizzaApplication.Library
 
         public Topping(string toppingType)
         {
-            IngredientType = "Topping";
             ToppingType = toppingType;
             IngredientName = $"{ToppingType}";
             IngredientInventoryName = $"{ToppingType}";

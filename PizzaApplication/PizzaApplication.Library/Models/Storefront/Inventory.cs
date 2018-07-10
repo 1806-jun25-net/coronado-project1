@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Linq;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
@@ -9,8 +10,7 @@ namespace PizzaApplication.Library
     {
         // fields and properties
         // using two lists with equal indices instead of a dictionary because dictionary is not serializeable
-
-        public IEnumerable<string> InventoryNameList { get; set; } = new List<string>
+        public List<string> InventoryNameList { get; set; } = new List<string>
         {
             "Dough", "Tomato Sauce", "White Sauce", "Cheese",
             "Pepperoni", "Ham", "Chicken", "Beef",
@@ -19,35 +19,35 @@ namespace PizzaApplication.Library
             "Garlic", "Onions", "Tomatoes", "Spinach",
             "Basil", "Ricotta", "Parmesan", "Feta"
         };
-
-        public IEnumerable<double> InitialInventoryCountList { get; set; } = new List<double>
+        public List<double> InventoryCountList { get; set; } = new List<double>
+        {
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0
+        };
+        // used to check inventory amounts before finalizing orders
+        [XmlIgnore]
+        public List<double> TempInventoryCountList { get; set; } = new List<double>
+        {
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0,
+            0, 0, 0, 0
+        };
+        // used to reset inventory amounts
+        [XmlIgnore]
+        public List<double> InitialInventoryCountList { get; set; } = new List<double>
         {
             200, 100, 100, 200,
             50, 50, 50, 50, 50,
             50, 50, 50, 50, 50,
             50, 50, 50, 50, 50,
             50, 50, 50, 50, 50
-        };
-
-        public IEnumerable<double> InventoryCountList { get; set; } = new List<double>
-        {
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0
-        };
-
-        // used to check inventory amounts before finalizing orders
-        public IEnumerable<double> TempInventoryCountList { get; set; } = new List<double>
-        {
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0,
-            0, 0, 0, 0
         };
 
 
@@ -63,12 +63,11 @@ namespace PizzaApplication.Library
         public int MatchNameToInventoryIndex(string name)
         {
             int index = -1;
-            var inventoryNameList = (List<string>)InventoryNameList; // downcast to use List Linq functions
-            foreach (var item in inventoryNameList)
+            foreach (var item in InventoryNameList)
             {
                 if (name == item)
                 {
-                    index = inventoryNameList.IndexOf(item);
+                    index = InventoryNameList.IndexOf(item);
                     break;
                 }
             }
@@ -77,60 +76,52 @@ namespace PizzaApplication.Library
 
         public double ReturnInventoryCount(string name)
         {
-            var inventoryCountList = (List<double>)InventoryCountList; // downcast to use List Linq functions
             var index = MatchNameToInventoryIndex(name); // use name parameter to find the matching index
-            var count = inventoryCountList[index]; // return the count at index
+            var count = InventoryCountList[index]; // return the count at index
             return count;
         }
 
         public double ReturnTempInventoryCount(string name)
         {
-            var tempInventoryCountList = (List<double>)TempInventoryCountList; // downcast to use List Linq functions
             var index = MatchNameToInventoryIndex(name); // use name parameter to find the matching index
-            var count = tempInventoryCountList[index]; // return the count at index
+            var count = TempInventoryCountList[index]; // return the count at index
             return count;
         }
 
         public void DeductInventoryCount(string name, double amount)
         {
-            var inventoryCountList = (List<double>)InventoryCountList; // downcast to use List Linq functions
             var index = MatchNameToInventoryIndex(name); // use name parameter to find the matching index
-            var count = inventoryCountList[index]; // return the count at index
+            var count = InventoryCountList[index]; // return the count at index
             count -= amount; // deduct count by amount
-            inventoryCountList[index] = count; //update count at index          
+            InventoryCountList[index] = count; //update count at index          
         }
 
         public void DeductTempInventoryCount(string name, double amount)
         {
-            var tempInventoryCountList = (List<double>)TempInventoryCountList; // downcast to use List Linq functions
             var index = MatchNameToInventoryIndex(name); // use name parameter to find the matching index
-            var count = tempInventoryCountList[index]; // return the count at index
+            var count = TempInventoryCountList[index]; // return the count at index
             count -= amount; // deduct count by amount
-            tempInventoryCountList[index] = count; //update count at index          
+            TempInventoryCountList[index] = count; //update count at index          
         }
 
         public bool CheckIfInventoryIsSufficient(string name, double amount)
         {
             var check = false;
-            var tempInventoryCountList = (List<double>)TempInventoryCountList; // downcast to use List Linq functions
             var index = MatchNameToInventoryIndex(name); // use name parameter to find the matching index
-            var count = tempInventoryCountList[index]; // return the count at index
+            var count = TempInventoryCountList[index]; // return the count at index
             if (count >= amount) check = true; // if count is greater or equal to the amount to be deducted then return true
 
             return check;
         }
 
-        public void CopyInventory(IEnumerable<double> inventory, IEnumerable<double> sourceInventory)
+        public void CopyInventory(List<double> inventory, List<double> sourceInventory)
         {
             // sets inventory to source values
-            var nameList = (List<string>)InventoryNameList; // need to iterate through name list to find correct index
-            var inventoryList = (List<double>)inventory;
-            var sourceInventoryList = (List<double>)sourceInventory;
             int index;
-            foreach (var item in nameList)
+            foreach (var item in InventoryNameList) // need to iterate through name list to find correct index
             {
-                index = nameList.IndexOf(item);
-                inventoryList[index] = sourceInventoryList[index];
+                index = InventoryNameList.IndexOf(item);
+                inventory[index] = sourceInventory[index];
             }
         }
 

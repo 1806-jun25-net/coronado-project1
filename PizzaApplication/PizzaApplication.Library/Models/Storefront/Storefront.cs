@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace PizzaApplication.Library
 {
     public class Storefront
     {
         // fields and properties
+        [XmlAttribute]
         public string StoreLocation { get; set; }
         public Inventory StoreInventory { get; set; } = new Inventory();
-        public StorefrontOrderHistory StoreOrderHistory { get; set; } = new StorefrontOrderHistory();
+        public List<Order> StorefrontOrderHistory { get; set; } = new List<Order>();
 
         // constructors
+        public Storefront()
+        {
+
+        }
+
         public Storefront(string location)
         {
             StoreLocation = location;
@@ -39,7 +46,7 @@ namespace PizzaApplication.Library
                         tempCheck = false;
                     }
                 }
-            }                       
+            }
             return tempCheck;
         }
 
@@ -65,12 +72,12 @@ namespace PizzaApplication.Library
 
         public void PrintInventory()
         {
-            var nameList = (List<string>)StoreInventory.InventoryNameList;
-            var countList = (List<double>)StoreInventory.InventoryCountList;            
+            var nameList = StoreInventory.InventoryNameList;
+            var countList = StoreInventory.InventoryCountList;
             int index;
 
             Console.WriteLine($"\n{StoreLocation} Storefront Inventory: \n---\n");
-        
+
             foreach (var item in nameList)
             {
                 index = nameList.IndexOf(item);
@@ -80,8 +87,8 @@ namespace PizzaApplication.Library
 
         public void PrintTempInventory()
         {
-            var nameList = (List<string>)StoreInventory.InventoryNameList;
-            var countList = (List<double>)StoreInventory.TempInventoryCountList;
+            var nameList = StoreInventory.InventoryNameList;
+            var countList = StoreInventory.TempInventoryCountList;
             int index;
 
             Console.WriteLine($"\n{StoreLocation} Storefront Temp Inventory: \n---\n");
@@ -91,6 +98,11 @@ namespace PizzaApplication.Library
                 index = nameList.IndexOf(item);
                 Console.WriteLine($"{item}: {countList[index]}");
             }
+        }
+
+        public void AddOrder(Order order)
+        {
+            StorefrontOrderHistory.Add(order);
         }
     }
 }
