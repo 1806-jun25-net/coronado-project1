@@ -13,6 +13,9 @@ appsettings.json
 # XML Serialization
 *.xml
 
+# SQL Queries
+*.sql
+
 # User-specific files
 *.suo
 *.user
