@@ -10,6 +10,7 @@ namespace PizzaApplication.Library
         // fields and properties
         [XmlAttribute]
         public string StoreLocation { get; set; }
+
         public Inventory StoreInventory { get; set; } = new Inventory();
         public List<Order> StorefrontOrderHistory { get; set; } = new List<Order>();
 
@@ -72,31 +73,31 @@ namespace PizzaApplication.Library
 
         public void PrintInventory()
         {
-            var nameList = StoreInventory.InventoryNameList;
-            var countList = StoreInventory.InventoryCountList;
+            var nameArray = StoreInventory.InventoryNameArray;
+            var countArray = StoreInventory.InventoryCountArray;
             int index;
 
             Console.WriteLine($"\n{StoreLocation} Storefront Inventory: \n---\n");
 
-            foreach (var item in nameList)
+            foreach (var item in nameArray)
             {
-                index = nameList.IndexOf(item);
-                Console.WriteLine($"{item}: {countList[index]}");
+                index = Array.IndexOf(nameArray, item);
+                Console.WriteLine($"{item}: {countArray[index]}");
             }
         }
 
         public void PrintTempInventory()
         {
-            var nameList = StoreInventory.InventoryNameList;
-            var countList = StoreInventory.TempInventoryCountList;
+            var nameArray = StoreInventory.InventoryNameArray;
+            var countArray = StoreInventory.TempInventoryCountArray;
             int index;
 
             Console.WriteLine($"\n{StoreLocation} Storefront Temp Inventory: \n---\n");
 
-            foreach (var item in nameList)
+            foreach (var item in nameArray)
             {
-                index = nameList.IndexOf(item);
-                Console.WriteLine($"{item}: {countList[index]}");
+                index = Array.IndexOf(nameArray, item);
+                Console.WriteLine($"{item}: {countArray[index]}");
             }
         }
 

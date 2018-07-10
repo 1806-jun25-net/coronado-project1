@@ -217,7 +217,7 @@ namespace PizzaApplication.UI
         }
 
         public static Order OrderBuilder(Customer customer, Storefront storefront)
-        {
+        {            
             var optionList = new List<string>();
             string option;
             var currentOrder = new Order(customer, storefront);
@@ -302,8 +302,8 @@ namespace PizzaApplication.UI
 
             // finalize order
             currentOrder.BuildOrder();
-            currentOrder.PrintOrder();           
-
+            currentOrder.PrintOrder();
+            
             return currentOrder;
         }
     }
