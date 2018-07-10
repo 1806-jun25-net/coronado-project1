@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using PizzaApplication.Library;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 using System.IO;
 
 namespace PizzaApplication.UI
@@ -14,20 +15,44 @@ namespace PizzaApplication.UI
             // initialize objects
 
             // store locations
+            List<Storefront> storeList = new List<Storefront>();
             var RestonStorefront = new Storefront("Reston");
             var HerndonStorefront = new Storefront("Herndon");
             var SterlingStorefront = new Storefront("Sterling");
-            List<Storefront> storeList = new List<Storefront>();
-            storeList.Add(RestonStorefront);
-            storeList.Add(HerndonStorefront);
-            storeList.Add(SterlingStorefront);
+            Storefront currentStorefront;
+
+            // attempt deserialization of storefronts
+            Task<IEnumerable<Storefront>> desStoreListTask = DeserializeStorefrontFromFileAsync(@"store-data.xml");
+            IEnumerable<Storefront> storeResult = new List<Storefront>();
+            try
+            {
+                storeResult = desStoreListTask.Result; // synchronously sits around until the result is ready
+            }
+            catch (AggregateException ex)
+            {
+                Console.WriteLine("store-data.xml wasn't found.");
+                storeList.Add(RestonStorefront);
+                storeList.Add(HerndonStorefront);
+                storeList.Add(SterlingStorefront);
+            }
+            storeList.AddRange(storeResult);
 
             // customer
             Customer currentCustomer;
             List<Customer> customerList = new List<Customer>();
 
-            // variables
-            var currentStorefront = RestonStorefront;
+            // attempt deserialization of customers
+            Task<IEnumerable<Customer>> desCustomerListTask = DeserializeCustomerFromFileAsync(@"customer-data.xml");
+            IEnumerable<Customer> customerResult = new List<Customer>();
+            try
+            {
+                customerResult = desCustomerListTask.Result; // synchronously sits around until the result is ready
+            }
+            catch (AggregateException ex)
+            {
+                Console.WriteLine("customer-data.xml wasn't found.");
+            }
+            customerList.AddRange(customerResult);
 
             // main ui flow
             Console.WriteLine("Welcome to the Pizza Store Console Application!");
@@ -39,43 +64,54 @@ namespace PizzaApplication.UI
 
             currentCustomer = new Customer(firstName, lastName);
 
-            if (CheckIfCustomerIsInList(currentCustomer, customerList)) ReturningUserFlow(currentCustomer, currentStorefront, RestonStorefront, HerndonStorefront, SterlingStorefront);
-            else  NewUserFlow(currentCustomer, currentStorefront, RestonStorefront, HerndonStorefront, SterlingStorefront);
+            var index = (MatchCustomerToIndex(currentCustomer, customerList)); // check if customer already exists in customer list
+            if (index != -1) // means index was found for customer in list
+            {
+                currentCustomer = customerList[index]; // set currentCustomer reference to the indexed Customer
+                currentStorefront = ReturningUserFlow(currentCustomer, RestonStorefront, HerndonStorefront, SterlingStorefront);
+            }
+            else // no index found for customer, need to add new customer to the list
+            {
+                customerList.Add(currentCustomer);
+                currentStorefront = NewUserFlow(currentCustomer, RestonStorefront, HerndonStorefront, SterlingStorefront);                
+            }
 
             // call order builder
             // which calls pizza builder up to 12 times
             var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
             currentCustomer.AddOrder(currentOrder);
             currentStorefront.AddOrder(currentOrder);
-
-            customerList.Add(currentCustomer);
+            
             SerializeToFile(@"customer-data.xml", customerList);
             SerializeToFile(@"store-data.xml", storeList);
-        }            
+        }
 
-        static bool CheckIfCustomerIsInList(Customer customer, List<Customer> list)
+        static int MatchCustomerToIndex(Customer customer, List<Customer> list)
         {
-            var check = false;
+            int index = -1;
 
+            string customerID = $"{customer.ID}: {customer.FirstName} {customer.LastName}";
             foreach (var item in list)
             {
-                if (customer == item)
+                string itemID = $"{item.ID}: {item.FirstName} {item.LastName}";
+                if (customerID == itemID)
                 {
-                    check = true;
+                    index = list.IndexOf(item);
                     break;
                 }
             }
 
-            return check;
+            return index;
         }
 
-        static void NewUserFlow(Customer currentCustomer, Storefront currentStorefront, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
+        static Storefront NewUserFlow(Customer currentCustomer, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
         {
             Console.WriteLine($"\nHello, {currentCustomer.FirstName}!");
 
             Console.WriteLine("\nPlease select a store location:");
             Console.WriteLine("Reston, Herndon, Sterling");
 
+            var currentStorefront = new Storefront();
             var optionList = new List<string> { "Reston", "Herndon", "Sterling" };
             var option = HelperPizza.PickOptionFromOptionList(optionList);
 
@@ -94,25 +130,41 @@ namespace PizzaApplication.UI
                     break;
             }
 
-            currentCustomer.DefaultLocation = currentStorefront;
+            currentCustomer.DefaultLocation = currentStorefront.StoreLocation;
 
-            Console.WriteLine($"\nOk, {option} has been set as your default location.");            
+            Console.WriteLine($"\nOk, {option} has been set as your default location.");
+
+            return currentStorefront;
         }
 
-        static void ReturningUserFlow(Customer currentCustomer, Storefront currentStorefront, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
-        {           
+        static Storefront ReturningUserFlow(Customer currentCustomer, Storefront RestonStorefront, Storefront HerndonStorefront, Storefront SterlingStorefront)
+        {
             Console.WriteLine($"Welcome back, {currentCustomer.FirstName}!");
 
-            Console.WriteLine($"\nYour current default location is {currentCustomer.DefaultLocation.StoreLocation}.");
+            Console.WriteLine($"\nYour current default location is {currentCustomer.DefaultLocation}.");
             Console.WriteLine($"\nDo you want to order from here?");
             Console.WriteLine("Enter: (Yes/No)\n");
 
+            var currentStorefront = new Storefront();
             var optionList = new List<string> { "Yes", "No" };
             var option = HelperPizza.PickOptionFromOptionList(optionList);
             if (option == "Yes")
             {
-                currentStorefront = currentCustomer.DefaultLocation;
-                Console.WriteLine($"\nOk, you are ordering at {currentCustomer.DefaultLocation.StoreLocation}.");
+                switch (currentCustomer.DefaultLocation)
+                {
+                    case "Reston":
+                        currentStorefront = RestonStorefront;
+                        break;
+                    case "Herndon":
+                        currentStorefront = HerndonStorefront;
+                        break;
+                    case "Sterling":
+                        currentStorefront = SterlingStorefront;
+                        break;
+                    default:
+                        break;
+                }
+                Console.WriteLine($"\nOk, you are ordering at {currentCustomer.DefaultLocation}.");
 
                 // call order builder
                 // which calls pizza builder up to 12 times
@@ -141,7 +193,7 @@ namespace PizzaApplication.UI
                         break;
                 }
 
-                Console.WriteLine($"\nYour current default location is {currentCustomer.DefaultLocation.StoreLocation}.");
+                Console.WriteLine($"\nYour current default location is {currentCustomer.DefaultLocation}.");
                 Console.WriteLine($"Do you want to set {location} as your default location?");
                 Console.WriteLine("Enter: (Yes/No)\n");
 
@@ -149,14 +201,15 @@ namespace PizzaApplication.UI
                 option = HelperPizza.PickOptionFromOptionList(optionList);
                 if (option == "Yes")
                 {
-                    currentCustomer.DefaultLocation = currentStorefront;
+                    currentCustomer.DefaultLocation = currentStorefront.StoreLocation;
                     Console.WriteLine($"\nOk, {location} is now your default location.");
                 }
                 else if (option == "No")
                 {
-                    Console.WriteLine($"\nOk, {currentCustomer.DefaultLocation.StoreLocation} is still your default location.");
+                    Console.WriteLine($"\nOk, {currentCustomer.DefaultLocation} is still your default location.");
                 }
             }
+            return currentStorefront;
         }
 
         private static void SerializeToFile(string fileName, List<Customer> customerList)
@@ -220,6 +273,36 @@ namespace PizzaApplication.UI
                 {
                     fileStream.Dispose();
                 }
+            }
+        }
+
+        private async static Task<IEnumerable<Customer>> DeserializeCustomerFromFileAsync(string fileName)
+        {
+            var serializer = new XmlSerializer(typeof(List<Customer>));
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var fileStream = new FileStream(fileName, FileMode.Open))
+                {
+                    await fileStream.CopyToAsync(memoryStream);
+                }
+                memoryStream.Position = 0; // reset "cursor" of stream to beginning
+                return (List<Customer>)serializer.Deserialize(memoryStream);
+            }
+        }
+
+        private async static Task<IEnumerable<Storefront>> DeserializeStorefrontFromFileAsync(string fileName)
+        {
+            var serializer = new XmlSerializer(typeof(List<Storefront>));
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var fileStream = new FileStream(fileName, FileMode.Open))
+                {
+                    await fileStream.CopyToAsync(memoryStream);
+                }
+                memoryStream.Position = 0; // reset "cursor" of stream to beginning
+                return (List<Storefront>)serializer.Deserialize(memoryStream);
             }
         }
     }

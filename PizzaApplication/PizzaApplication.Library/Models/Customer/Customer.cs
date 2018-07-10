@@ -16,11 +16,9 @@ namespace PizzaApplication.Library
         public string LastName { get; set; } = "";
 
         public Order LatestOrder = new Order();
-        public List<Order> OrderHistory = new List<Order>();        
-        [XmlIgnore]
-        public Storefront Location { get; set; }
-        [XmlIgnore]
-        public Storefront DefaultLocation { get; set; }        
+        public List<Order> OrderHistory = new List<Order>();      
+        public string LatestLocation { get; set; }
+        public string DefaultLocation { get; set; }        
 
         // methods
         public Customer()
@@ -36,6 +34,7 @@ namespace PizzaApplication.Library
 
         public void AddOrder(Order order)
         {
+            LatestLocation = order.OrderLocation;
             LatestOrder = order;
             OrderHistory.Add(order);
         }
