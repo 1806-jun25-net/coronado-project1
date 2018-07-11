@@ -8,6 +8,7 @@ namespace PizzaApplication.Library
 {
     public static class Mapper
     {
+        // Customer <=> Users
         public static Library.Customer Map(Data.Users user) => new Library.Customer
         {
             Id = user.Id,
@@ -28,6 +29,7 @@ namespace PizzaApplication.Library
             LatestOrderId = user.LatestOrder.Id
         };
 
+        // Pizza <=> Pizzas
         public static Library.Pizza Map(Data.Pizzas pizza) => new Library.Pizza
         {
             Id = pizza.Id,
@@ -61,6 +63,7 @@ namespace PizzaApplication.Library
             Topping6 = pizza.ToppingList[5].ToppingType
         };
 
+        // Order <=> PizzaOrders
         public static Library.Order Map(Data.PizzaOrders order) => new Library.Order
         {
             Id = order.Id,
@@ -77,6 +80,7 @@ namespace PizzaApplication.Library
             Price = order.OrderPrice,
         };
 
+        // Storefront <=> Locations
         public static Library.Storefront Map(Data.Locations location) => new Library.Storefront
         {
             StoreLocation = location.Location,
@@ -89,6 +93,7 @@ namespace PizzaApplication.Library
             InventoryId = location.StoreInventory.Id
         };
 
+        // Inventory <=> LocationInventory
         public static Library.Inventory Map(Data.LocationInventory inventory) => new Library.Inventory
         {
             Id = inventory.Id,
