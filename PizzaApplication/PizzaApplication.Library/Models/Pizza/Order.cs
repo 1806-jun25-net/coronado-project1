@@ -31,7 +31,7 @@ namespace PizzaApplication.Library
 
         public Order(int id)
         {
-            ID = id;
+            Id = id;
         }
 
         public Order(Customer customer, Storefront storefront)

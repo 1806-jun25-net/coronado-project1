@@ -106,11 +106,11 @@ namespace PizzaApplication.UI
         {
             int index = -1;
 
-            string customerID = $"{customer.ID}: {customer.FirstName} {customer.LastName}";
+            string customerId = $"{customer.Id}: {customer.FirstName} {customer.LastName}";
             foreach (var item in list)
             {
-                string itemID = $"{item.ID}: {item.FirstName} {item.LastName}";
-                if (customerID == itemID)
+                string itemId = $"{item.Id}: {item.FirstName} {item.LastName}";
+                if (customerId == itemId)
                 {
                     index = list.IndexOf(item);
                     break;
@@ -125,8 +125,7 @@ namespace PizzaApplication.UI
             int index = -1;
 
             foreach (var item in list)
-            {
-                string itemID = item.StoreLocation;
+            {                
                 if (storefront.StoreLocation == item.StoreLocation)
                 {
                     index = list.IndexOf(item);
