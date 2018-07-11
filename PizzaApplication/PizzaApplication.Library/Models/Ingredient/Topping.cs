@@ -40,7 +40,8 @@ namespace PizzaApplication.Library
 
         public Topping(string toppingType)
         {
-            ToppingType = toppingType;
+            if(toppingType == null) ToppingType = "";
+            else ToppingType = toppingType;
             IngredientName = $"{ToppingType}";
             IngredientInventoryName = $"{ToppingType}";
             IngredientPrice = CalculateIngredientPrice(ToppingType);

@@ -38,11 +38,9 @@ namespace PizzaApplication.Library
             IngredientInventoryCost = CalculateIngredientInventoryCost(CheeseThickness);
         }
 
-        public Cheese(string cheeseThickness)
+        public Cheese(string ingredientName)
         {
-            CheeseType = CheeseTypeOptions[0];
-            CheeseThickness = cheeseThickness;
-            IngredientName = $"{CheeseType}({CheeseThickness})";
+            ParseIngredientName(ingredientName);
             IngredientPrice = CalculateIngredientPrice(CheeseType, CheeseThickness);
             IngredientInventoryCost = CalculateIngredientInventoryCost(CheeseThickness);
         }
@@ -57,6 +55,14 @@ namespace PizzaApplication.Library
         }
 
         // methods
+        public void ParseIngredientName(string ingredientName)
+        {
+            IngredientName = ingredientName;
+            if (ingredientName.Contains("Light")) CheeseThickness = "Light";
+            if (ingredientName.Contains("Regular")) CheeseThickness = "Regular";
+            if (ingredientName.Contains("Extra")) CheeseThickness = "Extra";
+        }
+
         public decimal CalculateIngredientPrice()
         {
             return IngredientPrice;

@@ -172,7 +172,7 @@ namespace PizzaApplication.UI
 
             // take user input for cheese options
             var optCheeseThickness = PizzaOptionIO("Cheese Thickness", templatePizza.PizzaCheese.CheeseThicknessOptions);
-            var currentCheese = new Cheese(optCheeseThickness);
+            var currentCheese = new Cheese("Cheese", optCheeseThickness);
 
             // take user input for topping options
             var currentToppingList = new List<Topping>();

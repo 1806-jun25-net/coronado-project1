@@ -10,7 +10,7 @@ namespace PizzaApplication.Library
     {
         // fields and properties
         [XmlAttribute]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [XmlAttribute]
         public string PizzaName { get; set; }
 
@@ -28,7 +28,7 @@ namespace PizzaApplication.Library
         // constructor
         public Pizza()
         {
-            BuildPizza();
+            BuildPizza();            
         }
 
         public Pizza(Crust crust, Sauce sauce, Cheese cheese)
@@ -49,6 +49,14 @@ namespace PizzaApplication.Library
         }
         
         // methods
+        public void CleanToppingList()
+        {
+            foreach (var item in ToppingList)
+            {
+                if (item.ToppingType == "") ToppingList.Remove(item); // removes any unlabeled toppings
+            }
+        }
+
         public void SetNewCrust(string crustSize, string crustThickness)
         {
             PizzaCrust = new Crust(crustSize, crustThickness);
@@ -84,6 +92,7 @@ namespace PizzaApplication.Library
                 {
                     AddIngredient(topping);
                 }
+                CleanToppingList();
             }
             CalculatePizzaPrice();
             NamePizza();

@@ -9,7 +9,7 @@ namespace PizzaApplication.Library
     {
         // fields and properties
         [XmlAttribute]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [XmlAttribute]
         public string OrderName { get; set; }
         public string CustomerName { get; set; }        
@@ -27,6 +27,11 @@ namespace PizzaApplication.Library
         // constructors
         public Order()
         {            
+        }
+
+        public Order(int id)
+        {
+            ID = id;
         }
 
         public Order(Customer customer, Storefront storefront)

@@ -8,4 +8,8 @@
     <None Remove="Models\Ingredient\Crust.cs~RF3361baeb.TMP" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PizzaApplication.Data\PizzaApplication.Data.csproj" />
+  </ItemGroup>
+
 </Project>

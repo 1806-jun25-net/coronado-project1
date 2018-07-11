@@ -9,12 +9,12 @@ namespace PizzaApplication.Library
     {
         // fields and properties
         [XmlAttribute]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [XmlAttribute]        
         public string FirstName { get; set; } = "";
         [XmlAttribute]
         public string LastName { get; set; } = "";
-
+        
         public Order LatestOrder = new Order();
         public List<Order> OrderHistory = new List<Order>();      
         public string LatestLocation { get; set; }

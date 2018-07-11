@@ -11,6 +11,11 @@ namespace PizzaApplication.Library
         // fields and properties
         // using arrays with equal indices instead of a dictionary because dictionary is not serializeable      
 
+        [XmlAttribute]
+        public int Id { get; set; }
+        [XmlAttribute]
+        public string StoreLocation { get; set; }
+
         public string[] InventoryNameArray { get; set; } = new string[]
         {
             "Dough", "Tomato Sauce", "White Sauce", "Cheese",
@@ -56,6 +61,13 @@ namespace PizzaApplication.Library
         // constructors
         public Inventory()
         {
+            RefillInventory(); // sets inventory count to initial values
+            SetTempInventoryToActual(); // sets temp count list to match actual list
+        }
+
+        public Inventory(int id)
+        {
+            Id = id;
             RefillInventory(); // sets inventory count to initial values
             SetTempInventoryToActual(); // sets temp count list to match actual list
         }

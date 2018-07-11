@@ -5,6 +5,9 @@ using PizzaApplication.Library;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 using System.IO;
+using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
+using PizzaApplication.Data;
 
 namespace PizzaApplication.UI
 {
@@ -12,9 +15,17 @@ namespace PizzaApplication.UI
     {
         static void Main(string[] args)
         {
-            // initialize objects
+            var configBuilder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-            // store locations
+            IConfigurationRoot configuration = configBuilder.Build();
+
+            var optionsBuilder = new DbContextOptionsBuilder<PizzaDBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PizzaDB"));
+            var options = optionsBuilder.Options;
+
+            // initialize store locations
             List<Storefront> storeList = new List<Storefront>();
             Storefront RestonStorefront;
             Storefront HerndonStorefront;
@@ -42,7 +53,7 @@ namespace PizzaApplication.UI
             HerndonStorefront = ProcessStorefront(HerndonStorefront, storeList);
             SterlingStorefront = ProcessStorefront(SterlingStorefront, storeList);
 
-            // customer
+            // initialize customer
             Customer currentCustomer;
             List<Customer> customerList = new List<Customer>();
 

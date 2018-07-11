@@ -35,6 +35,13 @@ namespace PizzaApplication.Library
             IngredientInventoryCost = CalculateIngredientInventoryCost(CrustSize, CrustThickness);
         }
 
+        public Crust(string ingredientName)
+        {
+            ParseIngredientName(ingredientName);
+            IngredientPrice = CalculateIngredientPrice(CrustSize, CrustThickness);
+            IngredientInventoryCost = CalculateIngredientInventoryCost(CrustSize, CrustThickness);
+        }
+
         public Crust(string crustSize, string crustThickness)
         {
             CrustSize = crustSize;
@@ -45,6 +52,18 @@ namespace PizzaApplication.Library
         }
 
         // methods
+        public void ParseIngredientName(string ingredientName)
+        {
+            IngredientName = ingredientName;
+            if (ingredientName.Contains("Personal")) CrustSize = "Personal(8\")";
+            if (ingredientName.Contains("Small")) CrustSize = "Small(10\")";
+            if (ingredientName.Contains("Medium")) CrustSize = "Medium(12\")";
+            if (ingredientName.Contains("Large")) CrustSize = "Large(14\")";
+            if (ingredientName.Contains("Thin")) CrustThickness = "Thin Crust";
+            if (ingredientName.Contains("Standard")) CrustThickness = "Standard Crust";
+            if (ingredientName.Contains("Thick")) CrustThickness = "Thick Crust";
+        }
+
         public void SetCrustSize(string option)
         {
             CrustSize = option;

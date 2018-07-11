@@ -36,6 +36,14 @@ namespace PizzaApplication.Library
             IngredientInventoryCost = CalculateIngredientInventoryCost(SauceThickness);
         }
 
+        public Sauce(string ingredientName)
+        {
+            ParseIngredientName(ingredientName);
+            IngredientInventoryName = SauceType;
+            IngredientPrice = CalculateIngredientPrice(SauceType, SauceThickness);
+            IngredientInventoryCost = CalculateIngredientInventoryCost(SauceThickness);
+        }
+
         public Sauce(string sauceType, string sauceThickness)
         {
             SauceType = sauceType;
@@ -47,6 +55,16 @@ namespace PizzaApplication.Library
         }
 
         // methods
+        public void ParseIngredientName(string ingredientName)
+        {
+            IngredientName = ingredientName;
+            if (ingredientName.Contains("Tomato")) SauceType = "Tomato Sauce";
+            if (ingredientName.Contains("White")) SauceType = "White Sauce";
+            if (ingredientName.Contains("Light")) SauceThickness = "Light";
+            if (ingredientName.Contains("Regular")) SauceThickness = "Regular";
+            if (ingredientName.Contains("Extra")) SauceThickness = "Extra";
+        }
+
         public decimal CalculateIngredientPrice()
         {
             return IngredientPrice;
