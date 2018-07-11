@@ -8,7 +8,7 @@ namespace PizzaApplication.Library
 {
     public static class Mapper
     {
-        public static Customer Map(Users user) => new Customer
+        public static Library.Customer Map(Data.Users user) => new Library.Customer
         {
             Id = user.Id,
             FirstName = user.FirstName,
@@ -18,7 +18,7 @@ namespace PizzaApplication.Library
             LatestOrder = new Order((int)user.LatestOrderId)
         };
 
-        public static Users Map(Customer user) => new Users
+        public static Data.Users Map(Library.Customer user) => new Data.Users
         {
             Id = user.Id,
             FirstName = user.FirstName,
@@ -28,7 +28,7 @@ namespace PizzaApplication.Library
             LatestOrderId = user.LatestOrder.Id
         };
 
-        public static Pizza Map(Pizzas pizza) => new Pizza
+        public static Library.Pizza Map(Data.Pizzas pizza) => new Library.Pizza
         {
             Id = pizza.Id,
             PizzaName = pizza.Name,
@@ -46,7 +46,7 @@ namespace PizzaApplication.Library
             }
         };
 
-        public static Pizzas Map(Pizza pizza) => new Pizzas
+        public static Data.Pizzas Map(Library.Pizza pizza) => new Data.Pizzas
         {
             Id = pizza.Id,
             Name = pizza.PizzaName,
@@ -61,7 +61,7 @@ namespace PizzaApplication.Library
             Topping6 = pizza.ToppingList[5].ToppingType
         };
 
-        public static Order Map(PizzaOrders order) => new Order
+        public static Library.Order Map(Data.PizzaOrders order) => new Library.Order
         {
             Id = order.Id,
             OrderLocation = order.Location,
@@ -69,7 +69,7 @@ namespace PizzaApplication.Library
             OrderPrice = (decimal)order.Price,
         };
 
-        public static PizzaOrders Map(Order order) => new PizzaOrders
+        public static Data.PizzaOrders Map(Library.Order order) => new Data.PizzaOrders
         {
             Id = order.Id,
             Location = order.OrderLocation,
@@ -77,19 +77,19 @@ namespace PizzaApplication.Library
             Price = order.OrderPrice,
         };
 
-        public static Storefront Map(Locations location) => new Storefront
+        public static Library.Storefront Map(Data.Locations location) => new Library.Storefront
         {
             StoreLocation = location.Location,
             StoreInventory = new Inventory((int)location.InventoryId)
         };
 
-        public static Locations Map(Storefront location) => new Locations
+        public static Data.Locations Map(Library.Storefront location) => new Data.Locations
         {
             Location = location.StoreLocation,
             InventoryId = location.StoreInventory.Id
         };
 
-        public static Inventory Map(LocationInventory inventory) => new Inventory
+        public static Library.Inventory Map(Data.LocationInventory inventory) => new Library.Inventory
         {
             Id = inventory.Id,
             StoreLocation = inventory.Location,
@@ -122,7 +122,7 @@ namespace PizzaApplication.Library
             }
         };
 
-        public static LocationInventory Map(Inventory inventory) => new LocationInventory
+        public static Data.LocationInventory Map(Library.Inventory inventory) => new Data.LocationInventory
         {
             Id = inventory.Id,
             Location = inventory.StoreLocation,
@@ -151,6 +151,23 @@ namespace PizzaApplication.Library
             Parmesan = inventory.InventoryCountArray[22],
             Feta = inventory.InventoryCountArray[23]
         };
+
+        public static IEnumerable<Library.Customer> Map(IEnumerable<Data.Users> users) => users.Select(Map);
+        public static IEnumerable<Data.Users> Map(IEnumerable<Library.Customer> users) => users.Select(Map);
+
+        public static IEnumerable<Library.Pizza> Map(IEnumerable<Data.Pizzas> pizzas) => pizzas.Select(Map);
+        public static IEnumerable<Data.Pizzas> Map(IEnumerable<Library.Pizza> pizzas) => pizzas.Select(Map);
+
+        public static IEnumerable<Library.Order> Map(IEnumerable<Data.PizzaOrders> orders) => orders.Select(Map);
+        public static IEnumerable<Data.PizzaOrders> Map(IEnumerable<Library.Order> orders) => orders.Select(Map);
+
+        public static IEnumerable<Library.Storefront> Map(IEnumerable<Data.Locations> locations) => locations.Select(Map);
+        public static IEnumerable<Data.Locations> Map(IEnumerable<Library.Storefront> locations) => locations.Select(Map);
+
+        public static IEnumerable<Library.Inventory> Map(IEnumerable<Data.LocationInventory> inventories) => inventories.Select(Map);
+        public static IEnumerable<Data.LocationInventory> Map(IEnumerable<Library.Inventory> inventories) => inventories.Select(Map);
+
+
 
     }
 }
