@@ -25,25 +25,46 @@ namespace PizzaApplication.UI
             optionsBuilder.UseSqlServer(configuration.GetConnectionString("PizzaDB"));
             var options = optionsBuilder.Options;
 
+            var dbContext = new PizzaDBContext(options);
+            var pizzaRepository = new PizzaRepository(dbContext);
+
             // initialize store locations
             List<Storefront> storeList = new List<Storefront>();
             Storefront RestonStorefront;
             Storefront HerndonStorefront;
             Storefront SterlingStorefront;
             Storefront currentStorefront;
+            var tryLoadDatabase = false;
+            var tryDeserialize = true;
 
-            // attempt deserialization of storefronts
-            Task<IEnumerable<Storefront>> desStoreListTask = DeserializeStorefrontFromFileAsync(@"store-data.xml");
-            IEnumerable<Storefront> storeResult = new List<Storefront>();
-            try
+            while (tryLoadDatabase)
             {
-                storeResult = desStoreListTask.Result; // synchronously sits around until the result is ready
+                // attempt loading store info from DB
+                storeList = pizzaRepository.GetLocations().ToList();
+                if (storeList.Count == 0)
+                {
+                    Console.WriteLine("Could not load any locations from the database.\n");
+                    tryDeserialize = true;
+                }
+                tryLoadDatabase = false;
             }
-            catch (AggregateException)
+
+            while (tryDeserialize)
             {
-                Console.WriteLine("store-data.xml wasn't found.\n");
+                // attempt deserialization of storefronts
+                Task<IEnumerable<Storefront>> desStoreListTask = DeserializeStorefrontFromFileAsync(@"store-data.xml");
+                IEnumerable<Storefront> storeResult = new List<Storefront>();
+                try
+                {
+                    storeResult = desStoreListTask.Result; // synchronously sits around until the result is ready
+                }
+                catch (AggregateException)
+                {
+                    Console.WriteLine("store-data.xml wasn't found.\n");
+                }
+                storeList.AddRange(storeResult);
+                tryDeserialize = false;
             }
-            storeList.AddRange(storeResult);
 
             RestonStorefront = new Storefront("Reston");
             HerndonStorefront = new Storefront("Herndon");
@@ -56,19 +77,37 @@ namespace PizzaApplication.UI
             // initialize customer
             Customer currentCustomer;
             List<Customer> customerList = new List<Customer>();
+            tryLoadDatabase = false;
+            tryDeserialize = true;
 
-            // attempt deserialization of customers
-            Task<IEnumerable<Customer>> desCustomerListTask = DeserializeCustomerFromFileAsync(@"customer-data.xml");
-            IEnumerable<Customer> customerResult = new List<Customer>();
-            try
+            while (tryLoadDatabase)
             {
-                customerResult = desCustomerListTask.Result; // synchronously sits around until the result is ready
+                // attempt loading user info from DB
+                customerList = pizzaRepository.GetUsers().ToList();
+                if (customerList.Count == 0)
+                {
+                    Console.WriteLine("Could not load any users from the database.\n");
+                    tryDeserialize = true;
+                }
+                tryLoadDatabase = false;
             }
-            catch (AggregateException)
+
+            while (tryDeserialize)
             {
-                Console.WriteLine("customer-data.xml wasn't found.\n");
+                // attempt deserialization of customers
+                Task<IEnumerable<Customer>> desCustomerListTask = DeserializeCustomerFromFileAsync(@"customer-data.xml");
+                IEnumerable<Customer> customerResult = new List<Customer>();
+                try
+                {
+                    customerResult = desCustomerListTask.Result; // synchronously sits around until the result is ready
+                }
+                catch (AggregateException)
+                {
+                    Console.WriteLine("customer-data.xml wasn't found.\n");
+                }
+                customerList.AddRange(customerResult);
+                tryDeserialize = false;
             }
-            customerList.AddRange(customerResult);
 
             // main ui flow
             Console.WriteLine("Welcome to the Pizza Store Console Application!");
@@ -144,7 +183,7 @@ namespace PizzaApplication.UI
                                         default:
                                             DisplayOrderHistory(searchedUser);
                                             break;
-                                    }                                    
+                                    }
                                     break;
                                 case "Quit":
                                     Console.WriteLine("Returning to Main Menu...");
