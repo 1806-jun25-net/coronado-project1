@@ -217,14 +217,74 @@ namespace PizzaApplication.UI
         }
 
         public static Order OrderBuilder(Customer customer, Storefront storefront)
-        {            
+        {
             var optionList = new List<string>();
             string option;
             var currentOrder = new Order(customer, storefront);
             var retry = true;
-
-            while (retry) // reruns until order is valid
+            var runOrderHistory = true;
+            var endOrder = false;
+            
+            if (runOrderHistory && customer.LatestOrder.OrderName != null) // check if customer has an order history
             {
+                var latestOrder = customer.LatestOrder;
+                Console.WriteLine("\nYour previous order was: ");
+                latestOrder.PrintOrder();
+
+                Console.WriteLine("\nWould you like to order these pizzas again?");
+                Console.WriteLine("Enter: (Yes/No)");
+                optionList = new List<string> { "Yes", "No" };
+                option = PickOptionFromOptionList(optionList);
+                if (option == "Yes")
+                {
+                    foreach (var pizza in latestOrder.PizzaList)
+                    {
+                        currentOrder.AddPizza(pizza);
+                    }
+                    // check if storefront inventory can fulfill order
+                    var latestOrderCheck = storefront.CanOrderBeFulfilled(currentOrder);
+                    storefront.SetInventory(latestOrderCheck);
+                    if (latestOrderCheck)
+                    {
+                        Console.WriteLine("Ok, the pizzas have been added to your order.");
+                    }
+                    else // if check fails, remove pizzas from order's pizza list
+                    {
+                        foreach (var pizza in currentOrder.PizzaList)
+                        {
+                            currentOrder.PizzaList.Remove(pizza);
+                        }
+                        currentOrder.OrderPizzaCount = 0;
+                        currentOrder.UpdatePrice();
+                        Console.WriteLine("Sorry, there are not enough ingredients. Starting a fresh order.");
+                        runOrderHistory = false;
+                    }
+                }
+                else if (option == "No")
+                {
+                    Console.WriteLine("\nOk, Please select a new pizza.");
+                    runOrderHistory = false;
+                }
+                runOrderHistory = false;
+            }
+
+            if (currentOrder.PizzaList.Count() > 0)
+            {
+                Console.WriteLine("\nWould you like to add more pizzas?");
+                Console.WriteLine("Enter: (Yes/No)");
+                optionList = new List<string> { "Yes", "No" };
+                option = PickOptionFromOptionList(optionList);
+                runOrderHistory = false;
+                if (option == "No")
+                {
+                    retry = false; // don't go into pizza loop if they don't want to add more
+                    endOrder = true;
+                }
+            }
+            
+            while (retry == true && endOrder == false) // reruns until order is valid
+            {
+                if (retry == false) break;
                 // loop while pizza limit is below max
                 while (currentOrder.OrderPizzaCount < currentOrder.OrderPizzaLimit)
                 {
@@ -296,14 +356,18 @@ namespace PizzaApplication.UI
                 var finalCheck = storefront.CanOrderBeFulfilled(currentOrder);
                 storefront.SetInventory(finalCheck);
 
-                if (finalCheck) retry = false;
+                if (finalCheck)
+                {
+                    retry = false;
+                    endOrder = true;
+                }
                 else retry = true;
             }
 
             // finalize order
             currentOrder.BuildOrder();
             currentOrder.PrintOrder();
-            
+
             return currentOrder;
         }
     }

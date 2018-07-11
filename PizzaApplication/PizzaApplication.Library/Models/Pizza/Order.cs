@@ -88,6 +88,7 @@ namespace PizzaApplication.Library
             {
                 pizza.PrintPizza();
             }
+            Console.WriteLine("---");
         }
     }
 }

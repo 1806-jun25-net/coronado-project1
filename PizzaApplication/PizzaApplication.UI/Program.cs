@@ -41,7 +41,7 @@ namespace PizzaApplication.UI
             }
             catch (AggregateException)
             {
-                Console.WriteLine("store-data.xml wasn't found.");
+                Console.WriteLine("store-data.xml wasn't found.\n");
             }
             storeList.AddRange(storeResult);
 
@@ -66,40 +66,320 @@ namespace PizzaApplication.UI
             }
             catch (AggregateException)
             {
-                Console.WriteLine("customer-data.xml wasn't found.");
+                Console.WriteLine("customer-data.xml wasn't found.\n");
             }
             customerList.AddRange(customerResult);
 
             // main ui flow
             Console.WriteLine("Welcome to the Pizza Store Console Application!");
+            var loop = true;
+            while (loop)
+            {
+                Console.WriteLine("\n--- \nMain Menu: \n---");
+                var optionList = new List<string> { "Order", "Search Users", "Location Info", "Quit" };
+                var option = HelperPizza.PizzaOptionIO("an Option", optionList);
+                switch (option)
+                {
+                    case "Order":
+                        Console.WriteLine("\nEnter your first name.\n");
+                        var firstName = HelperIO.ReadLine();
+                        Console.WriteLine("\nEnter your last name.\n");
+                        var lastName = HelperIO.ReadLine();
 
-            Console.WriteLine("\nEnter your first name.\n");
+                        currentCustomer = new Customer(firstName, lastName);
+
+                        var index = (MatchCustomerToIndex(currentCustomer, customerList)); // check if customer already exists in customer list
+                        if (index != -1) // means index was found for customer in list
+                        {
+                            currentCustomer = customerList[index]; // set currentCustomer reference to the indexed Customer
+                            currentStorefront = ReturningUserFlow(currentCustomer, RestonStorefront, HerndonStorefront, SterlingStorefront);
+                        }
+                        else // no index found for customer, need to add new customer to the list
+                        {
+                            customerList.Add(currentCustomer);
+                            currentStorefront = NewUserFlow(currentCustomer, RestonStorefront, HerndonStorefront, SterlingStorefront);
+                        }
+
+                        // call order builder
+                        // which calls pizza builder up to 12 times
+                        var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
+                        currentCustomer.AddOrder(currentOrder);
+                        currentStorefront.AddOrder(currentOrder);
+
+                        SerializeToFile(@"customer-data.xml", customerList);
+                        SerializeToFile(@"store-data.xml", storeList);
+                        break;
+
+                    case "Search Users":
+                        var searchedUser = SearchUsersByName(customerList);
+                        if (searchedUser != null)
+                        {
+                            optionList = new List<string> { "Display Latest Order", "Display Order History", "Quit" };
+                            option = HelperPizza.PizzaOptionIO("an Option", optionList);
+                            switch (option)
+                            {
+                                case "Display Latest Order":
+                                    Console.WriteLine("\n--- \nLatest Order: \n---");
+                                    searchedUser.LatestOrder.PrintOrder();
+                                    break;
+                                case "Display Order History":
+
+                                    optionList = new List<string> { "Earliest", "Latest", "Cheapest", "Most Expensive" };
+                                    option = HelperPizza.PizzaOptionIO("Sorting Order", optionList);
+
+                                    switch (option)
+                                    {
+                                        case "Earliest":
+                                            DisplayOrderHistorySortEarliest(searchedUser);
+                                            break;
+                                        case "Latest":
+                                            DisplayOrderHistorySortLatest(searchedUser);
+                                            break;
+                                        case "Cheapest":
+                                            DisplayOrderHistorySortCheapest(searchedUser);
+                                            break;
+                                        case "Most Expensive":
+                                            DisplayOrderHistorySortMostExpensive(searchedUser);
+                                            break;
+                                        default:
+                                            DisplayOrderHistory(searchedUser);
+                                            break;
+                                    }                                    
+                                    break;
+                                case "Quit":
+                                    Console.WriteLine("Returning to Main Menu...");
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        break;
+
+                    case "Location Info":
+
+                        optionList = new List<string> { "Reston", "Herndon", "Sterling" };
+                        option = HelperPizza.PizzaOptionIO("a Location", optionList);
+
+                        Storefront selectedLocation = null;
+                        switch (option)
+                        {
+                            case "Reston":
+                                selectedLocation = RestonStorefront;
+                                break;
+                            case "Herndon":
+                                selectedLocation = HerndonStorefront;
+                                break;
+                            case "Sterling":
+                                selectedLocation = SterlingStorefront;
+                                break;
+                            default:
+                                selectedLocation = RestonStorefront;
+                                break;
+                        }
+
+                        optionList = new List<string> { "Display Inventory", "Display Order History", "Quit" };
+                        option = HelperPizza.PizzaOptionIO("an Option", optionList);
+                        switch (option)
+                        {
+                            case "Display Inventory":
+                                selectedLocation.PrintInventory();
+                                break;
+                            case "Display Order History":
+                                optionList = new List<string> { "Earliest", "Latest", "Cheapest", "Most Expensive" };
+                                option = HelperPizza.PizzaOptionIO("Sorting Order", optionList);
+
+                                switch (option)
+                                {
+                                    case "Earliest":
+                                        DisplayOrderHistorySortEarliest(selectedLocation);
+                                        break;
+                                    case "Latest":
+                                        DisplayOrderHistorySortLatest(selectedLocation);
+                                        break;
+                                    case "Cheapest":
+                                        DisplayOrderHistorySortCheapest(selectedLocation);
+                                        break;
+                                    case "Most Expensive":
+                                        DisplayOrderHistorySortMostExpensive(selectedLocation);
+                                        break;
+                                    default:
+                                        DisplayOrderHistory(selectedLocation);
+                                        break;
+                                }
+                                break;
+                            case "Quit":
+                                Console.WriteLine("Returning to Main Menu...");
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+
+                    case "Quit":
+                        loop = false;
+                        break;
+
+                    default:
+                        break;
+                }
+                if (loop == false) break;
+            }
+        }
+
+        static Customer SearchUsersByName(List<Customer> userList)
+        {
+            Console.WriteLine("\nSearching List of Users...");
+            Console.WriteLine("\nEnter first name.\n");
             var firstName = HelperIO.ReadLine();
-            Console.WriteLine("\nEnter your last name.\n");
+            Console.WriteLine("\nEnter last name.\n");
             var lastName = HelperIO.ReadLine();
-
-            currentCustomer = new Customer(firstName, lastName);
-            
-            var index = (MatchCustomerToIndex(currentCustomer, customerList)); // check if customer already exists in customer list
-            if (index != -1) // means index was found for customer in list
+            Customer searchedUser = null;
+            foreach (var user in userList)
             {
-                currentCustomer = customerList[index]; // set currentCustomer reference to the indexed Customer
-                currentStorefront = ReturningUserFlow(currentCustomer, RestonStorefront, HerndonStorefront, SterlingStorefront);
+                if (firstName == user.FirstName && lastName == user.LastName)
+                {
+                    searchedUser = user;
+                    break;
+                }
             }
-            else // no index found for customer, need to add new customer to the list
+            if (searchedUser != null)
             {
-                customerList.Add(currentCustomer);
-                currentStorefront = NewUserFlow(currentCustomer, RestonStorefront, HerndonStorefront, SterlingStorefront);
+                Console.WriteLine("\n...Found user!");
+            }
+            else
+            {
+                Console.WriteLine("\n...Could not find user.");
             }
 
-            // call order builder
-            // which calls pizza builder up to 12 times
-            var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
-            currentCustomer.AddOrder(currentOrder);
-            currentStorefront.AddOrder(currentOrder);
+            return searchedUser;
+        }
 
-            SerializeToFile(@"customer-data.xml", customerList);
-            SerializeToFile(@"store-data.xml", storeList);
+        static void DisplayOrderHistory(Storefront location)
+        {
+            if (location.StorefrontOrderHistory != null)
+            {
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in location.StorefrontOrderHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistory(Customer user)
+        {
+            if (user.LatestOrder.OrderName != null)
+            {
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in user.OrderHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistorySortMostExpensive(Storefront location)
+        {
+            if (location.StorefrontOrderHistory != null)
+            {
+                var expensiveHistory = location.StorefrontOrderHistory.OrderByDescending(o => o.OrderPrice);
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in expensiveHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistorySortMostExpensive(Customer user)
+        {
+            if (user.LatestOrder.OrderName != null)
+            {
+                var expensiveHistory = user.OrderHistory.OrderByDescending(o => o.OrderPrice);
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in expensiveHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistorySortCheapest(Storefront location)
+        {
+            if (location.StorefrontOrderHistory != null)
+            {
+                var cheapestHistory = location.StorefrontOrderHistory.OrderBy(o => o.OrderPrice);
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in cheapestHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistorySortCheapest(Customer user)
+        {
+            if (user.LatestOrder.OrderName != null)
+            {
+                var cheapestHistory = user.OrderHistory.OrderBy(o => o.OrderPrice);
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in cheapestHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistorySortLatest(Storefront location)
+        {
+            if (location.StorefrontOrderHistory != null)
+            {
+                var latestHistory = location.StorefrontOrderHistory.OrderByDescending(o => o.OrderTime);
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in latestHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistorySortLatest(Customer user)
+        {
+            if (user.LatestOrder.OrderName != null)
+            {
+                var latestHistory = user.OrderHistory.OrderByDescending(o => o.OrderTime);
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in latestHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistorySortEarliest(Storefront location)
+        {
+            if (location.StorefrontOrderHistory != null)
+            {
+                var earliestHistory = location.StorefrontOrderHistory.OrderBy(o => o.OrderTime);
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in earliestHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
+        }
+
+        static void DisplayOrderHistorySortEarliest(Customer user)
+        {
+            if (user.LatestOrder.OrderName != null)
+            {
+                var earliestHistory = user.OrderHistory.OrderBy(o => o.OrderTime);
+                Console.WriteLine("\n--- \nOrder History: \n---");
+                foreach (var order in earliestHistory)
+                {
+                    order.PrintOrder();
+                }
+            }
         }
 
         static int MatchCustomerToIndex(Customer customer, List<Customer> list)
@@ -125,7 +405,7 @@ namespace PizzaApplication.UI
             int index = -1;
 
             foreach (var item in list)
-            {                
+            {
                 if (storefront.StoreLocation == item.StoreLocation)
                 {
                     index = list.IndexOf(item);
@@ -183,13 +463,8 @@ namespace PizzaApplication.UI
             var option = HelperPizza.PickOptionFromOptionList(optionList);
             if (option == "Yes")
             {
-
                 currentStorefront = PickCurrentStorefront(currentCustomer.DefaultLocation, RestonStorefront, HerndonStorefront, SterlingStorefront);
                 Console.WriteLine($"\nOk, you are ordering at {currentCustomer.DefaultLocation}.");
-
-                // call order builder
-                // which calls pizza builder up to 12 times
-                var currentOrder = HelperPizza.OrderBuilder(currentCustomer, currentStorefront);
             }
             else if (option == "No")
             {
