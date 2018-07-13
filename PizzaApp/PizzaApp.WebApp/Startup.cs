@@ -6,8 +6,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PizzaApp.Context;
 
 namespace PizzaApp.WebApp
 {
@@ -26,10 +28,12 @@ namespace PizzaApp.WebApp
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => false;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<PizzaAppDBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("AppDB")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -51,6 +55,17 @@ namespace PizzaApp.WebApp
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "user",
+                    template: "user/{action=Index}/{id?}",
+                    defaults: new { controller = "User" });
+
+                routes.MapRoute(
+                    name: "location",
+                    template: "location/{action=Index}/{id?}",
+                    defaults: new { controller = "Location" });
+
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

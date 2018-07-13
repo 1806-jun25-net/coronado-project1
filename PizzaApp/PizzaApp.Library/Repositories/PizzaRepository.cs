@@ -10,9 +10,9 @@ namespace PizzaApp.Library
 {
     public class PizzaRepository
     {
-        private readonly PizzaDBContext _db;
+        private readonly PizzaAppDBContext _db;
 
-        public PizzaRepository(PizzaDBContext db)
+        public PizzaRepository(PizzaAppDBContext db)
         {
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }

@@ -17,7 +17,7 @@ namespace PizzaApp.WebApp.Controllers
 
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page.";
+            ViewData["Message"] = "Your application description page. test";
 
             return View();
         }
@@ -33,7 +33,7 @@ namespace PizzaApp.WebApp.Controllers
         {
             return View();
         }
-
+                
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

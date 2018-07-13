@@ -11,5 +11,9 @@ namespace PizzaApp.Context
         public int? DefaultLocation { get; set; }
         public int? LatestLocation { get; set; }
         public int? LatestOrderId { get; set; }
+
+        public Location DefaultLocationNavigation { get; set; }
+        public Location LatestLocationNavigation { get; set; }
+        public Order LatestOrder { get; set; }
     }
 }

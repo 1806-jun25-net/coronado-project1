@@ -10,9 +10,9 @@ namespace PizzaApp.Library
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int DefaultLocation { get; set; } = 0;
-        public int LatestLocation { get; set; } = 0;
-        public int LatestOrderId { get; set; } = 0;
+        public int? DefaultLocation { get; set; }
+        public int? LatestLocation { get; set; }
+        public int? LatestOrderId { get; set; }
 
         // constructors
         public User()

@@ -5,6 +5,11 @@ namespace PizzaApp.Context
 {
     public partial class Inventory
     {
+        public Inventory()
+        {
+            LocationNavigation = new HashSet<Location>();
+        }
+
         public int Id { get; set; }
         public int? LocationId { get; set; }
         public double Dough { get; set; }
@@ -31,5 +36,8 @@ namespace PizzaApp.Context
         public double Ricotta { get; set; }
         public double Parmesan { get; set; }
         public double Feta { get; set; }
+
+        public Location Location { get; set; }
+        public ICollection<Location> LocationNavigation { get; set; }
     }
 }

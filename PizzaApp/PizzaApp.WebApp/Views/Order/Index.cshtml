@@ -1,0 +1,125 @@
+﻿@model IEnumerable<PizzaApp.Context.Order>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId3)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId4)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId5)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId6)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId7)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId8)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId9)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId10)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId11)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PizzaId12)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocationId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId3)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId4)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId5)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId6)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId7)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId8)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId9)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId10)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId11)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PizzaId12)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

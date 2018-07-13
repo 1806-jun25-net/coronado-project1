@@ -22,11 +22,11 @@ namespace PizzaApp.ConsoleApp
 
             IConfigurationRoot configuration = configBuilder.Build();
 
-            var optionsBuilder = new DbContextOptionsBuilder<PizzaDBContext>();
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PizzaDB"));
+            var optionsBuilder = new DbContextOptionsBuilder<PizzaAppDBContext>();
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("PizzaAppDB"));
             var options = optionsBuilder.Options;
 
-            var dbContext = new PizzaDBContext(options);
+            var dbContext = new PizzaAppDBContext(options);
             var pizzaRepository = new PizzaRepository(dbContext);
 
             // initialize list of pizzas            
@@ -148,7 +148,7 @@ namespace PizzaApp.ConsoleApp
                             // attempt loading user info from DB
                             Console.WriteLine("Reloading user list");
                             userList = pizzaRepository.GetUsers().ToList();
-                            currentUser.Id = pizzaRepository.GetId(currentUser);
+                            //currentUser.Id = pizzaRepository.GetId(currentUser);
 
                             currentLocation = NewUserFlow(currentUser, Reston, Herndon, Sterling);
                         }

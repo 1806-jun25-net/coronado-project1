@@ -5,6 +5,11 @@ namespace PizzaApp.Context
 {
     public partial class Order
     {
+        public Order()
+        {
+            User = new HashSet<User>();
+        }
+
         public int Id { get; set; }
         public int? UserId { get; set; }
         public int? LocationId { get; set; }
@@ -22,5 +27,19 @@ namespace PizzaApp.Context
         public int? PizzaId10 { get; set; }
         public int? PizzaId11 { get; set; }
         public int? PizzaId12 { get; set; }
+
+        public Pizza PizzaId10Navigation { get; set; }
+        public Pizza PizzaId11Navigation { get; set; }
+        public Pizza PizzaId12Navigation { get; set; }
+        public Pizza PizzaId1Navigation { get; set; }
+        public Pizza PizzaId2Navigation { get; set; }
+        public Pizza PizzaId3Navigation { get; set; }
+        public Pizza PizzaId4Navigation { get; set; }
+        public Pizza PizzaId5Navigation { get; set; }
+        public Pizza PizzaId6Navigation { get; set; }
+        public Pizza PizzaId7Navigation { get; set; }
+        public Pizza PizzaId8Navigation { get; set; }
+        public Pizza PizzaId9Navigation { get; set; }
+        public ICollection<User> User { get; set; }
     }
 }

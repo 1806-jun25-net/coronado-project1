@@ -1,0 +1,151 @@
+﻿@model PizzaApp.Context.Inventory
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Inventory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="LocationId" class="control-label"></label>
+                <select asp-for="LocationId" class="form-control" asp-items="ViewBag.LocationId"></select>
+                <span asp-validation-for="LocationId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dough" class="control-label"></label>
+                <input asp-for="Dough" class="form-control" />
+                <span asp-validation-for="Dough" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TomatoSauce" class="control-label"></label>
+                <input asp-for="TomatoSauce" class="form-control" />
+                <span asp-validation-for="TomatoSauce" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WhiteSauce" class="control-label"></label>
+                <input asp-for="WhiteSauce" class="form-control" />
+                <span asp-validation-for="WhiteSauce" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cheese" class="control-label"></label>
+                <input asp-for="Cheese" class="form-control" />
+                <span asp-validation-for="Cheese" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pepperoni" class="control-label"></label>
+                <input asp-for="Pepperoni" class="form-control" />
+                <span asp-validation-for="Pepperoni" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ham" class="control-label"></label>
+                <input asp-for="Ham" class="form-control" />
+                <span asp-validation-for="Ham" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Chicken" class="control-label"></label>
+                <input asp-for="Chicken" class="form-control" />
+                <span asp-validation-for="Chicken" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Beef" class="control-label"></label>
+                <input asp-for="Beef" class="form-control" />
+                <span asp-validation-for="Beef" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Sausage" class="control-label"></label>
+                <input asp-for="Sausage" class="form-control" />
+                <span asp-validation-for="Sausage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bacon" class="control-label"></label>
+                <input asp-for="Bacon" class="form-control" />
+                <span asp-validation-for="Bacon" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Anchovies" class="control-label"></label>
+                <input asp-for="Anchovies" class="form-control" />
+                <span asp-validation-for="Anchovies" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RedPeppers" class="control-label"></label>
+                <input asp-for="RedPeppers" class="form-control" />
+                <span asp-validation-for="RedPeppers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GreenPeppers" class="control-label"></label>
+                <input asp-for="GreenPeppers" class="form-control" />
+                <span asp-validation-for="GreenPeppers" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pineapple" class="control-label"></label>
+                <input asp-for="Pineapple" class="form-control" />
+                <span asp-validation-for="Pineapple" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Olives" class="control-label"></label>
+                <input asp-for="Olives" class="form-control" />
+                <span asp-validation-for="Olives" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Mushrooms" class="control-label"></label>
+                <input asp-for="Mushrooms" class="form-control" />
+                <span asp-validation-for="Mushrooms" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Garlic" class="control-label"></label>
+                <input asp-for="Garlic" class="form-control" />
+                <span asp-validation-for="Garlic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Onions" class="control-label"></label>
+                <input asp-for="Onions" class="form-control" />
+                <span asp-validation-for="Onions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tomatoes" class="control-label"></label>
+                <input asp-for="Tomatoes" class="form-control" />
+                <span asp-validation-for="Tomatoes" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Spinach" class="control-label"></label>
+                <input asp-for="Spinach" class="form-control" />
+                <span asp-validation-for="Spinach" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Basil" class="control-label"></label>
+                <input asp-for="Basil" class="form-control" />
+                <span asp-validation-for="Basil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ricotta" class="control-label"></label>
+                <input asp-for="Ricotta" class="form-control" />
+                <span asp-validation-for="Ricotta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Parmesan" class="control-label"></label>
+                <input asp-for="Parmesan" class="form-control" />
+                <span asp-validation-for="Parmesan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Feta" class="control-label"></label>
+                <input asp-for="Feta" class="form-control" />
+                <span asp-validation-for="Feta" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

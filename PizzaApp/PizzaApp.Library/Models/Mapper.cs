@@ -14,9 +14,9 @@ namespace PizzaApp.Library
             Id = user.Id,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            DefaultLocation = (int)user.DefaultLocation,
-            LatestLocation = (int)user.LatestLocation,
-            LatestOrderId = (int)user.LatestOrderId
+            DefaultLocation = user.DefaultLocation,
+            LatestLocation = user.LatestLocation,
+            LatestOrderId = user.LatestOrderId
         };
 
         public static Context.User Map(Library.User user) => new Context.User
