@@ -75,7 +75,7 @@ namespace PizzaApp.Library
         public IEnumerable<Order> GetOrders()
         {
             return Mapper.Map(_db.Order);
-        }
+        }        
 
         public int GetId(Order order)
         {
@@ -97,6 +97,95 @@ namespace PizzaApp.Library
         {
             _db.Entry(_db.Order.Find(order.Id)).CurrentValues.SetValues(Mapper.Map(order));
         }
+
+        // order matching to location
+        public List<Order> MatchOrderToModel(Location location)
+        {
+            var allOrders = Mapper.Map(_db.Order);
+            var orders = new List<Order>();
+            foreach (var order in allOrders)
+            {
+                if (order.LocationId == location.Id)
+                {
+                    orders.Add(order);
+                }
+            }
+            return orders;
+        }
+
+        // order matching to user
+        public List<Order> MatchOrderToModel(User user)
+        {
+            var allOrders = Mapper.Map(_db.Order);
+            var orders = new List<Order>();
+            foreach (var order in allOrders)
+            {
+                if (order.UserId == user.Id)
+                {
+                    orders.Add(order);
+                }
+            }
+            return orders;
+        }
+
+        // order sorting for location
+        public IEnumerable<Order> SortOrdersByEarliest(Location location)
+        {
+            var orders = MatchOrderToModel(location);
+            var earliestOrders = orders.OrderBy(o => o.DateTime);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByLatest(Location location)
+        {
+            var orders = MatchOrderToModel(location);
+            var earliestOrders = orders.OrderByDescending(o => o.DateTime);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByCheapest(Location location)
+        {
+            var orders = MatchOrderToModel(location);
+            var earliestOrders = orders.OrderBy(o => o.Price);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByMostExpensive(Location location)
+        {
+            var orders = MatchOrderToModel(location);
+            var earliestOrders = orders.OrderByDescending(o => o.Price);
+            return earliestOrders;
+        }
+
+        // order sorting for user
+        public IEnumerable<Order> SortOrdersByEarliest(User user)
+        {
+            var orders = MatchOrderToModel(user);
+            var earliestOrders = orders.OrderBy(o => o.DateTime);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByLatest(User user)
+        {
+            var orders = MatchOrderToModel(user);
+            var earliestOrders = orders.OrderByDescending(o => o.DateTime);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByCheapest(User user)
+        {
+            var orders = MatchOrderToModel(user);
+            var earliestOrders = orders.OrderBy(o => o.Price);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByMostExpensive(User user)
+        {
+            var orders = MatchOrderToModel(user);
+            var earliestOrders = orders.OrderByDescending(o => o.Price);
+            return earliestOrders;
+        }
+
 
         // Location
         public IEnumerable<Location> GetLocations()
