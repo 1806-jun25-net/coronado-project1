@@ -160,7 +160,7 @@ namespace PizzaApp.Context
                 entity.HasOne(d => d.LatestOrder)
                     .WithMany(p => p.User)
                     .HasForeignKey(d => d.LatestOrderId)
-                    .HasConstraintName("K_UserLatestOrder");
+                    .HasConstraintName("FK_UserLatestOrder");
             });
         }
     }

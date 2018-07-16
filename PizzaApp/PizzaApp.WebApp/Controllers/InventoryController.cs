@@ -6,42 +6,91 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaApp.Context;
+using PizzaApp.Library;
 
 namespace PizzaApp.WebApp.Controllers
 {
     public class InventoryController : Controller
     {
-        private readonly PizzaAppDBContext _context;
 
-        public InventoryController(PizzaAppDBContext context)
+        public PizzaRepository Repo { get; }
+
+        public InventoryController(PizzaRepository repo)
         {
-            _context = context;
+            Repo = repo;
         }
 
         // GET: Inventory
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            ViewData["IndexMessage"] = "viewdata set in this request";
-            return View(await _context.Inventory.ToListAsync());
+            var libInventorys = Repo.GetInventories();
+            var webInventorys = libInventorys.Select(x => new Inventory
+            {
+                Id = x.Id,
+                LocationId = x.LocationId,
+                Dough = x.Dough,
+                TomatoSauce = x.TomatoSauce,
+                WhiteSauce = x.WhiteSauce,
+                Cheese = x.Cheese,
+                Pepperoni = x.Pepperoni,
+                Ham = x.Ham,
+                Chicken = x.Chicken,
+                Beef = x.Beef,
+                Sausage = x.Sausage,
+                Bacon = x.Bacon,
+                Anchovies = x.Anchovies,
+                RedPeppers = x.RedPeppers,
+                GreenPeppers = x.GreenPeppers,
+                Pineapple = x.Pineapple,
+                Olives = x.Olives,
+                Mushrooms = x.Mushrooms,
+                Garlic = x.Garlic,
+                Onions = x.Onions,
+                Tomatoes = x.Tomatoes,
+                Spinach = x.Spinach,
+                Basil = x.Basil,
+                Ricotta = x.Ricotta,
+                Parmesan = x.Parmesan,
+                Feta = x.Feta
+            });
+
+            return View(webInventorys);
         }
 
-
         // GET: Inventory/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
+            var libInventory = Repo.GetInventoryById(id);
+            var webInventory = new Inventory
             {
-                return NotFound();
-            }
-
-            var person = await _context.Inventory
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            return View(person);
+                Id = libInventory.Id,
+                LocationId = libInventory.LocationId,
+                Dough = libInventory.Dough,
+                TomatoSauce = libInventory.TomatoSauce,
+                WhiteSauce = libInventory.WhiteSauce,
+                Cheese = libInventory.Cheese,
+                Pepperoni = libInventory.Pepperoni,
+                Ham = libInventory.Ham,
+                Chicken = libInventory.Chicken,
+                Beef = libInventory.Beef,
+                Sausage = libInventory.Sausage,
+                Bacon = libInventory.Bacon,
+                Anchovies = libInventory.Anchovies,
+                RedPeppers = libInventory.RedPeppers,
+                GreenPeppers = libInventory.GreenPeppers,
+                Pineapple = libInventory.Pineapple,
+                Olives = libInventory.Olives,
+                Mushrooms = libInventory.Mushrooms,
+                Garlic = libInventory.Garlic,
+                Onions = libInventory.Onions,
+                Tomatoes = libInventory.Tomatoes,
+                Spinach = libInventory.Spinach,
+                Basil = libInventory.Basil,
+                Ricotta = libInventory.Ricotta,
+                Parmesan = libInventory.Parmesan,
+                Feta = libInventory.Feta
+            };
+            return View(webInventory);
         }
 
         // GET: Inventory/Create
@@ -55,38 +104,87 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormCollection collection)
+        public ActionResult Create(Inventory inventory)
         {
-            Inventory inventory;
-            if (ModelState.IsValid)
+            try
             {
-                inventory = new Inventory
+                if (ModelState.IsValid)
                 {
+                    Repo.AddInventory(new Library.Inventory
+                    {
+                        LocationId = inventory.LocationId,
+                        Dough = inventory.Dough,
+                        TomatoSauce = inventory.TomatoSauce,
+                        WhiteSauce = inventory.WhiteSauce,
+                        Cheese = inventory.Cheese,
+                        Pepperoni = inventory.Pepperoni,
+                        Ham = inventory.Ham,
+                        Chicken = inventory.Chicken,
+                        Beef = inventory.Beef,
+                        Sausage = inventory.Sausage,
+                        Bacon = inventory.Bacon,
+                        Anchovies = inventory.Anchovies,
+                        RedPeppers = inventory.RedPeppers,
+                        GreenPeppers = inventory.GreenPeppers,
+                        Pineapple = inventory.Pineapple,
+                        Olives = inventory.Olives,
+                        Mushrooms = inventory.Mushrooms,
+                        Garlic = inventory.Garlic,
+                        Onions = inventory.Onions,
+                        Tomatoes = inventory.Tomatoes,
+                        Spinach = inventory.Spinach,
+                        Basil = inventory.Basil,
+                        Ricotta = inventory.Ricotta,
+                        Parmesan = inventory.Parmesan,
+                        Feta = inventory.Feta
+                    });
+                    Repo.Save();
 
-                };
-                _context.Add(inventory);
-                await _context.SaveChangesAsync();
-                TempData["CreateMessage"] = "Inventory successfully created!";
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(inventory);
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
 
 
         // GET: Inventory/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
+            var libInventory = Repo.GetInventoryById(id);
+            var webInventory = new Inventory
             {
-                return NotFound();
-            }
-
-            var inventory = await _context.Inventory.FindAsync(id);
-            if (inventory == null)
-            {
-                return NotFound();
-            }
-            return View(inventory);
+                Id = libInventory.Id,
+                LocationId = libInventory.LocationId,
+                Dough = libInventory.Dough,
+                TomatoSauce = libInventory.TomatoSauce,
+                WhiteSauce = libInventory.WhiteSauce,
+                Cheese = libInventory.Cheese,
+                Pepperoni = libInventory.Pepperoni,
+                Ham = libInventory.Ham,
+                Chicken = libInventory.Chicken,
+                Beef = libInventory.Beef,
+                Sausage = libInventory.Sausage,
+                Bacon = libInventory.Bacon,
+                Anchovies = libInventory.Anchovies,
+                RedPeppers = libInventory.RedPeppers,
+                GreenPeppers = libInventory.GreenPeppers,
+                Pineapple = libInventory.Pineapple,
+                Olives = libInventory.Olives,
+                Mushrooms = libInventory.Mushrooms,
+                Garlic = libInventory.Garlic,
+                Onions = libInventory.Onions,
+                Tomatoes = libInventory.Tomatoes,
+                Spinach = libInventory.Spinach,
+                Basil = libInventory.Basil,
+                Ricotta = libInventory.Ricotta,
+                Parmesan = libInventory.Parmesan,
+                Feta = libInventory.Feta
+            };
+            return View(webInventory);
         }
 
         // POST: Inventory/Edit/5
@@ -94,68 +192,106 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Inventory inventory)
+        public ActionResult Edit([FromRoute]int id, Inventory inventory)
         {
-            if (id != inventory.Id)
+            try
             {
-                return NotFound();
-            }
+                if (ModelState.IsValid)
+                {
+                    var libInventory = new Library.Inventory
+                    {
+                        Id = id,
+                        LocationId = inventory.LocationId,
+                        Dough = inventory.Dough,
+                        TomatoSauce = inventory.TomatoSauce,
+                        WhiteSauce = inventory.WhiteSauce,
+                        Cheese = inventory.Cheese,
+                        Pepperoni = inventory.Pepperoni,
+                        Ham = inventory.Ham,
+                        Chicken = inventory.Chicken,
+                        Beef = inventory.Beef,
+                        Sausage = inventory.Sausage,
+                        Bacon = inventory.Bacon,
+                        Anchovies = inventory.Anchovies,
+                        RedPeppers = inventory.RedPeppers,
+                        GreenPeppers = inventory.GreenPeppers,
+                        Pineapple = inventory.Pineapple,
+                        Olives = inventory.Olives,
+                        Mushrooms = inventory.Mushrooms,
+                        Garlic = inventory.Garlic,
+                        Onions = inventory.Onions,
+                        Tomatoes = inventory.Tomatoes,
+                        Spinach = inventory.Spinach,
+                        Basil = inventory.Basil,
+                        Ricotta = inventory.Ricotta,
+                        Parmesan = inventory.Parmesan,
+                        Feta = inventory.Feta
+                    };
+                    Repo.UpdateInventory(libInventory);
+                    Repo.Save();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(inventory);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InventoryExists(inventory.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(inventory);
             }
-            return View(inventory);
+            catch (Exception ex)
+            {
+                return View(inventory);
+            }
         }
 
         // GET: Inventory/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
+            var libInventory = Repo.GetInventoryById(id);
+            var webInventory = new Inventory
             {
-                return NotFound();
-            }
-
-            var inventory = await _context.Inventory
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (inventory == null)
-            {
-                return NotFound();
-            }
-
-            return View(inventory);
+                Id = libInventory.Id,
+                LocationId = libInventory.LocationId,
+                Dough = libInventory.Dough,
+                TomatoSauce = libInventory.TomatoSauce,
+                WhiteSauce = libInventory.WhiteSauce,
+                Cheese = libInventory.Cheese,
+                Pepperoni = libInventory.Pepperoni,
+                Ham = libInventory.Ham,
+                Chicken = libInventory.Chicken,
+                Beef = libInventory.Beef,
+                Sausage = libInventory.Sausage,
+                Bacon = libInventory.Bacon,
+                Anchovies = libInventory.Anchovies,
+                RedPeppers = libInventory.RedPeppers,
+                GreenPeppers = libInventory.GreenPeppers,
+                Pineapple = libInventory.Pineapple,
+                Olives = libInventory.Olives,
+                Mushrooms = libInventory.Mushrooms,
+                Garlic = libInventory.Garlic,
+                Onions = libInventory.Onions,
+                Tomatoes = libInventory.Tomatoes,
+                Spinach = libInventory.Spinach,
+                Basil = libInventory.Basil,
+                Ricotta = libInventory.Ricotta,
+                Parmesan = libInventory.Parmesan,
+                Feta = libInventory.Feta
+            };
+            return View(webInventory);
         }
 
         // POST: Inventory/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
-            var inventory = await _context.Inventory.FindAsync(id);
-            _context.Inventory.Remove(inventory);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                Repo.DeleteInventory(id);
+                Repo.Save();
 
-        private bool InventoryExists(int id)
-        {
-            return _context.Inventory.Any(e => e.Id == id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
     }

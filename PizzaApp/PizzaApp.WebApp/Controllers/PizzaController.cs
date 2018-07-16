@@ -6,42 +6,63 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaApp.Context;
+using PizzaApp.Library;
 
 namespace PizzaApp.WebApp.Controllers
 {
     public class PizzaController : Controller
     {
-        private readonly PizzaAppDBContext _context;
 
-        public PizzaController(PizzaAppDBContext context)
+        public PizzaRepository Repo { get; }
+
+        public PizzaController(PizzaRepository repo)
         {
-            _context = context;
+            Repo = repo;
         }
 
         // GET: Pizza
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            ViewData["IndexMessage"] = "viewdata set in this request";
-            return View(await _context.Pizza.ToListAsync());
+            var libPizzas = Repo.GetPizzas();
+            var webPizzas = libPizzas.Select(x => new Pizza
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Price = x.Price,
+                Crust = x.Crust.IngredientName,
+                Sauce = x.Sauce.IngredientName,
+                Cheese = x.Cheese.IngredientName,
+                Topping1 = x.Topping1.IngredientName,
+                Topping2 = x.Topping2.IngredientName,
+                Topping3 = x.Topping3.IngredientName,
+                Topping4 = x.Topping4.IngredientName,
+                Topping5 = x.Topping5.IngredientName,
+                Topping6 = x.Topping6.IngredientName
+            });
+
+            return View(webPizzas);
         }
 
-
         // GET: Pizza/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
+            var libPizza = Repo.GetPizzaById(id);
+            var webPizza = new Pizza
             {
-                return NotFound();
-            }
-
-            var person = await _context.Pizza
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            return View(person);
+                Id = libPizza.Id,
+                Name = libPizza.Name,
+                Price = libPizza.Price,
+                Crust = libPizza.Crust.IngredientName,
+                Sauce = libPizza.Sauce.IngredientName,
+                Cheese = libPizza.Cheese.IngredientName,
+                Topping1 = libPizza.Topping1.IngredientName,
+                Topping2 = libPizza.Topping2.IngredientName,
+                Topping3 = libPizza.Topping3.IngredientName,
+                Topping4 = libPizza.Topping4.IngredientName,
+                Topping5 = libPizza.Topping5.IngredientName,
+                Topping6 = libPizza.Topping6.IngredientName
+            };
+            return View(webPizza);
         }
 
         // GET: Pizza/Create
@@ -55,38 +76,59 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormCollection collection)
+        public ActionResult Create(Pizza pizza)
         {
-            Pizza pizza;
-            if (ModelState.IsValid)
+            try
             {
-                pizza = new Pizza
+                if (ModelState.IsValid)
                 {
+                    Repo.AddPizza(new Library.Pizza
+                    {
+                        Name = pizza.Name,
+                        Price = pizza.Price,
+                        Crust = new Crust(pizza.Crust),
+                        Sauce = new Sauce(pizza.Sauce),
+                        Cheese = new Cheese(pizza.Cheese),
+                        Topping1 = new Topping(pizza.Topping1),
+                        Topping2 = new Topping(pizza.Topping2),
+                        Topping3 = new Topping(pizza.Topping3),
+                        Topping4 = new Topping(pizza.Topping4),
+                        Topping5 = new Topping(pizza.Topping5),
+                        Topping6 = new Topping(pizza.Topping6)
+                    });
+                    Repo.Save();
 
-                };
-                _context.Add(pizza);
-                await _context.SaveChangesAsync();
-                TempData["CreateMessage"] = "Pizza successfully created!";
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(pizza);
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
 
 
         // GET: Pizza/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
+            var libPizza = Repo.GetPizzaById(id);
+            var webPizza = new Pizza
             {
-                return NotFound();
-            }
-
-            var pizza = await _context.Pizza.FindAsync(id);
-            if (pizza == null)
-            {
-                return NotFound();
-            }
-            return View(pizza);
+                Id = libPizza.Id,
+                Name = libPizza.Name,
+                Price = libPizza.Price,
+                Crust = libPizza.Crust.IngredientName,
+                Sauce = libPizza.Sauce.IngredientName,
+                Cheese = libPizza.Cheese.IngredientName,
+                Topping1 = libPizza.Topping1.IngredientName,
+                Topping2 = libPizza.Topping2.IngredientName,
+                Topping3 = libPizza.Topping3.IngredientName,
+                Topping4 = libPizza.Topping4.IngredientName,
+                Topping5 = libPizza.Topping5.IngredientName,
+                Topping6 = libPizza.Topping6.IngredientName
+            };
+            return View(webPizza);
         }
 
         // POST: Pizza/Edit/5
@@ -94,68 +136,78 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Pizza pizza)
+        public ActionResult Edit([FromRoute]int id, Pizza pizza)
         {
-            if (id != pizza.Id)
+            try
             {
-                return NotFound();
-            }
+                if (ModelState.IsValid)
+                {
+                    var libPizza = new Library.Pizza
+                    {
+                        Id = id,
+                        Name = pizza.Name,
+                        Price = pizza.Price,
+                        Crust = new Crust(pizza.Crust),
+                        Sauce = new Sauce(pizza.Sauce),
+                        Cheese = new Cheese(pizza.Cheese),
+                        Topping1 = new Topping(pizza.Topping1),
+                        Topping2 = new Topping(pizza.Topping2),
+                        Topping3 = new Topping(pizza.Topping3),
+                        Topping4 = new Topping(pizza.Topping4),
+                        Topping5 = new Topping(pizza.Topping5),
+                        Topping6 = new Topping(pizza.Topping6)
+                    };
+                    Repo.UpdatePizza(libPizza);
+                    Repo.Save();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(pizza);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PizzaExists(pizza.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(pizza);
             }
-            return View(pizza);
+            catch (Exception ex)
+            {
+                return View(pizza);
+            }
         }
 
         // GET: Pizza/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
+            var libPizza = Repo.GetPizzaById(id);
+            var webPizza = new Pizza
             {
-                return NotFound();
-            }
-
-            var pizza = await _context.Pizza
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (pizza == null)
-            {
-                return NotFound();
-            }
-
-            return View(pizza);
+                Id = libPizza.Id,
+                Name = libPizza.Name,
+                Price = libPizza.Price,
+                Crust = libPizza.Crust.IngredientName,
+                Sauce = libPizza.Sauce.IngredientName,
+                Cheese = libPizza.Cheese.IngredientName,
+                Topping1 = libPizza.Topping1.IngredientName,
+                Topping2 = libPizza.Topping2.IngredientName,
+                Topping3 = libPizza.Topping3.IngredientName,
+                Topping4 = libPizza.Topping4.IngredientName,
+                Topping5 = libPizza.Topping5.IngredientName,
+                Topping6 = libPizza.Topping6.IngredientName
+            };
+            return View(webPizza);
         }
 
         // POST: Pizza/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
-            var pizza = await _context.Pizza.FindAsync(id);
-            _context.Pizza.Remove(pizza);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                Repo.DeletePizza(id);
+                Repo.Save();
 
-        private bool PizzaExists(int id)
-        {
-            return _context.Pizza.Any(e => e.Id == id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
     }

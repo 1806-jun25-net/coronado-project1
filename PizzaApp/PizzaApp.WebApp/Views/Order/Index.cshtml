@@ -1,10 +1,10 @@
-﻿@model IEnumerable<PizzaApp.Context.Order>
+﻿@model IEnumerable<PizzaApp.WebApp.Order>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Order Index";
 }
 
-<h2>Index</h2>
+<h2>Order Index</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,6 +12,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.UserId)
             </th>
@@ -25,101 +28,105 @@
                 @Html.DisplayNameFor(model => model.Price)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId1)
+                Pizza Id(s)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId2)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId3)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId4)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId5)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId6)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId7)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId8)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId9)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId10)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId11)
+                &nbsp;
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PizzaId12)
+                &nbsp;
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LocationId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId1)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId2)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId3)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId4)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId5)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId6)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId7)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId8)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId9)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId10)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId11)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PizzaId12)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.ActionLink(item.UserId.ToString(), "Details", "User", new { id = item.UserId })
+                </td>
+                <td>
+                    @Html.ActionLink(item.LocationId.ToString(), "Details", "Location", new { id = item.LocationId })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId1.ToString(), "Details", "Pizza", new { id = item.PizzaId1 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId2.ToString(), "Details", "Pizza", new { id = item.PizzaId2 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId3.ToString(), "Details", "Pizza", new { id = item.PizzaId3 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId4.ToString(), "Details", "Pizza", new { id = item.PizzaId4 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId5.ToString(), "Details", "Pizza", new { id = item.PizzaId5 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId6.ToString(), "Details", "Pizza", new { id = item.PizzaId6 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId7.ToString(), "Details", "Pizza", new { id = item.PizzaId7 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId8.ToString(), "Details", "Pizza", new { id = item.PizzaId8 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId9.ToString(), "Details", "Pizza", new { id = item.PizzaId9 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId10.ToString(), "Details", "Pizza", new { id = item.PizzaId10 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId11.ToString(), "Details", "Pizza", new { id = item.PizzaId11 })
+                </td>
+                <td>
+                    @Html.ActionLink(item.PizzaId12.ToString(), "Details", "Pizza", new { id = item.PizzaId12 })
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

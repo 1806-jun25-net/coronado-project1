@@ -1,0 +1,184 @@
+﻿@model PizzaApp.WebApp.Inventory
+
+@{
+    ViewData["Title"] = "Inventory Details";
+}
+
+<h2>Inventory Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.LocationId)
+        </dt>
+        <dd>
+            @switch (Model.LocationId)
+            {
+                case 1:
+                    @Html.ActionLink("(1)Reston", "Details", "Location", new { id = Model.LocationId })
+                    break;
+                case 2:
+                    @Html.ActionLink("(2)Herndon", "Details", "Location", new { id = Model.LocationId })
+                    break;
+                case 3:
+                    @Html.ActionLink("(3)Sterling", "Details", "Location", new { id = Model.LocationId })
+                    break;
+            }
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Dough)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Dough)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TomatoSauce)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TomatoSauce)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.WhiteSauce)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.WhiteSauce)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cheese)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cheese)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pepperoni)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pepperoni)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ham)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ham)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Chicken)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Chicken)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Beef)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Beef)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Sausage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Sausage)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Bacon)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Bacon)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Anchovies)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Anchovies)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.RedPeppers)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.RedPeppers)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.GreenPeppers)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.GreenPeppers)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Pineapple)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Pineapple)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Olives)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Olives)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Mushrooms)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Mushrooms)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Garlic)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Garlic)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Onions)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Onions)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tomatoes)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tomatoes)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Spinach)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Spinach)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Basil)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basil)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Ricotta)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Ricotta)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Parmesan)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Parmesan)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Feta)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Feta)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    <a asp-action="Index">Back to List</a>
+</div>

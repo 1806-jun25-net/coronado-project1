@@ -6,42 +6,45 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaApp.Context;
+using PizzaApp.Library;
 
 namespace PizzaApp.WebApp.Controllers
 {
     public class LocationController : Controller
     {
-        private readonly PizzaAppDBContext _context;
 
-        public LocationController(PizzaAppDBContext context)
+        public PizzaRepository Repo { get; }
+
+        public LocationController(PizzaRepository repo)
         {
-            _context = context;
+            Repo = repo;
         }
 
         // GET: Location
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            ViewData["IndexMessage"] = "viewdata set in this request";
-            return View(await _context.Location.ToListAsync());
+            var libLocations = Repo.GetLocations();
+            var webLocations = libLocations.Select(x => new Location
+            {
+                Id = x.Id,
+                Name = x.Name,
+                InventoryId = x.InventoryId
+            });
+
+            return View(webLocations);
         }
 
-
         // GET: Location/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
+            var libLocation = Repo.GetLocationById(id);
+            var webLocation = new Location
             {
-                return NotFound();
-            }
-
-            var person = await _context.Location
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            return View(person);
+                Id = libLocation.Id,
+                Name = libLocation.Name,
+                InventoryId = libLocation.InventoryId
+            };
+            return View(webLocation);
         }
 
         // GET: Location/Create
@@ -55,38 +58,41 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormCollection collection)
+        public ActionResult Create(Location location)
         {
-            Location location;
-            if (ModelState.IsValid)
+            try
             {
-                location = new Location
+                if (ModelState.IsValid)
                 {
-                    Name = collection["Name"]
-                };
-                _context.Add(location);
-                await _context.SaveChangesAsync();
-                TempData["CreateMessage"] = "Location successfully created!";
-                return RedirectToAction(nameof(Index));
+                    Repo.AddLocation(new Library.Location
+                    {
+                        Name = location.Name,
+                        InventoryId = location.InventoryId
+                    });
+                    Repo.Save();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(location);
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
 
 
         // GET: Location/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
+            var libLocation = Repo.GetLocationById(id);
+            var webLocation = new Location
             {
-                return NotFound();
-            }
-
-            var location = await _context.Location.FindAsync(id);
-            if (location == null)
-            {
-                return NotFound();
-            }
-            return View(location);
+                Id = libLocation.Id,
+                Name = libLocation.Name,
+                InventoryId = libLocation.InventoryId
+            };
+            return View(webLocation);
         }
 
         // POST: Location/Edit/5
@@ -94,68 +100,60 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Location location)
+        public ActionResult Edit([FromRoute]int id, Location location)
         {
-            if (id != location.Id)
+            try
             {
-                return NotFound();
-            }
+                if (ModelState.IsValid)
+                {
+                    var libLocation = new Library.Location
+                    {
+                        Id = id,
+                        Name = location.Name,
+                        InventoryId = location.InventoryId
+                    };
+                    Repo.UpdateLocation(libLocation);
+                    Repo.Save();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(location);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LocationExists(location.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(location);
             }
-            return View(location);
+            catch (Exception ex)
+            {
+                return View(location);
+            }
         }
 
         // GET: Location/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
+            var libLocation = Repo.GetLocationById(id);
+            var webLocation = new Location
             {
-                return NotFound();
-            }
-
-            var location = await _context.Location
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (location == null)
-            {
-                return NotFound();
-            }
-
-            return View(location);
+                Id = libLocation.Id,
+                Name = libLocation.Name,
+                InventoryId = libLocation.InventoryId
+            };
+            return View(webLocation);
         }
 
         // POST: Location/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
-            var location = await _context.Location.FindAsync(id);
-            _context.Location.Remove(location);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                Repo.DeleteLocation(id);
+                Repo.Save();
 
-        private bool LocationExists(int id)
-        {
-            return _context.Location.Any(e => e.Id == id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
     }

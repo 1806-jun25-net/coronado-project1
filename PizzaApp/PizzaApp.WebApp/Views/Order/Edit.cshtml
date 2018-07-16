@@ -1,18 +1,22 @@
-﻿@model PizzaApp.Context.Order
+﻿@model PizzaApp.WebApp.Order
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Order";
 }
 
-<h2>Edit</h2>
+<h2>Edit Order</h2>
 
-<h4>Order</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
                 <input asp-for="UserId" class="form-control" />
@@ -35,62 +39,62 @@
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId1" class="control-label"></label>
-                <select asp-for="PizzaId1" class="form-control" asp-items="ViewBag.PizzaId1"></select>
+                <input asp-for="PizzaId1" class="form-control" />
                 <span asp-validation-for="PizzaId1" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId2" class="control-label"></label>
-                <select asp-for="PizzaId2" class="form-control" asp-items="ViewBag.PizzaId2"></select>
+                <input asp-for="PizzaId2" class="form-control" />
                 <span asp-validation-for="PizzaId2" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId3" class="control-label"></label>
-                <select asp-for="PizzaId3" class="form-control" asp-items="ViewBag.PizzaId3"></select>
+                <input asp-for="PizzaId3" class="form-control" />
                 <span asp-validation-for="PizzaId3" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId4" class="control-label"></label>
-                <select asp-for="PizzaId4" class="form-control" asp-items="ViewBag.PizzaId4"></select>
+                <input asp-for="PizzaId4" class="form-control" />
                 <span asp-validation-for="PizzaId4" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId5" class="control-label"></label>
-                <select asp-for="PizzaId5" class="form-control" asp-items="ViewBag.PizzaId5"></select>
+                <input asp-for="PizzaId5" class="form-control" />
                 <span asp-validation-for="PizzaId5" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId6" class="control-label"></label>
-                <select asp-for="PizzaId6" class="form-control" asp-items="ViewBag.PizzaId6"></select>
+                <input asp-for="PizzaId6" class="form-control" />
                 <span asp-validation-for="PizzaId6" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId7" class="control-label"></label>
-                <select asp-for="PizzaId7" class="form-control" asp-items="ViewBag.PizzaId7"></select>
+                <input asp-for="PizzaId7" class="form-control" />
                 <span asp-validation-for="PizzaId7" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId8" class="control-label"></label>
-                <select asp-for="PizzaId8" class="form-control" asp-items="ViewBag.PizzaId8"></select>
+                <input asp-for="PizzaId8" class="form-control" />
                 <span asp-validation-for="PizzaId8" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId9" class="control-label"></label>
-                <select asp-for="PizzaId9" class="form-control" asp-items="ViewBag.PizzaId9"></select>
+                <input asp-for="PizzaId9" class="form-control" />
                 <span asp-validation-for="PizzaId9" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId10" class="control-label"></label>
-                <select asp-for="PizzaId10" class="form-control" asp-items="ViewBag.PizzaId10"></select>
+                <input asp-for="PizzaId10" class="form-control" />
                 <span asp-validation-for="PizzaId10" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId11" class="control-label"></label>
-                <select asp-for="PizzaId11" class="form-control" asp-items="ViewBag.PizzaId11"></select>
+                <input asp-for="PizzaId11" class="form-control" />
                 <span asp-validation-for="PizzaId11" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaId12" class="control-label"></label>
-                <select asp-for="PizzaId12" class="form-control" asp-items="ViewBag.PizzaId12"></select>
+                <input asp-for="PizzaId12" class="form-control" />
                 <span asp-validation-for="PizzaId12" class="text-danger"></span>
             </div>
             <div class="form-group">

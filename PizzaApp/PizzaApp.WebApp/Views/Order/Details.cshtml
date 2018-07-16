@@ -1,26 +1,43 @@
-﻿@model PizzaApp.Context.Order
+﻿@model PizzaApp.WebApp.Order
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Order Details";
 }
 
-<h2>Details</h2>
+<h2>Order Details</h2>
 
 <div>
     <h4>Order</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.UserId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.UserId)
+            @Html.ActionLink(Model.UserId.ToString(), "Details", "User", new { id = Model.UserId })
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.LocationId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LocationId)
+            @switch (Model.LocationId)
+            {
+                case 1:
+                    @Html.ActionLink("(1)Reston", "Details", "Location", new { id = Model.LocationId })
+                    break;
+                case 2:
+                    @Html.ActionLink("(2)Herndon", "Details", "Location", new { id = Model.LocationId })
+                    break;
+                case 3:
+                    @Html.ActionLink("(3)Sterling", "Details", "Location", new { id = Model.LocationId })
+                    break;
+            }
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.DateTime)
@@ -35,80 +52,80 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId10Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId1)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId10Navigation.Id)
+            @Html.ActionLink(Model.PizzaId1.ToString(), "Details", "Pizza", new { id = Model.PizzaId1 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId11Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId2)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId11Navigation.Id)
+            @Html.ActionLink(Model.PizzaId2.ToString(), "Details", "Pizza", new { id = Model.PizzaId2 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId12Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId3)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId12Navigation.Id)
+            @Html.ActionLink(Model.PizzaId3.ToString(), "Details", "Pizza", new { id = Model.PizzaId3 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId1Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId4)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId1Navigation.Id)
+            @Html.ActionLink(Model.PizzaId4.ToString(), "Details", "Pizza", new { id = Model.PizzaId4 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId2Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId5)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId2Navigation.Id)
+            @Html.ActionLink(Model.PizzaId5.ToString(), "Details", "Pizza", new { id = Model.PizzaId5 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId3Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId6)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId3Navigation.Id)
+            @Html.ActionLink(Model.PizzaId6.ToString(), "Details", "Pizza", new { id = Model.PizzaId6 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId4Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId7)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId4Navigation.Id)
+            @Html.ActionLink(Model.PizzaId7.ToString(), "Details", "Pizza", new { id = Model.PizzaId7 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId5Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId8)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId5Navigation.Id)
+            @Html.ActionLink(Model.PizzaId8.ToString(), "Details", "Pizza", new { id = Model.PizzaId8 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId6Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId9)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId6Navigation.Id)
+            @Html.ActionLink(Model.PizzaId9.ToString(), "Details", "Pizza", new { id = Model.PizzaId9 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId7Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId10)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId7Navigation.Id)
+            @Html.ActionLink(Model.PizzaId10.ToString(), "Details", "Pizza", new { id = Model.PizzaId10 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId8Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId11)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId8Navigation.Id)
+            @Html.ActionLink(Model.PizzaId11.ToString(), "Details", "Pizza", new { id = Model.PizzaId11 })
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.PizzaId9Navigation)
+            @Html.DisplayNameFor(model => model.PizzaId12)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.PizzaId9Navigation.Id)
+            @Html.ActionLink(Model.PizzaId12.ToString(), "Details", "Pizza", new { id = Model.PizzaId12 })
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>

@@ -6,42 +6,69 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaApp.Context;
+using PizzaApp.Library;
 
 namespace PizzaApp.WebApp.Controllers
 {
     public class UserController : Controller
     {
-        private readonly PizzaAppDBContext _context;
 
-        public UserController(PizzaAppDBContext context)
+        public PizzaRepository Repo { get; }
+
+        public UserController(PizzaRepository repo)
         {
-            _context = context;
+            Repo = repo;
         }
 
         // GET: User
-        public async Task<IActionResult> Index()
+        public ActionResult Index(string searchString)
         {
-            ViewData["IndexMessage"] = "viewdata set in this request";
-            return View(await _context.User.ToListAsync());
+            var libUsers = Repo.GetUsers();
+            var webUsers = libUsers.Select(x => new User
+            {
+                Id = x.Id,
+                FirstName = x.FirstName,
+                LastName = x.LastName,
+                DefaultLocation = x.DefaultLocation,
+                LatestLocation = x.LatestLocation,
+                LatestOrderId = x.LatestOrderId
+            });
+
+            // SEARCH: User
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower(); // search is case insensitive
+                if (searchString.Contains(" ")) // if there is a space in the search string, split string into firstName and lastName
+                {
+                    string[] searchStrings = searchString.Split(" ");
+
+                    string firstName = searchStrings[0];
+                    string lastName = searchStrings[1];
+
+                    // search whole name using firstName and lastName
+                    webUsers = webUsers.Where(s => String.Concat(s.FirstName, s.LastName).ToLower().Contains(firstName) && String.Concat(s.FirstName, s.LastName).ToLower().Contains(lastName));
+                }
+                else
+                    webUsers = webUsers.Where(s => String.Concat(s.FirstName, s.LastName).ToLower().Contains(searchString)); // search whole name using searchString
+            }
+
+            return View(webUsers);
         }
 
-
         // GET: User/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
+            var libUser = Repo.GetUserById(id);
+            var webUser = new User
             {
-                return NotFound();
-            }
-
-            var person = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            return View(person);
+                Id = libUser.Id,
+                FirstName = libUser.FirstName,
+                LastName = libUser.LastName,
+                DefaultLocation = libUser.DefaultLocation,
+                LatestLocation = libUser.LatestLocation,
+                LatestOrderId = libUser.LatestOrderId
+            };
+            return View(webUser);
         }
 
         // GET: User/Create
@@ -55,39 +82,48 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormCollection collection)
+        public ActionResult Create(User user)
         {
-            User user;
-            if (ModelState.IsValid)
+            try
             {
-                user = new User
+                if (ModelState.IsValid)
                 {
-                    FirstName = collection["FirstName"],
-                    LastName = collection["LastName"]
-                };
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                TempData["CreateMessage"] = "User successfully created!";
-                return RedirectToAction(nameof(Index));
+                    Repo.AddUser(new Library.User
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        DefaultLocation = user.DefaultLocation,
+                        LatestLocation = user.LatestLocation,
+                        LatestOrderId = user.LatestOrderId
+
+                    });
+                    Repo.Save();
+
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(user);
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
 
 
         // GET: User/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
+            var libUser = Repo.GetUserById(id);
+            var webUser = new User
             {
-                return NotFound();
-            }
-
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
+                Id = libUser.Id,
+                FirstName = libUser.FirstName,
+                LastName = libUser.LastName,
+                DefaultLocation = libUser.DefaultLocation,
+                LatestLocation = libUser.LatestLocation,
+                LatestOrderId = libUser.LatestOrderId
+            };
+            return View(webUser);
         }
 
         // POST: User/Edit/5
@@ -95,68 +131,66 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName")] User user)
+        public ActionResult Edit([FromRoute]int id, User user)
         {
-            if (id != user.Id)
+            try
             {
-                return NotFound();
-            }
+                if (ModelState.IsValid)
+                {
+                    var libUser = new Library.User
+                    {
+                        Id = id,
+                        FirstName = user.FirstName,
+                        LastName = user.LastName,
+                        DefaultLocation = user.DefaultLocation,
+                        LatestLocation = user.LatestLocation,
+                        LatestOrderId = user.LatestOrderId
+                    };
+                    Repo.UpdateUser(libUser);
+                    Repo.Save();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(user);
             }
-            return View(user);
+            catch (Exception ex)
+            {
+                return View(user);
+            }
         }
 
         // GET: User/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
+            var libUser = Repo.GetUserById(id);
+            var webUser = new User
             {
-                return NotFound();
-            }
-
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
+                Id = libUser.Id,
+                FirstName = libUser.FirstName,
+                LastName = libUser.LastName,
+                DefaultLocation = libUser.DefaultLocation,
+                LatestLocation = libUser.LatestLocation,
+                LatestOrderId = libUser.LatestOrderId
+            };
+            return View(webUser);
         }
 
         // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
-            var user = await _context.User.FindAsync(id);
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                Repo.DeleteUser(id);
+                Repo.Save();
 
-        private bool UserExists(int id)
-        {
-            return _context.User.Any(e => e.Id == id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
     }

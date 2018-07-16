@@ -23,10 +23,9 @@ namespace PizzaApp.Library
             return Mapper.Map(_db.User);
         }
 
-        public int GetId(User user)
+        public User GetUserById(int id)
         {
-            var searchedId = _db.User.Find(user.FirstName, user.LastName).Id;
-            return searchedId;
+            return Mapper.Map(_db.User.First(x => x.Id == id));
         }
 
         public void AddUser(User user)
@@ -50,10 +49,10 @@ namespace PizzaApp.Library
             return Mapper.Map(_db.Pizza);
         }
 
-        public int GetId(Pizza pizza)
+        
+        public Pizza GetPizzaById(int id)
         {
-            var searchedId = _db.Pizza.Find(pizza.Id).Id;
-            return searchedId;
+            return Mapper.Map(_db.Pizza.First(x => x.Id == id));
         }
 
         public void AddPizza(Pizza pizza)
@@ -75,12 +74,11 @@ namespace PizzaApp.Library
         public IEnumerable<Order> GetOrders()
         {
             return Mapper.Map(_db.Order);
-        }        
+        }
 
-        public int GetId(Order order)
+        public Order GetOrderById(int id)
         {
-            var searchedId = _db.Order.Find(order.Id).Id;
-            return searchedId;
+            return Mapper.Map(_db.Order.First(x => x.Id == id));
         }
 
         public void AddOrder(Order order)
@@ -193,10 +191,9 @@ namespace PizzaApp.Library
             return Mapper.Map(_db.Location);
         }
 
-        public int GetId(Location location)
+        public Location GetLocationById(int id)
         {
-            var searchedId = _db.Location.Find(location.Id).Id;
-            return searchedId;
+            return Mapper.Map(_db.Location.First(x => x.Id == id));
         }
 
         public void AddLocation(Location location)
@@ -220,10 +217,9 @@ namespace PizzaApp.Library
             return Mapper.Map(_db.Inventory);
         }
 
-        public int GetId(Inventory inventory)
+        public Inventory GetInventoryById(int id)
         {
-            var searchedId = _db.Inventory.Find(inventory.Id).Id;
-            return searchedId;
+            return Mapper.Map(_db.Inventory.First(x => x.Id == id));
         }
 
         public void AddInventory(Inventory inventory)

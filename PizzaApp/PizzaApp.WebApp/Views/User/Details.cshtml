@@ -1,15 +1,21 @@
-﻿@model PizzaApp.Context.User
+﻿@model PizzaApp.WebApp.User
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "User Details";
 }
 
-<h2>Details</h2>
+<h2>User Details</h2>
 
 <div>
-    <h4>User</h4>
+
     <hr />
     <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>
@@ -23,26 +29,48 @@
             @Html.DisplayFor(model => model.LastName)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.DefaultLocationNavigation)
+            @Html.DisplayNameFor(model => model.DefaultLocation)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.DefaultLocationNavigation.Id)
+            @switch (Model.DefaultLocation)
+            {
+                case 1:
+                    @:(1)Reston
+                    break;
+                case 2:
+                    @:(2)Herndon
+                    break;
+                case 3:
+                    @:S(3)terling
+                    break;
+            }
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.LatestLocationNavigation)
+            @Html.DisplayNameFor(model => model.LatestLocation)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LatestLocationNavigation.Id)
+            @switch (Model.LatestLocation)
+            {
+                case 1:
+                    @:(1)Reston
+                    break;
+                case 2:
+                    @:(2)Herndon
+                    break;
+                case 3:
+                    @:(3)Sterling
+                    break;
+            }
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.LatestOrder)
+            @Html.DisplayNameFor(model => model.LatestOrderId)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.LatestOrder.Id)
+            @Html.ActionLink(Model.LatestOrderId.ToString(), "Details", "Order", new { id = Model.LatestOrderId })
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>

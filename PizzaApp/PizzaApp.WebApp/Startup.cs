@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PizzaApp.Context;
+using PizzaApp.Library;
 
 namespace PizzaApp.WebApp
 {
@@ -35,6 +36,8 @@ namespace PizzaApp.WebApp
             services.AddDbContext<PizzaAppDBContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("AppDB")));
 
+            services.AddScoped<PizzaRepository>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -56,18 +59,32 @@ namespace PizzaApp.WebApp
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "user",
-                    template: "user/{action=Index}/{id?}",
+                    name: "User",
+                    template: "User/{action=Index}/{id?}",
                     defaults: new { controller = "User" });
 
                 routes.MapRoute(
-                    name: "location",
-                    template: "location/{action=Index}/{id?}",
+                    name: "Location",
+                    template: "Location/{action=Index}/{id?}",
                     defaults: new { controller = "Location" });
 
+                routes.MapRoute(
+                    name: "Inventory",
+                    template: "Inventory/{action=Index}/{id?}",
+                    defaults: new { controller = "Inventory" });
 
                 routes.MapRoute(
-                    name: "default",
+                    name: "Order",
+                    template: "Order/{action=Index}/{id?}",
+                    defaults: new { controller = "Order" });
+
+                routes.MapRoute(
+                    name: "Pizza",
+                    template: "Pizza/{action=Index}/{id?}",
+                    defaults: new { controller = "Pizza" });
+
+                routes.MapRoute(
+                    name: "Default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }

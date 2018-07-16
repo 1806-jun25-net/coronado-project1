@@ -8,8 +8,8 @@ namespace PizzaApp.Library
     {
         // fields and properties
         public int Id { get; set; }
-        public string Name { get; set; }
-        public decimal? Price { get; set; }
+        public string Name { get; set; } = "";
+        public decimal? Price { get; set; } = 0.00m;
         public Crust Crust { get; set; } = new Crust();
         public Sauce Sauce { get; set; } = new Sauce();
         public Cheese Cheese { get; set; } = new Cheese();

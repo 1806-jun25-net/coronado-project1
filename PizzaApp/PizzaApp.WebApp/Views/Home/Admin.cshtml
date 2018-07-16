@@ -1,0 +1,14 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+
+<div>
+    <h3>Index Links</h3>
+    @Html.ActionLink("Users", "Index", "User")<br />
+    @Html.ActionLink("Locations", "Index", "Location")<br />
+    @Html.ActionLink("Inventories", "Index", "Inventory")<br />
+    @Html.ActionLink("Orders", "Index", "Order")<br />
+    @Html.ActionLink("Pizzas", "Index", "Pizza")<br />
+</div>

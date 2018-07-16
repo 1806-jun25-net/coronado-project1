@@ -6,42 +6,73 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PizzaApp.Context;
+using PizzaApp.Library;
 
 namespace PizzaApp.WebApp.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly PizzaAppDBContext _context;
 
-        public OrderController(PizzaAppDBContext context)
+        public PizzaRepository Repo { get; }
+
+        public OrderController(PizzaRepository repo)
         {
-            _context = context;
+            Repo = repo;
         }
 
         // GET: Order
-        public async Task<IActionResult> Index()
+        public ActionResult Index()
         {
-            ViewData["IndexMessage"] = "viewdata set in this request";
-            return View(await _context.Order.ToListAsync());
+            var libOrders = Repo.GetOrders();
+            var webOrders = libOrders.Select(x => new Order
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                LocationId = x.LocationId,
+                DateTime = x.DateTime,
+                Price = x.Price,
+                PizzaId1 = x.PizzaId1,
+                PizzaId2 = x.PizzaId2,
+                PizzaId3 = x.PizzaId3,
+                PizzaId4 = x.PizzaId4,
+                PizzaId5 = x.PizzaId5,
+                PizzaId6 = x.PizzaId6,
+                PizzaId7 = x.PizzaId7,
+                PizzaId8 = x.PizzaId8,
+                PizzaId9 = x.PizzaId9,
+                PizzaId10 = x.PizzaId10,
+                PizzaId11 = x.PizzaId11,
+                PizzaId12 = x.PizzaId12
+            });
+
+            return View(webOrders);
         }
 
-
         // GET: Order/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
+            var libOrder = Repo.GetOrderById(id);
+            var webOrder = new Order
             {
-                return NotFound();
-            }
-
-            var person = await _context.Order
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (person == null)
-            {
-                return NotFound();
-            }
-
-            return View(person);
+                Id = libOrder.Id,
+                UserId = libOrder.UserId,
+                LocationId = libOrder.LocationId,
+                DateTime = libOrder.DateTime,
+                Price = libOrder.Price,
+                PizzaId1 = libOrder.PizzaId1,
+                PizzaId2 = libOrder.PizzaId2,
+                PizzaId3 = libOrder.PizzaId3,
+                PizzaId4 = libOrder.PizzaId4,
+                PizzaId5 = libOrder.PizzaId5,
+                PizzaId6 = libOrder.PizzaId6,
+                PizzaId7 = libOrder.PizzaId7,
+                PizzaId8 = libOrder.PizzaId8,
+                PizzaId9 = libOrder.PizzaId9,
+                PizzaId10 = libOrder.PizzaId10,
+                PizzaId11 = libOrder.PizzaId11,
+                PizzaId12 = libOrder.PizzaId12
+            };
+            return View(webOrder);
         }
 
         // GET: Order/Create
@@ -55,38 +86,69 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(IFormCollection collection)
+        public ActionResult Create(Order order)
         {
-            Order order;
-            if (ModelState.IsValid)
+            try
             {
-                order = new Order
+                if (ModelState.IsValid)
                 {
+                    Repo.AddOrder(new Library.Order
+                    {
+                        UserId = order.UserId,
+                        LocationId = order.LocationId,
+                        DateTime = order.DateTime,
+                        Price = order.Price,
+                        PizzaId1 = order.PizzaId1,
+                        PizzaId2 = order.PizzaId2,
+                        PizzaId3 = order.PizzaId3,
+                        PizzaId4 = order.PizzaId4,
+                        PizzaId5 = order.PizzaId5,
+                        PizzaId6 = order.PizzaId6,
+                        PizzaId7 = order.PizzaId7,
+                        PizzaId8 = order.PizzaId8,
+                        PizzaId9 = order.PizzaId9,
+                        PizzaId10 = order.PizzaId10,
+                        PizzaId11 = order.PizzaId11,
+                        PizzaId12 = order.PizzaId12
+                    });
+                    Repo.Save();
 
-                };
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                TempData["CreateMessage"] = "Order successfully created!";
-                return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(order);
             }
-            return View();
+            catch
+            {
+                return View();
+            }
         }
 
 
         // GET: Order/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
+            var libOrder = Repo.GetOrderById(id);
+            var webOrder = new Order
             {
-                return NotFound();
-            }
-
-            var order = await _context.Order.FindAsync(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            return View(order);
+                Id = libOrder.Id,
+                UserId = libOrder.UserId,
+                LocationId = libOrder.LocationId,
+                DateTime = libOrder.DateTime,
+                Price = libOrder.Price,
+                PizzaId1 = libOrder.PizzaId1,
+                PizzaId2 = libOrder.PizzaId2,
+                PizzaId3 = libOrder.PizzaId3,
+                PizzaId4 = libOrder.PizzaId4,
+                PizzaId5 = libOrder.PizzaId5,
+                PizzaId6 = libOrder.PizzaId6,
+                PizzaId7 = libOrder.PizzaId7,
+                PizzaId8 = libOrder.PizzaId8,
+                PizzaId9 = libOrder.PizzaId9,
+                PizzaId10 = libOrder.PizzaId10,
+                PizzaId11 = libOrder.PizzaId11,
+                PizzaId12 = libOrder.PizzaId12
+            };
+            return View(webOrder);
         }
 
         // POST: Order/Edit/5
@@ -94,68 +156,88 @@ namespace PizzaApp.WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Order order)
+        public ActionResult Edit([FromRoute]int id, Order order)
         {
-            if (id != order.Id)
+            try
             {
-                return NotFound();
-            }
+                if (ModelState.IsValid)
+                {
+                    var libOrder = new Library.Order
+                    {
+                        Id = id,
+                        UserId = order.UserId,
+                        LocationId = order.LocationId,
+                        DateTime = order.DateTime,
+                        Price = order.Price,
+                        PizzaId1 = order.PizzaId1,
+                        PizzaId2 = order.PizzaId2,
+                        PizzaId3 = order.PizzaId3,
+                        PizzaId4 = order.PizzaId4,
+                        PizzaId5 = order.PizzaId5,
+                        PizzaId6 = order.PizzaId6,
+                        PizzaId7 = order.PizzaId7,
+                        PizzaId8 = order.PizzaId8,
+                        PizzaId9 = order.PizzaId9,
+                        PizzaId10 = order.PizzaId10,
+                        PizzaId11 = order.PizzaId11,
+                        PizzaId12 = order.PizzaId12
+                    };
+                    Repo.UpdateOrder(libOrder);
+                    Repo.Save();
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(order);
-                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!OrderExists(order.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(order);
             }
-            return View(order);
+            catch (Exception ex)
+            {
+                return View(order);
+            }
         }
 
         // GET: Order/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public ActionResult Delete(int id)
         {
-            if (id == null)
+            var libOrder = Repo.GetOrderById(id);
+            var webOrder = new Order
             {
-                return NotFound();
-            }
-
-            var order = await _context.Order
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-
-            return View(order);
+                Id = libOrder.Id,
+                UserId = libOrder.UserId,
+                LocationId = libOrder.LocationId,
+                DateTime = libOrder.DateTime,
+                Price = libOrder.Price,
+                PizzaId1 = libOrder.PizzaId1,
+                PizzaId2 = libOrder.PizzaId2,
+                PizzaId3 = libOrder.PizzaId3,
+                PizzaId4 = libOrder.PizzaId4,
+                PizzaId5 = libOrder.PizzaId5,
+                PizzaId6 = libOrder.PizzaId6,
+                PizzaId7 = libOrder.PizzaId7,
+                PizzaId8 = libOrder.PizzaId8,
+                PizzaId9 = libOrder.PizzaId9,
+                PizzaId10 = libOrder.PizzaId10,
+                PizzaId11 = libOrder.PizzaId11,
+                PizzaId12 = libOrder.PizzaId12
+            };
+            return View(webOrder);
         }
 
         // POST: Order/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public ActionResult Delete(int id, IFormCollection collection)
         {
-            var order = await _context.Order.FindAsync(id);
-            _context.Order.Remove(order);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+            try
+            {
+                Repo.DeleteOrder(id);
+                Repo.Save();
 
-        private bool OrderExists(int id)
-        {
-            return _context.Order.Any(e => e.Id == id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
 
     }

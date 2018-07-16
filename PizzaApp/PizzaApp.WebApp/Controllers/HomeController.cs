@@ -15,9 +15,14 @@ namespace PizzaApp.WebApp.Controllers
             return View();
         }
 
+        public IActionResult Admin()
+        {
+            return View();
+        }
+
         public IActionResult About()
         {
-            ViewData["Message"] = "Your application description page. test";
+            ViewData["Message"] = "Your application description page.";
 
             return View();
         }

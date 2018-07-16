@@ -1,17 +1,28 @@
-﻿@model IEnumerable<PizzaApp.Context.User>
+﻿@model IEnumerable<PizzaApp.WebApp.User>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "User Index";
 }
 
-<h2>Index</h2>
+<h2>User Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create New User</a>
 </p>
+
+<form asp-controller="User" asp-action="Index">
+    <p>
+        Search Users: <input type="text" name="SearchString">
+        <input type="submit" value="Go" />
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
             </th>
@@ -19,13 +30,13 @@
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DefaultLocationNavigation)
+                @Html.DisplayNameFor(model => model.DefaultLocation)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LatestLocationNavigation)
+                @Html.DisplayNameFor(model => model.LatestLocation)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LatestOrder)
+                @Html.DisplayNameFor(model => model.LatestOrderId)
             </th>
             <th></th>
         </tr>
@@ -34,24 +45,49 @@
 @foreach (var item in Model) {
         <tr>
             <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.FirstName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DefaultLocationNavigation.Id)
+                @switch (item.DefaultLocation)
+                {
+                    case 1:
+                        @:(1)Reston
+                        break;
+                    case 2:
+                        @:(2)Herndon
+                        break;
+                    case 3:
+                        @:(3)Sterling
+                        break;
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LatestLocationNavigation.Id)
+                @switch (item.LatestLocation)
+                {
+                    case 1:
+                        @:(1)Reston
+                        break;
+                    case 2:
+                        @:(2)Herndon
+                        break;
+                    case 3:
+                        @:(3)Sterling
+                        break;
+                }
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LatestOrder.Id)
+                @Html.ActionLink(item.LatestOrderId.ToString(), "Details", "Order", new { id = item.LatestOrderId})
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
 }

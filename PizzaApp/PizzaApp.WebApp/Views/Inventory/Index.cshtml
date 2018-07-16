@@ -1,10 +1,10 @@
-﻿@model IEnumerable<PizzaApp.Context.Inventory>
+﻿@model IEnumerable<PizzaApp.WebApp.Inventory>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inventory Index";
 }
 
-<h2>Index</h2>
+<h2>Inventory Index</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,6 +12,12 @@
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationId)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Dough)
             </th>
@@ -84,15 +90,29 @@
             <th>
                 @Html.DisplayNameFor(model => model.Feta)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @switch (item.LocationId)
+            {
+                case 1:
+                    @Html.ActionLink("(1)Reston", "Details", "Location", new { id = item.LocationId })
+                    break;
+                case 2:
+                    @Html.ActionLink("(2)Herndon", "Details", "Location", new { id = item.LocationId })
+                    break;
+                case 3:
+                    @Html.ActionLink("(3)Sterling", "Details", "Location", new { id = item.LocationId })
+                        break;
+                }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Dough)
             </td>
@@ -166,12 +186,9 @@
                 @Html.DisplayFor(modelItem => item.Feta)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Location.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id=item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
             </td>
         </tr>
 }
