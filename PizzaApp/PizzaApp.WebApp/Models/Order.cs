@@ -29,5 +29,14 @@ namespace PizzaApp.WebApp
         public int? PizzaId10 { get; set; }
         public int? PizzaId11 { get; set; }
         public int? PizzaId12 { get; set; }
+
+        [Required]
+        public int PizzaCount { get; set; }
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
     }
 }

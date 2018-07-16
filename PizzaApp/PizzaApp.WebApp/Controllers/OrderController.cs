@@ -60,7 +60,7 @@ namespace PizzaApp.WebApp.Controllers
                 else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
                 else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
                 else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
-                
+
             }
 
             return View(webOrders);
@@ -110,25 +110,76 @@ namespace PizzaApp.WebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Repo.AddOrder(new Library.Order
+                    var libUsers = Repo.GetUsers();
+                    var webUsers = libUsers.Select(x => new User
                     {
-                        UserId = order.UserId,
+                        Id = x.Id,
+                        FirstName = x.FirstName,
+                        LastName = x.LastName,
+                        DefaultLocation = x.DefaultLocation,
+                        LatestLocation = x.LatestLocation,
+                        LatestOrderId = x.LatestOrderId
+                    });
+                    var searchedUser = new User();
+                    bool found = false;
+                    foreach (var user in webUsers)
+                    {
+                        if (order.FirstName == user.FirstName && order.LastName == user.LastName)
+                        {
+                            searchedUser = user;
+                            found = true;
+                        }
+                    }
+                    if (!found)
+                    {
+
+                        return RedirectToAction(nameof(Create), "User/{action=Index}/");
+
+                    }
+
+                    var pizzaList = new List<Pizza>();
+                    for (int i = 1; i < order.PizzaCount; i++)
+                    {
+
+                        var newPizza = new Library.Pizza
+                        {
+                            Crust = new Crust(),
+                            Sauce = new Sauce(),
+                            Cheese = new Cheese(),
+                            Topping1 = new Topping(),
+                            Topping2 = new Topping(),
+                            Topping3 = new Topping(),
+                            Topping4 = new Topping(),
+                            Topping5 = new Topping(),
+                            Topping6 = new Topping()
+                        };
+                        newPizza.BuildPizza();
+                        Repo.AddPizza(newPizza);
+                        Repo.Save();
+                    }
+
+                    var newOrder = new Library.Order
+                    {
+                        UserId = searchedUser.Id,
                         LocationId = order.LocationId,
                         DateTime = order.DateTime,
                         Price = order.Price,
-                        PizzaId1 = order.PizzaId1,
-                        PizzaId2 = order.PizzaId2,
-                        PizzaId3 = order.PizzaId3,
-                        PizzaId4 = order.PizzaId4,
-                        PizzaId5 = order.PizzaId5,
-                        PizzaId6 = order.PizzaId6,
-                        PizzaId7 = order.PizzaId7,
-                        PizzaId8 = order.PizzaId8,
-                        PizzaId9 = order.PizzaId9,
-                        PizzaId10 = order.PizzaId10,
-                        PizzaId11 = order.PizzaId11,
-                        PizzaId12 = order.PizzaId12
-                    });
+                    };                                       
+
+                    if(order.PizzaCount >= 1)newOrder.PizzaId1 = pizzaList[1].Id;
+                    if (order.PizzaCount >= 2) newOrder.PizzaId2 = pizzaList[2].Id;
+                    if (order.PizzaCount >= 3) newOrder.PizzaId3 = pizzaList[3].Id;
+                    if (order.PizzaCount >= 4) newOrder.PizzaId4 = pizzaList[4].Id;
+                    if (order.PizzaCount >= 5) newOrder.PizzaId5 = pizzaList[5].Id;
+                    if (order.PizzaCount >= 6) newOrder.PizzaId6 = pizzaList[6].Id;
+                    if (order.PizzaCount >= 7) newOrder.PizzaId7 = pizzaList[7].Id;
+                    if (order.PizzaCount >= 8) newOrder.PizzaId8 = pizzaList[8].Id;
+                    if (order.PizzaCount >= 9) newOrder.PizzaId9 = pizzaList[9].Id;
+                    if (order.PizzaCount >= 10) newOrder.PizzaId10 = pizzaList[10].Id;
+                    if (order.PizzaCount >= 11) newOrder.PizzaId11 = pizzaList[11].Id;
+                    if (order.PizzaCount >= 12) newOrder.PizzaId12 = pizzaList[12].Id;
+
+                    Repo.AddOrder(newOrder);
                     Repo.Save();
 
                     return RedirectToAction(nameof(Index));
