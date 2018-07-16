@@ -259,9 +259,9 @@ namespace PizzaApp.WebApp.Controllers
         }
 
         // Sort Orders
-        public ActionResult ByEarliest()
+        public ActionResult ByEarliest(string searchString)
         {
-            var libOrders = Repo.SortOrdersByEarliest(string searchString);
+            var libOrders = Repo.SortOrdersByEarliest();
             var webOrders = libOrders.Select(x => new Order
             {
                 Id = x.Id,
@@ -298,9 +298,9 @@ namespace PizzaApp.WebApp.Controllers
             return View(webOrders);
         }
 
-        public ActionResult ByLatest()
+        public ActionResult ByLatest(string searchString)
         {
-            var libOrders = Repo.SortOrdersByLatest(string searchString);
+            var libOrders = Repo.SortOrdersByLatest();
             var webOrders = libOrders.Select(x => new Order
             {
                 Id = x.Id,
@@ -337,9 +337,9 @@ namespace PizzaApp.WebApp.Controllers
             return View(webOrders);
         }
 
-        public ActionResult ByCheapest()
+        public ActionResult ByCheapest(string searchString)
         {
-            var libOrders = Repo.SortOrdersByCheapest(string searchString);
+            var libOrders = Repo.SortOrdersByCheapest();
             var webOrders = libOrders.Select(x => new Order
             {
                 Id = x.Id,
