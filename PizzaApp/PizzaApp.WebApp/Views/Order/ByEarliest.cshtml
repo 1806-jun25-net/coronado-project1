@@ -1,0 +1,159 @@
+﻿@model IEnumerable<PizzaApp.WebApp.Order>
+
+@{
+    ViewData["Title"] = "Order Index: Sort By Earliest";
+}
+
+<h2>Order Index: Sort By Earliest</h2>
+
+<form asp-controller="Order" asp-action="ByEarliest">
+    <p>
+        Filter by User Id or Location Name: <input type="text" name="SearchString">
+        <input type="submit" value="Go" />
+    </p>
+</form>
+
+Sorting:
+@Html.ActionLink("Index", "Index", "Order") |
+@Html.ActionLink("Latest", "ByLatest", "Order") |
+Earliest |
+@Html.ActionLink("Most Expensive", "ByMostExpensive", "Order") |
+@Html.ActionLink("Cheapest", "ByCheapest", "Order")
+<br />
+<br />
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                Pizza Id(s)
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th>
+                &nbsp;
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.ActionLink(item.UserId.ToString(), "Details", "User", new { id = item.UserId })
+            </td>
+            <td>
+                @switch (item.LocationId)
+                    {
+                        case 1:
+                @Html.ActionLink("Reston", "Details", "Location", new { id = item.LocationId })
+                            break;
+                        case 2:
+                @Html.ActionLink("Herndon", "Details", "Location", new { id = item.LocationId })
+                            break;
+                        case 3:
+                @Html.ActionLink("Sterling", "Details", "Location", new { id = item.LocationId })
+                            break;
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId1.ToString(), "Details", "Pizza", new { id = item.PizzaId1 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId2.ToString(), "Details", "Pizza", new { id = item.PizzaId2 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId3.ToString(), "Details", "Pizza", new { id = item.PizzaId3 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId4.ToString(), "Details", "Pizza", new { id = item.PizzaId4 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId5.ToString(), "Details", "Pizza", new { id = item.PizzaId5 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId6.ToString(), "Details", "Pizza", new { id = item.PizzaId6 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId7.ToString(), "Details", "Pizza", new { id = item.PizzaId7 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId8.ToString(), "Details", "Pizza", new { id = item.PizzaId8 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId9.ToString(), "Details", "Pizza", new { id = item.PizzaId9 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId10.ToString(), "Details", "Pizza", new { id = item.PizzaId10 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId11.ToString(), "Details", "Pizza", new { id = item.PizzaId11 })
+            </td>
+            <td>
+                @Html.ActionLink(item.PizzaId12.ToString(), "Details", "Pizza", new { id = item.PizzaId12 })
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

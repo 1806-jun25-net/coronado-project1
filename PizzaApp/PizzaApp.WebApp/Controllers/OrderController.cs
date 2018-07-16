@@ -20,8 +20,14 @@ namespace PizzaApp.WebApp.Controllers
             Repo = repo;
         }
 
+        // Order Builder
+        public IActionResult Builder()
+        {
+            return View();
+        }
+
         // GET: Order
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             var libOrders = Repo.GetOrders();
             var webOrders = libOrders.Select(x => new Order
@@ -44,6 +50,18 @@ namespace PizzaApp.WebApp.Controllers
                 PizzaId11 = x.PizzaId11,
                 PizzaId12 = x.PizzaId12
             });
+
+            // SEARCH
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower(); // search is case insensitive
+                // search based on either user id or location name
+                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
+                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
+                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
+                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
+                
+            }
 
             return View(webOrders);
         }
@@ -189,7 +207,7 @@ namespace PizzaApp.WebApp.Controllers
                 }
                 return View(order);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View(order);
             }
@@ -240,5 +258,174 @@ namespace PizzaApp.WebApp.Controllers
             }
         }
 
+        // Sort Orders
+        public ActionResult ByEarliest()
+        {
+            var libOrders = Repo.SortOrdersByEarliest(string searchString);
+            var webOrders = libOrders.Select(x => new Order
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                LocationId = x.LocationId,
+                DateTime = x.DateTime,
+                Price = x.Price,
+                PizzaId1 = x.PizzaId1,
+                PizzaId2 = x.PizzaId2,
+                PizzaId3 = x.PizzaId3,
+                PizzaId4 = x.PizzaId4,
+                PizzaId5 = x.PizzaId5,
+                PizzaId6 = x.PizzaId6,
+                PizzaId7 = x.PizzaId7,
+                PizzaId8 = x.PizzaId8,
+                PizzaId9 = x.PizzaId9,
+                PizzaId10 = x.PizzaId10,
+                PizzaId11 = x.PizzaId11,
+                PizzaId12 = x.PizzaId12
+            });
+
+            // SEARCH
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower(); // search is case insensitive
+                // search based on either user id or location name
+                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
+                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
+                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
+                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
+
+            }
+
+            return View(webOrders);
+        }
+
+        public ActionResult ByLatest()
+        {
+            var libOrders = Repo.SortOrdersByLatest(string searchString);
+            var webOrders = libOrders.Select(x => new Order
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                LocationId = x.LocationId,
+                DateTime = x.DateTime,
+                Price = x.Price,
+                PizzaId1 = x.PizzaId1,
+                PizzaId2 = x.PizzaId2,
+                PizzaId3 = x.PizzaId3,
+                PizzaId4 = x.PizzaId4,
+                PizzaId5 = x.PizzaId5,
+                PizzaId6 = x.PizzaId6,
+                PizzaId7 = x.PizzaId7,
+                PizzaId8 = x.PizzaId8,
+                PizzaId9 = x.PizzaId9,
+                PizzaId10 = x.PizzaId10,
+                PizzaId11 = x.PizzaId11,
+                PizzaId12 = x.PizzaId12
+            });
+
+            // SEARCH
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower(); // search is case insensitive
+                // search based on either user id or location name
+                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
+                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
+                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
+                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
+
+            }
+
+            return View(webOrders);
+        }
+
+        public ActionResult ByCheapest()
+        {
+            var libOrders = Repo.SortOrdersByCheapest(string searchString);
+            var webOrders = libOrders.Select(x => new Order
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                LocationId = x.LocationId,
+                DateTime = x.DateTime,
+                Price = x.Price,
+                PizzaId1 = x.PizzaId1,
+                PizzaId2 = x.PizzaId2,
+                PizzaId3 = x.PizzaId3,
+                PizzaId4 = x.PizzaId4,
+                PizzaId5 = x.PizzaId5,
+                PizzaId6 = x.PizzaId6,
+                PizzaId7 = x.PizzaId7,
+                PizzaId8 = x.PizzaId8,
+                PizzaId9 = x.PizzaId9,
+                PizzaId10 = x.PizzaId10,
+                PizzaId11 = x.PizzaId11,
+                PizzaId12 = x.PizzaId12
+            });
+
+            // SEARCH
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower(); // search is case insensitive
+                // search based on either user id or location name
+                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
+                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
+                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
+                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
+
+            }
+
+            return View(webOrders);
+        }
+
+        public ActionResult ByMostExpensive(string searchString)
+        {
+            var libOrders = Repo.SortOrdersByMostExpensive();
+            var webOrders = libOrders.Select(x => new Order
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                LocationId = x.LocationId,
+                DateTime = x.DateTime,
+                Price = x.Price,
+                PizzaId1 = x.PizzaId1,
+                PizzaId2 = x.PizzaId2,
+                PizzaId3 = x.PizzaId3,
+                PizzaId4 = x.PizzaId4,
+                PizzaId5 = x.PizzaId5,
+                PizzaId6 = x.PizzaId6,
+                PizzaId7 = x.PizzaId7,
+                PizzaId8 = x.PizzaId8,
+                PizzaId9 = x.PizzaId9,
+                PizzaId10 = x.PizzaId10,
+                PizzaId11 = x.PizzaId11,
+                PizzaId12 = x.PizzaId12
+            });
+
+            // SEARCH
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower(); // search is case insensitive
+                // search based on either user id or location name
+                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
+                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
+                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
+                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
+
+            }
+
+            return View(webOrders);
+        }
+
+        //// Session
+        //[HttpPost]
+        //public ActionResult Index(ImageSwapModel imageSwap)
+        //{
+        //    var oldFileFound = false;
+        //    var newFileFound = false;
+
+        //    if (ModelState.IsValid)
+        //    {
+        //        this.HttpContext.Session["ImageSwap"] = imageSwap;
+        //    }
+        //}
     }
 }

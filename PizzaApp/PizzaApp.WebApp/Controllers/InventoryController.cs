@@ -234,7 +234,7 @@ namespace PizzaApp.WebApp.Controllers
                 }
                 return View(inventory);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View(inventory);
             }

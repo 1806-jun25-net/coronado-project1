@@ -13,64 +13,219 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Id" class="control-label"></label>
-                <input asp-for="Id" class="form-control" />
-                <span asp-validation-for="Id" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Crust" class="control-label"></label>
-                <input asp-for="Crust" class="form-control" />
-                <span asp-validation-for="Crust" class="text-danger"></span>
+                <select class="form-control" id="Crust" name="Crust">
+                    <option value="">- Please select crust -</option>
+
+                    <option value="Personal(8&quot) Thin Crust">Personal(8&quot) Thin Crust</option>
+                    <option value="Personal(8&quot) Thin Crust">Personal(8&quot) Standard Crust</option>
+                    <option value="Personal(8&quot) Thin Crust">Personal(8&quot) Thick Crust</option>
+
+                    <option value="Small(10&quot) Thin Crust">Personal(8&quot) Thin Crust</option>
+                    <option value="Small(10&quot) Thin Crust">Personal(8&quot) Standard Crust</option>
+                    <option value="Small(10&quot) Thin Crust">Personal(8&quot) Thick Crust</option>
+
+                    <option value="Medium(12&quot) Thin Crust">Personal(8&quot) Thin Crust</option>
+                    <option value="Medium(12&quot) Thin Crust">Personal(8&quot) Standard Crust</option>
+                    <option value="Medium(12&quot) Thin Crust">Personal(8&quot) Thick Crust</option>
+
+                    <option value="Large(14&quot) Thin Crust">Personal(8&quot) Thin Crust</option>
+                    <option value="Large(14&quot) Thin Crust">Personal(8&quot) Standard Crust</option>
+                    <option value="Large(14&quot) Thin Crust">Personal(8&quot) Thick Crust</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Sauce" class="control-label"></label>
-                <input asp-for="Sauce" class="form-control" />
-                <span asp-validation-for="Sauce" class="text-danger"></span>
+                <select class="form-control" id="Sauce" name="Sauce">
+                    <option value="">- Please select sauce -</option>
+
+                    <option value="Tomato Sauce(Light)">Tomato Sauce(Light)</option>
+                    <option value="Tomato Sauce(Regular)">Tomato Sauce(Regular)</option>
+                    <option value="Tomato Sauce(Extra)">Tomato Sauce(Extra)</option>
+
+                    <option value="White Sauce(Light)">White Sauce(Light)</option>
+                    <option value="White Sauce(Regular)">White Sauce(Regular)</option>
+                    <option value="White Sauce(Extra)">White Sauce(Extra)</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Cheese" class="control-label"></label>
-                <input asp-for="Cheese" class="form-control" />
-                <span asp-validation-for="Cheese" class="text-danger"></span>
+                <select class="form-control" id="Cheese" name="Cheese">
+                    <option value="">- Please select cheese -</option>
+
+                    <option value="Cheese(Light)">Cheese(Light)</option>
+                    <option value="Cheese(Regular)">Cheese(Regular)</option>
+                    <option value="Cheese(Extra)">Cheese(Extra)</option>
+                </select>
             </div>
+
             <div class="form-group">
                 <label asp-for="Topping1" class="control-label"></label>
-                <input asp-for="Topping1" class="form-control" />
-                <span asp-validation-for="Topping1" class="text-danger"></span>
+                <select class="form-control" id="Cheese" name="Cheese">
+                    <option value="">- Please select topping -</option>
+
+                    <option selected="selected" value="">None</option>
+                    <option value="Pepperoni">Pepperoni</option>
+                    <option value="Ham">Ham</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Beef">Beef</option>
+                    <option value="Sausage">Sausage</option>
+                    <option value="Bacon">Bacon</option>
+                    <option value="Anchovies">Anchovies</option>
+                    <option value="Red Peppers">Red Peppers</option>
+                    <option value="Green Peppers">Green Peppers</option>
+                    <option value="Pineapple">Pineapple</option>
+                    <option value="Olives">Olives</option>
+                    <option value="Mushrooms">Mushrooms</option>
+                    <option value="Garlic">Garlic</option>
+                    <option value="Onions">Onions</option>
+                    <option value="Tomatoes">Tomatoes</option>
+                    <option value="Spinach">Spinach</option>
+                    <option value="Basil">Basil</option>
+                    <option value="Ricotta">Ricotta</option>
+                    <option value="Parmesan">Parmesan</option>
+                    <option value="Feta">Feta</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Topping2" class="control-label"></label>
-                <input asp-for="Topping2" class="form-control" />
-                <span asp-validation-for="Topping2" class="text-danger"></span>
+                <select class="form-control" id="Cheese" name="Cheese">
+                    <option value="">- Please select topping -</option>
+
+                    <option selected="selected" value="">None</option>
+                    <option value="Pepperoni">Pepperoni</option>
+                    <option value="Ham">Ham</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Beef">Beef</option>
+                    <option value="Sausage">Sausage</option>
+                    <option value="Bacon">Bacon</option>
+                    <option value="Anchovies">Anchovies</option>
+                    <option value="Red Peppers">Red Peppers</option>
+                    <option value="Green Peppers">Green Peppers</option>
+                    <option value="Pineapple">Pineapple</option>
+                    <option value="Olives">Olives</option>
+                    <option value="Mushrooms">Mushrooms</option>
+                    <option value="Garlic">Garlic</option>
+                    <option value="Onions">Onions</option>
+                    <option value="Tomatoes">Tomatoes</option>
+                    <option value="Spinach">Spinach</option>
+                    <option value="Basil">Basil</option>
+                    <option value="Ricotta">Ricotta</option>
+                    <option value="Parmesan">Parmesan</option>
+                    <option value="Feta">Feta</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Topping3" class="control-label"></label>
-                <input asp-for="Topping3" class="form-control" />
-                <span asp-validation-for="Topping3" class="text-danger"></span>
+                <select class="form-control" id="Cheese" name="Cheese">
+                    <option value="">- Please select topping -</option>
+
+                    <option selected="selected" value="">None</option>
+                    <option value="Pepperoni">Pepperoni</option>
+                    <option value="Ham">Ham</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Beef">Beef</option>
+                    <option value="Sausage">Sausage</option>
+                    <option value="Bacon">Bacon</option>
+                    <option value="Anchovies">Anchovies</option>
+                    <option value="Red Peppers">Red Peppers</option>
+                    <option value="Green Peppers">Green Peppers</option>
+                    <option value="Pineapple">Pineapple</option>
+                    <option value="Olives">Olives</option>
+                    <option value="Mushrooms">Mushrooms</option>
+                    <option value="Garlic">Garlic</option>
+                    <option value="Onions">Onions</option>
+                    <option value="Tomatoes">Tomatoes</option>
+                    <option value="Spinach">Spinach</option>
+                    <option value="Basil">Basil</option>
+                    <option value="Ricotta">Ricotta</option>
+                    <option value="Parmesan">Parmesan</option>
+                    <option value="Feta">Feta</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Topping4" class="control-label"></label>
-                <input asp-for="Topping4" class="form-control" />
-                <span asp-validation-for="Topping4" class="text-danger"></span>
+                <select class="form-control" id="Cheese" name="Cheese">
+                    <option value="">- Please select topping -</option>
+
+                    <option selected="selected" value="">None</option>
+                    <option value="Pepperoni">Pepperoni</option>
+                    <option value="Ham">Ham</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Beef">Beef</option>
+                    <option value="Sausage">Sausage</option>
+                    <option value="Bacon">Bacon</option>
+                    <option value="Anchovies">Anchovies</option>
+                    <option value="Red Peppers">Red Peppers</option>
+                    <option value="Green Peppers">Green Peppers</option>
+                    <option value="Pineapple">Pineapple</option>
+                    <option value="Olives">Olives</option>
+                    <option value="Mushrooms">Mushrooms</option>
+                    <option value="Garlic">Garlic</option>
+                    <option value="Onions">Onions</option>
+                    <option value="Tomatoes">Tomatoes</option>
+                    <option value="Spinach">Spinach</option>
+                    <option value="Basil">Basil</option>
+                    <option value="Ricotta">Ricotta</option>
+                    <option value="Parmesan">Parmesan</option>
+                    <option value="Feta">Feta</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Topping5" class="control-label"></label>
-                <input asp-for="Topping5" class="form-control" />
-                <span asp-validation-for="Topping5" class="text-danger"></span>
+                <select class="form-control" id="Cheese" name="Cheese">
+                    <option value="">- Please select topping -</option>
+
+                    <option selected="selected" value="">None</option>
+                    <option value="Pepperoni">Pepperoni</option>
+                    <option value="Ham">Ham</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Beef">Beef</option>
+                    <option value="Sausage">Sausage</option>
+                    <option value="Bacon">Bacon</option>
+                    <option value="Anchovies">Anchovies</option>
+                    <option value="Red Peppers">Red Peppers</option>
+                    <option value="Green Peppers">Green Peppers</option>
+                    <option value="Pineapple">Pineapple</option>
+                    <option value="Olives">Olives</option>
+                    <option value="Mushrooms">Mushrooms</option>
+                    <option value="Garlic">Garlic</option>
+                    <option value="Onions">Onions</option>
+                    <option value="Tomatoes">Tomatoes</option>
+                    <option value="Spinach">Spinach</option>
+                    <option value="Basil">Basil</option>
+                    <option value="Ricotta">Ricotta</option>
+                    <option value="Parmesan">Parmesan</option>
+                    <option value="Feta">Feta</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Topping6" class="control-label"></label>
-                <input asp-for="Topping6" class="form-control" />
-                <span asp-validation-for="Topping6" class="text-danger"></span>
+                <select class="form-control" id="Cheese" name="Cheese">
+                    <option value="">- Please select topping -</option>
+
+                    <option selected="selected" value="">None</option>
+                    <option value="Pepperoni">Pepperoni</option>
+                    <option value="Ham">Ham</option>
+                    <option value="Chicken">Chicken</option>
+                    <option value="Beef">Beef</option>
+                    <option value="Sausage">Sausage</option>
+                    <option value="Bacon">Bacon</option>
+                    <option value="Anchovies">Anchovies</option>
+                    <option value="Red Peppers">Red Peppers</option>
+                    <option value="Green Peppers">Green Peppers</option>
+                    <option value="Pineapple">Pineapple</option>
+                    <option value="Olives">Olives</option>
+                    <option value="Mushrooms">Mushrooms</option>
+                    <option value="Garlic">Garlic</option>
+                    <option value="Onions">Onions</option>
+                    <option value="Tomatoes">Tomatoes</option>
+                    <option value="Spinach">Spinach</option>
+                    <option value="Basil">Basil</option>
+                    <option value="Ricotta">Ricotta</option>
+                    <option value="Parmesan">Parmesan</option>
+                    <option value="Feta">Feta</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

@@ -142,8 +142,8 @@ namespace PizzaApp.Library
         public static Library.Order Map(Context.Order order) => new Library.Order
         {
             Id = order.Id,
-            UserId = order.Id,
-            LocationId = order.Id,
+            UserId = order.UserId,
+            LocationId = order.LocationId,
             DateTime = (DateTime)order.DateTime,
             Price = order.Price,
             PizzaId1 = order.PizzaId1,
@@ -163,8 +163,8 @@ namespace PizzaApp.Library
         public static Context.Order Map(Library.Order order) => new Context.Order
         {
             Id = order.Id,
-            UserId = order.Id,
-            LocationId = order.Id,
+            UserId = order.UserId,
+            LocationId = order.LocationId,
             DateTime = order.DateTime,
             Price = order.Price,
             PizzaId1 = order.PizzaId1,

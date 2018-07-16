@@ -184,6 +184,35 @@ namespace PizzaApp.Library
             return earliestOrders;
         }
 
+        // order sorting
+        public IEnumerable<Order> SortOrdersByEarliest()
+        {
+            var orders = GetOrders();
+            var earliestOrders = orders.OrderBy(o => o.DateTime);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByLatest()
+        {
+            var orders = GetOrders();
+            var earliestOrders = orders.OrderByDescending(o => o.DateTime);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByCheapest()
+        {
+            var orders = GetOrders();
+            var earliestOrders = orders.OrderBy(o => o.Price);
+            return earliestOrders;
+        }
+
+        public IEnumerable<Order> SortOrdersByMostExpensive()
+        {
+            var orders = GetOrders();
+            var earliestOrders = orders.OrderByDescending(o => o.Price);
+            return earliestOrders;
+        }
+
 
         // Location
         public IEnumerable<Location> GetLocations()

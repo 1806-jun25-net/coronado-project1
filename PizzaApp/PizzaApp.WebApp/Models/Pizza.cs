@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PizzaApp.WebApp
 {
+    [Serializable]
     public class Pizza
     {
         public int Id { get; set; }

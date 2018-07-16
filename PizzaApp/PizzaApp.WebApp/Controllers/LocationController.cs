@@ -119,7 +119,7 @@ namespace PizzaApp.WebApp.Controllers
                 }
                 return View(location);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View(location);
             }

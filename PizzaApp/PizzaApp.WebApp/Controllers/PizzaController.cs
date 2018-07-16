@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PizzaApp.Context;
 using PizzaApp.Library;
@@ -18,6 +19,12 @@ namespace PizzaApp.WebApp.Controllers
         public PizzaController(PizzaRepository repo)
         {
             Repo = repo;
+        }
+
+        // Order Builder
+        public IActionResult Builder()
+        {
+            return View();
         }
 
         // GET: Pizza
@@ -82,7 +89,7 @@ namespace PizzaApp.WebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Repo.AddPizza(new Library.Pizza
+                    var newPizza = new Library.Pizza
                     {
                         Name = pizza.Name,
                         Price = pizza.Price,
@@ -95,7 +102,9 @@ namespace PizzaApp.WebApp.Controllers
                         Topping4 = new Topping(pizza.Topping4),
                         Topping5 = new Topping(pizza.Topping5),
                         Topping6 = new Topping(pizza.Topping6)
-                    });
+                    };
+                    newPizza.BuildPizza();
+                    Repo.AddPizza(newPizza);
                     Repo.Save();
 
                     return RedirectToAction(nameof(Index));
@@ -164,7 +173,7 @@ namespace PizzaApp.WebApp.Controllers
                 }
                 return View(pizza);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return View(pizza);
             }
