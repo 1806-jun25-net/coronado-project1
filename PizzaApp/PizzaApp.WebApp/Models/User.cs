@@ -16,6 +16,7 @@ namespace PizzaApp.WebApp
         [Required]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
+        [Required]
         [Display(Name = "Default Location")]
         public int? DefaultLocation { get; set; }
         [Display(Name = "Latest Location")]

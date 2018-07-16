@@ -133,12 +133,40 @@ namespace PizzaApp.WebApp.Controllers
                     if (!found)
                     {
 
-                        return RedirectToAction(nameof(Create), "User/{action=Index}/");
+                        return RedirectToAction(nameof(Index), "User/Create");
 
                     }
+                    
+                    var currentTime = DateTime.Now;
 
-                    var pizzaList = new List<Pizza>();
-                    for (int i = 1; i < order.PizzaCount; i++)
+                    var newOrder = new Library.Order
+                    {
+                        UserId = searchedUser.Id,
+                        LocationId = order.LocationId,
+                        DateTime = currentTime,
+                        Price = order.Price,
+                    };
+
+                    var libPizzas = Repo.GetPizzas();
+                    var webPizzas = libPizzas.Select(x => new Pizza
+                    {
+                        Id = x.Id,
+                        Name = x.Name,
+                        Price = x.Price,
+                        Crust = x.Crust.IngredientName,
+                        Sauce = x.Sauce.IngredientName,
+                        Cheese = x.Cheese.IngredientName,
+                        Topping1 = x.Topping1.IngredientName,
+                        Topping2 = x.Topping2.IngredientName,
+                        Topping3 = x.Topping3.IngredientName,
+                        Topping4 = x.Topping4.IngredientName,
+                        Topping5 = x.Topping5.IngredientName,
+                        Topping6 = x.Topping6.IngredientName
+                    });
+
+                    var lastId = webPizzas.Last().Id;
+                    var pizzaList = new List<Library.Pizza>();
+                    for (int i = 1; i <= order.PizzaCount; i++)
                     {
 
                         var newPizza = new Library.Pizza
@@ -156,33 +184,37 @@ namespace PizzaApp.WebApp.Controllers
                         newPizza.BuildPizza();
                         Repo.AddPizza(newPizza);
                         Repo.Save();
+                        newPizza.Id = lastId + i;
+                        newPizza.BuildPizza();
+                        pizzaList.Add(newPizza);
+                        Repo.UpdatePizza(newPizza);
+                        Repo.Save();
+                        newOrder.AddPizza(newPizza);
                     }
-
-                    var newOrder = new Library.Order
-                    {
-                        UserId = searchedUser.Id,
-                        LocationId = order.LocationId,
-                        DateTime = order.DateTime,
-                        Price = order.Price,
-                    };                                       
-
-                    if(order.PizzaCount >= 1)newOrder.PizzaId1 = pizzaList[1].Id;
-                    if (order.PizzaCount >= 2) newOrder.PizzaId2 = pizzaList[2].Id;
-                    if (order.PizzaCount >= 3) newOrder.PizzaId3 = pizzaList[3].Id;
-                    if (order.PizzaCount >= 4) newOrder.PizzaId4 = pizzaList[4].Id;
-                    if (order.PizzaCount >= 5) newOrder.PizzaId5 = pizzaList[5].Id;
-                    if (order.PizzaCount >= 6) newOrder.PizzaId6 = pizzaList[6].Id;
-                    if (order.PizzaCount >= 7) newOrder.PizzaId7 = pizzaList[7].Id;
-                    if (order.PizzaCount >= 8) newOrder.PizzaId8 = pizzaList[8].Id;
-                    if (order.PizzaCount >= 9) newOrder.PizzaId9 = pizzaList[9].Id;
-                    if (order.PizzaCount >= 10) newOrder.PizzaId10 = pizzaList[10].Id;
-                    if (order.PizzaCount >= 11) newOrder.PizzaId11 = pizzaList[11].Id;
-                    if (order.PizzaCount >= 12) newOrder.PizzaId12 = pizzaList[12].Id;
-
+                    newOrder.ProcessPizzaList(pizzaList);
+                    newOrder.BuildOrder();
                     Repo.AddOrder(newOrder);
                     Repo.Save();
+                    
+                    var libInventories = Repo.GetInventories();
+                    var currentInventory = new Library.Inventory();
+                    foreach (var item in libInventories)
+                    {
+                        if (order.LocationId == item.Id) currentInventory = item;
+                    }
 
-                    return RedirectToAction(nameof(Index));
+                    foreach (var pizza in newOrder.PizzaList)
+                    {
+                        foreach (var ingredient in pizza.PizzaComposition)
+                        {
+                            currentInventory.DeductInventoryCount(ingredient);
+                        }
+                    }
+
+                    Repo.UpdateInventory(currentInventory);
+                    Repo.Save();
+                    
+                    return RedirectToAction(nameof(Index), "Order/Submitted");
                 }
                 return View(order);
             }
@@ -190,6 +222,18 @@ namespace PizzaApp.WebApp.Controllers
             {
                 return View();
             }
+        }
+
+        // GET: Order/Submitted
+        public ActionResult Submitted()
+        {
+            return View();
+        }
+
+        // GET: Order/Error
+        public ActionResult Error()
+        {
+            return View();
         }
 
 

@@ -98,62 +98,50 @@ namespace PizzaApp.Library
                 if (PizzaId1 == null)
                 {
                     PizzaId1 = item.Id;
-                    break;
                 }
                 else if (PizzaId2 == null)
                 {
                     PizzaId2 = item.Id;
-                    break;
                 }
                 else if (PizzaId3 == null)
                 {
                     PizzaId3 = item.Id;
-                    break;
                 }
                 else if (PizzaId4 == null)
                 {
                     PizzaId4 = item.Id;
-                    break;
                 }
                 else if (PizzaId5 == null)
                 {
                     PizzaId5 = item.Id;
-                    break;
                 }
                 else if (PizzaId6 == null)
                 {
                     PizzaId6 = item.Id;
-                    break;
                 }
                 else if (PizzaId7 == null)
                 {
                     PizzaId7 = item.Id;
-                    break;
                 }
                 else if (PizzaId8 == null)
                 {
                     PizzaId8 = item.Id;
-                    break;
                 }
                 else if (PizzaId9 == null)
                 {
                     PizzaId9 = item.Id;
-                    break;
                 }
                 else if (PizzaId10 == null)
                 {
                     PizzaId10 = item.Id;
-                    break;
                 }
                 else if (PizzaId11 == null)
                 {
                     PizzaId11 = item.Id;
-                    break;
                 }
                 else if (PizzaId12 == null)
                 {
                     PizzaId12 = item.Id;
-                    break;
                 }
             }
         }

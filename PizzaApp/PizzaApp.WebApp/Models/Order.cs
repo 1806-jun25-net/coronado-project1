@@ -12,6 +12,7 @@ namespace PizzaApp.WebApp
         public int Id { get; set; }
         [Display(Name = "User")]
         public int? UserId { get; set; }
+        [Required]
         [Display(Name = "Location")]
         public int? LocationId { get; set; }
         [Display(Name = "Time")]
