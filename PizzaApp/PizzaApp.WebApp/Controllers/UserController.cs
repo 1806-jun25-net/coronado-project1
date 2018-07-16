@@ -99,9 +99,9 @@ namespace PizzaApp.WebApp.Controllers
                     });
                     Repo.Save();
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), "Order/Create");
                 }
-                return View(user);
+                return RedirectToAction(nameof(Index), "Order/Create");
             }
             catch
             {

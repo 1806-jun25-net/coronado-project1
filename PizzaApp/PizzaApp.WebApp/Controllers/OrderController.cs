@@ -110,23 +110,16 @@ namespace PizzaApp.WebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var libUsers = Repo.GetUsers();
-                    var webUsers = libUsers.Select(x => new User
-                    {
-                        Id = x.Id,
-                        FirstName = x.FirstName,
-                        LastName = x.LastName,
-                        DefaultLocation = x.DefaultLocation,
-                        LatestLocation = x.LatestLocation,
-                        LatestOrderId = x.LatestOrderId
-                    });
-                    var searchedUser = new User();
+                    var libUsers = Repo.GetUsers().ToList();
+                    var searchedUser = new Library.User();
+                    int searchedUserId = 0;
                     bool found = false;
-                    foreach (var user in webUsers)
+                    foreach (var user in libUsers)
                     {
                         if (order.FirstName == user.FirstName && order.LastName == user.LastName)
                         {
                             searchedUser = user;
+                            searchedUserId = user.Id;
                             found = true;
                         }
                     }
@@ -147,24 +140,9 @@ namespace PizzaApp.WebApp.Controllers
                         Price = order.Price,
                     };
 
-                    var libPizzas = Repo.GetPizzas();
-                    var webPizzas = libPizzas.Select(x => new Pizza
-                    {
-                        Id = x.Id,
-                        Name = x.Name,
-                        Price = x.Price,
-                        Crust = x.Crust.IngredientName,
-                        Sauce = x.Sauce.IngredientName,
-                        Cheese = x.Cheese.IngredientName,
-                        Topping1 = x.Topping1.IngredientName,
-                        Topping2 = x.Topping2.IngredientName,
-                        Topping3 = x.Topping3.IngredientName,
-                        Topping4 = x.Topping4.IngredientName,
-                        Topping5 = x.Topping5.IngredientName,
-                        Topping6 = x.Topping6.IngredientName
-                    });
+                    var libPizzas = Repo.GetPizzas().ToList();
 
-                    var lastId = webPizzas.Last().Id;
+                    var lastId = libPizzas.Last().Id;
                     var pizzaList = new List<Library.Pizza>();
                     for (int i = 1; i <= order.PizzaCount; i++)
                     {
@@ -196,7 +174,7 @@ namespace PizzaApp.WebApp.Controllers
                     Repo.AddOrder(newOrder);
                     Repo.Save();
                     
-                    var libInventories = Repo.GetInventories();
+                    var libInventories = Repo.GetInventories().ToList();
                     var currentInventory = new Library.Inventory();
                     foreach (var item in libInventories)
                     {
@@ -213,7 +191,15 @@ namespace PizzaApp.WebApp.Controllers
 
                     Repo.UpdateInventory(currentInventory);
                     Repo.Save();
-                    
+
+                    var thisUser = Repo.GetUserById(searchedUserId);
+
+                    thisUser.LatestLocation = newOrder.LocationId;
+                    thisUser.LatestOrderId = newOrder.Id;
+
+                    Repo.UpdateUser(thisUser);
+                    Repo.Save();
+
                     return RedirectToAction(nameof(Index), "Order/Submitted");
                 }
                 return View(order);
