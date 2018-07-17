@@ -110,6 +110,10 @@ namespace PizzaApp.WebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var repoOrders = Repo.GetOrders().ToList();
+                    var lastOrderId = repoOrders.Last().Id;
+                    var newOrderId = lastOrderId + 1;
+
                     var libUsers = Repo.GetUsers().ToList();
                     var searchedUser = new Library.User();
                     int searchedUserId = 0;
@@ -195,7 +199,7 @@ namespace PizzaApp.WebApp.Controllers
                     var thisUser = Repo.GetUserById(searchedUserId);
 
                     thisUser.LatestLocation = newOrder.LocationId;
-                    thisUser.LatestOrderId = newOrder.Id;
+                    thisUser.LatestOrderId = newOrderId;
 
                     Repo.UpdateUser(thisUser);
                     Repo.Save();
