@@ -14,8 +14,7 @@
 </form>
 
 Sorting:
-@Html.ActionLink("Index", "Index", "Order") |
-@Html.ActionLink("Latest", "ByLatest", "Order") |
+@Html.ActionLink("Latest", "Index", "Order") |
 @Html.ActionLink("Earliest", "ByEarliest", "Order") |
 @Html.ActionLink("Most Expensive", "ByMostExpensive", "Order") |
 Cheapest
@@ -45,6 +44,9 @@ Cheapest
             </th>
             <th>
                 Pizza Id(s)
+            </th>
+            <th>
+                &nbsp;
             </th>
             <th>
                 &nbsp;
@@ -112,6 +114,7 @@ Cheapest
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
+                <td></td>
                 <td>
                     @Html.ActionLink(item.PizzaId1.ToString(), "Details", "Pizza", new { id = item.PizzaId1 })
                 </td>

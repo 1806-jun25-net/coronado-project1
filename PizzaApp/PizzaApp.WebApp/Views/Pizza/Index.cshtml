@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<PizzaApp.WebApp.Pizza>
 
 @{
-    ViewData["Title"] = "Pizza Index";
+    ViewData["Title"] = "Pizza Index: Sort By Latest";
 }
 
-<h2>Pizza Index</h2>
+<h2>Pizza Index: Sort By Latest</h2>
 
 <form asp-controller="Pizza" asp-action="Index">
     <p>
@@ -14,8 +14,7 @@
 </form>
 
 Sorting:
-Index |
-@Html.ActionLink("Latest", "ByLatest", "Pizza") |
+Latest |
 @Html.ActionLink("Earliest", "ByEarliest", "Pizza") |
 @Html.ActionLink("Most Expensive", "ByMostExpensive", "Pizza") |
 @Html.ActionLink("Cheapest", "ByCheapest", "Pizza")
@@ -64,6 +63,9 @@ Index |
             <th>
                 &nbsp;
             </th>
+            <th>
+                &nbsp;
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -89,6 +91,7 @@ Index |
                 <td>
                     @Html.DisplayFor(modelItem => item.Cheese)
                 </td>
+                <td></td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Topping1)
                 </td>

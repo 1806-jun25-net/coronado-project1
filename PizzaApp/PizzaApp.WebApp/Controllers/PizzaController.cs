@@ -30,7 +30,7 @@ namespace PizzaApp.WebApp.Controllers
         // GET: Pizza
         public ActionResult Index(string searchString)
         {
-            var libPizzas = Repo.GetPizzas();
+            var libPizzas = Repo.SortPizzasByLatest();
             var webPizzas = libPizzas.Select(x => new Pizza
             {
                 Id = x.Id,
@@ -259,7 +259,8 @@ namespace PizzaApp.WebApp.Controllers
 
             return View(webPizzas);
         }
-                
+        // made latest the default index
+        /*
         public ActionResult ByLatest(string searchString)
         {
             var libPizzas = Repo.SortPizzasByLatest();
@@ -290,7 +291,7 @@ namespace PizzaApp.WebApp.Controllers
 
             return View(webPizzas);
         }
-
+        */
         public ActionResult ByCheapest(string searchString)
         {
             var libPizzas = Repo.SortPizzasByCheapest();

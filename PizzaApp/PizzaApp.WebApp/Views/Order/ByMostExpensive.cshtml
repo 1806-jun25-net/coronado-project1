@@ -79,6 +79,9 @@ Most Expensive |
             <th>
                 &nbsp;
             </th>
+            <th>
+                &nbsp;
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -112,6 +115,7 @@ Most Expensive |
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
+                <td></td>
                 <td>
                     @Html.ActionLink(item.PizzaId1.ToString(), "Details", "Pizza", new { id = item.PizzaId1 })
                 </td>

@@ -14,8 +14,7 @@
 </form>
 
 Sorting:
-@Html.ActionLink("Index", "Index", "Pizza") |
-@Html.ActionLink("Latest", "ByLatest", "Pizza") |
+@Html.ActionLink("Latest", "Index", "Pizza") |
 Earliest |
 @Html.ActionLink("Most Expensive", "ByMostExpensive", "Pizza") |
 @Html.ActionLink("Cheapest", "ByCheapest", "Pizza")
@@ -64,6 +63,9 @@ Earliest |
             <th>
                 &nbsp;
             </th>
+            <th>
+                &nbsp;
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -89,6 +91,7 @@ Earliest |
                 <td>
                     @Html.DisplayFor(modelItem => item.Cheese)
                 </td>
+                <td></td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Topping1)
                 </td>

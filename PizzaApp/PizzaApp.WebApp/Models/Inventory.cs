@@ -10,7 +10,7 @@ namespace PizzaApp.WebApp
     public class Inventory
     {
         public int Id { get; set; }
-        [Display(Name = "Location Id")]
+        [Display(Name = "Location")]
         public int? LocationId { get; set; }
         [Range(0.00,200.00)]
         public double Dough { get; set; }
