@@ -71,6 +71,8 @@ namespace PizzaApp.WebApp.Controllers
                     }
                     if (!found)
                     {
+                        var newId = repoUsers.Last().Id +1;
+                        TempData["UserId"] = newId;
                         return RedirectToAction(nameof(Index), "User/Create");
                     }
 

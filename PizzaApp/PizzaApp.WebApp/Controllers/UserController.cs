@@ -99,6 +99,8 @@ namespace PizzaApp.WebApp.Controllers
                     });
                     Repo.Save();
 
+                    TempData["DefaultLocationId"] = user.DefaultLocation;
+
                     return RedirectToAction(nameof(Index), "Order/Create");
                 }
                 return RedirectToAction(nameof(Index), "Order/Create");
