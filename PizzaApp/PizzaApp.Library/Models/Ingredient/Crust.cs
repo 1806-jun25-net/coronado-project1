@@ -14,8 +14,8 @@ namespace PizzaApp.Library
         public string IngredientInventoryName { get; set; } = "Dough";
         public decimal IngredientPrice { get; set; } = 0.00m;
         public double IngredientInventoryCost { get; set; }
-        public readonly List<string> CrustSizeOptions = new List<string> { "Personal(8\")", "Small(10\")", "Medium(12\")", "Large(14\")" };
-        public readonly List<string> CrustThicknessOptions = new List<string> { "Thin Crust", "Standard Crust", "Thick Crust" };
+        public List<string> CrustSizeOptions = new List<string> { "Personal(8\")", "Small(10\")", "Medium(12\")", "Large(14\")" };
+        public List<string> CrustThicknessOptions = new List<string> { "Thin Crust", "Standard Crust", "Thick Crust" };
 
         // constructors
         public Crust()

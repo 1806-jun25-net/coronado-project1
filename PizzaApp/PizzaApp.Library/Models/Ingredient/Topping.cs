@@ -13,7 +13,8 @@ namespace PizzaApp.Library
         public string IngredientInventoryName { get; set; }
         public decimal IngredientPrice { get; set; } = 0.00m;
         public double IngredientInventoryCost { get; set; } = 1.00;
-        public readonly List<string> ToppingTypeOptions = new List<string>
+        
+        public List<string> ToppingTypeOptions = new List<string>
         {
             "Pepperoni", "Ham", "Chicken", "Beef",
             "Sausage", "Bacon", "Anchovies", "Red Peppers",
