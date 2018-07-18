@@ -66,6 +66,8 @@ namespace PizzaApp.Test
             Assert.False(OrderPriceIsBelowLimit);
         }
 
+        // Outdated Tests
+        /*
         [Fact]
         public void ShouldNotBeAbleToOrderPizzaIfStoreDoesNotHaveEnoughIngredients()
         {
@@ -91,7 +93,7 @@ namespace PizzaApp.Test
             }
             Assert.False(PizzaIsOrdered);
         }
-
+        
         [Fact]
         public void ShouldReturnTrueIfTwoDefaultPizzasMatch()
         {
@@ -163,5 +165,6 @@ namespace PizzaApp.Test
 
             return check;
         }
+        */
     }
 }
