@@ -12,10 +12,10 @@ namespace PizzaApp.Library
         public string IngredientName { get; set; }
         public string IngredientInventoryName { get; set; } = "Cheese";
         public decimal IngredientPrice { get; set; } = 0.00m;
-        public double IngredientInventoryCost { get; set; } = 1.00;
+        public double IngredientInventoryCost { get; set; }
         public string CheeseType { get; set; } = "Cheese";
-        public List<string> CheeseTypeOptions = new List<string> { "Cheese" };
-        public List<string> CheeseThicknessOptions = new List<string> { "Light", "Regular", "Extra" };
+        public readonly List<string> CheeseTypeOptions = new List<string> { "Cheese" };
+        public readonly List<string> CheeseThicknessOptions = new List<string> { "Light", "Regular", "Extra" };
 
         // constructors
         public Cheese()
