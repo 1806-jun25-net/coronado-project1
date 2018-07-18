@@ -6,6 +6,9 @@
 
 <h2>Create Order</h2>
 
+"Mama knows best!" <br />
+So let Mama pick for you!<br />
+Select an amount and we will send you that many random pizzas.
 
 <hr />
 <div class="row">
@@ -13,52 +16,96 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control" />
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control" />
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="LocationId" class="control-label"></label>
                 <select class="form-control" id="LocationId" name="LocationId">
                     <option value="">- Please select location -</option>
+                    @if(TempData["DefaultLocationId"] != null){ 
+                    var defaultLocationId = int.Parse(TempData["DefaultLocationId"].ToString());
 
-                    <option selected="selected" value="1">Reston</option>
-                    <option value="2">Herndon</option>
-                    <option value="3">Sterling</option>
+                    @if (defaultLocationId == 1)
+                    {<option selected="selected" value="1">Reston</option>}
+                    else { <option value="1">Reston</option> }
+                    @if (defaultLocationId == 2)
+                    {<option selected="selected" value="2">Herndon</option>}
+                    else { <option value="2">Herndon</option> }
+                    @if (defaultLocationId == 3)
+                    {<option selected="selected" value="3">Sterling</option>}
+                    else { <option value="3">Sterling</option> }
+                    }
+                    else
+                    {
+                        <option select="selected" value="1">Reston</option>
+                        <option value="2">Herndon</option>
+                        <option value="3">Sterling</option>
+                    }
                 </select>
             </div>
             <div class="form-group">
                 <label asp-for="PizzaCount" class="control-label"></label>
                 <select class="form-control" id="PizzaCount" name="PizzaCount">
                     <option value="">- Please amount of pizza(s) -</option>
+                        @if(TempData["LatestPizzaCount"] != null){ 
+                        var pizzaCount = int.Parse(TempData["LatestPizzaCount"].ToString());
 
-                    <option selected="selected" value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
+                        @if (pizzaCount == 1)
+                        {<option selected="selected" value="1">1</option>}
+                        else { <option value="1">1</option> }
+                        @if (pizzaCount == 2)
+                        {<option selected="selected" value="2">2</option>}
+                        else { <option value="2">2</option> }
+                        @if (pizzaCount == 3)
+                        {<option selected="selected" value="3">3</option>}
+                        else { <option value="3">3</option> }
+                        @if (pizzaCount == 4)
+                        {<option selected="selected" value="4">4</option>}
+                        else { <option value="4">4</option> }
+                        @if (pizzaCount == 5)
+                        {<option selected="selected" value="5">5</option>}
+                        else { <option value="5">5</option> }
+                        @if (pizzaCount == 6)
+                        {<option selected="selected" value="6">6</option>}
+                        else { <option value="6">6</option> }
+                        @if (pizzaCount == 7)
+                        {<option selected="selected" value="7">7</option>}
+                        else { <option value="7">7</option> }
+                        @if (pizzaCount == 8)
+                        {<option selected="selected" value="8">8</option>}
+                        else { <option value="8">8</option> }
+                        @if (pizzaCount == 9)
+                        {<option selected="selected" value="9">9</option>}
+                        else { <option value="9">9</option> }
+                        @if (pizzaCount == 10)
+                        {<option selected="selected" value="10">10</option>}
+                        else { <option value="10">10</option> }
+                        @if (pizzaCount == 11)
+                        {<option selected="selected" value="11">11</option>}
+                        else { <option value="11">11</option> }
+                        @if (pizzaCount == 12)
+                        {<option selected="selected" value="12">12</option>}
+                        else { <option value="12">12</option> }
+                        }
+                        else
+                        {
+                            <option selected="selected" value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                        }
+
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Place Order" class="btn btn-default" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 

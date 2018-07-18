@@ -1,0 +1,26 @@
+﻿@model PizzaApp.WebApp.Inventory
+
+@{
+    ViewData["Title"] = "Restock Inventory";
+}
+
+<h2>Restock Inventory</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Restock">
+            <div class="form-group">
+                Are you sure you want to restock this inventory?
+                <br />
+                <br />
+                <input type="submit" value="Yes" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
