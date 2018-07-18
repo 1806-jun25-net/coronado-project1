@@ -114,31 +114,14 @@ namespace PizzaApp.WebApp.Controllers
                     var lastOrderId = repoOrders.Last().Id;
                     var newOrderId = lastOrderId + 1;
 
-                    var libUsers = Repo.GetUsers().ToList();
-                    var searchedUser = new Library.User();
-                    int searchedUserId = 0;
-                    bool found = false;
-                    foreach (var user in libUsers)
-                    {
-                        if (order.FirstName == user.FirstName && order.LastName == user.LastName)
-                        {
-                            searchedUser = user;
-                            searchedUserId = user.Id;
-                            found = true;
-                        }
-                    }
-                    if (!found)
-                    {
-
-                        return RedirectToAction(nameof(Index), "User/Create");
-
-                    }
+                    var userId = int.Parse(TempData["userId"].ToString());
+                    var thisUser = Repo.GetUserById(userId);
                     
                     var currentTime = DateTime.Now;
 
                     var newOrder = new Library.Order
                     {
-                        UserId = searchedUser.Id,
+                        UserId = userId,
                         LocationId = order.LocationId,
                         DateTime = currentTime,
                         Price = order.Price,
@@ -149,35 +132,162 @@ namespace PizzaApp.WebApp.Controllers
                     var lastId = libPizzas.Last().Id;
                     var pizzaList = new List<Library.Pizza>();
                     for (int i = 1; i <= order.PizzaCount; i++)
-                    {
-
-                        var newPizza = new Library.Pizza
+                    {                        
+                        // create random pizzas
+                        var random = new Random();
+                        var randomChoice = random.Next(6);
+                        var newPizza = new Library.Pizza();
+                        switch (randomChoice)
                         {
-                            Crust = new Crust(),
-                            Sauce = new Sauce(),
-                            Cheese = new Cheese(),
-                            Topping1 = new Topping(),
-                            Topping2 = new Topping(),
-                            Topping3 = new Topping(),
-                            Topping4 = new Topping(),
-                            Topping5 = new Topping(),
-                            Topping6 = new Topping()
-                        };
+                            case 0:
+                                newPizza = new Library.Pizza
+                                {
+                                    Crust = new Crust(),
+                                    Sauce = new Sauce(),
+                                    Cheese = new Cheese(),
+                                    Topping1 = new Topping(""),
+                                    Topping2 = new Topping(""),
+                                    Topping3 = new Topping(""),
+                                    Topping4 = new Topping(""),
+                                    Topping5 = new Topping(""),
+                                    Topping6 = new Topping("")
+                                };
+                                break;
+                            case 1:
+                                newPizza = new Library.Pizza
+                                {
+                                    Crust = new Crust(),
+                                    Sauce = new Sauce(),
+                                    Cheese = new Cheese(),
+                                    Topping1 = new Topping(),
+                                    Topping2 = new Topping(""),
+                                    Topping3 = new Topping(""),
+                                    Topping4 = new Topping(""),
+                                    Topping5 = new Topping(""),
+                                    Topping6 = new Topping("")
+                                };
+                                break;
+                            case 2:
+                                newPizza = new Library.Pizza
+                                {
+                                    Crust = new Crust(),
+                                    Sauce = new Sauce(),
+                                    Cheese = new Cheese(),
+                                    Topping1 = new Topping(),
+                                    Topping2 = new Topping(),
+                                    Topping3 = new Topping(""),
+                                    Topping4 = new Topping(""),
+                                    Topping5 = new Topping(""),
+                                    Topping6 = new Topping("")
+                                };
+                                break;
+                            case 3:
+                                newPizza = new Library.Pizza
+                                {
+                                    Crust = new Crust(),
+                                    Sauce = new Sauce(),
+                                    Cheese = new Cheese(),
+                                    Topping1 = new Topping(),
+                                    Topping2 = new Topping(),
+                                    Topping3 = new Topping(),
+                                    Topping4 = new Topping(""),
+                                    Topping5 = new Topping(""),
+                                    Topping6 = new Topping("")
+                                };
+                                break;
+                            case 4:
+                                newPizza = new Library.Pizza
+                                {
+                                    Crust = new Crust(),
+                                    Sauce = new Sauce(),
+                                    Cheese = new Cheese(),
+                                    Topping1 = new Topping(),
+                                    Topping2 = new Topping(),
+                                    Topping3 = new Topping(),
+                                    Topping4 = new Topping(),
+                                    Topping5 = new Topping(""),
+                                    Topping6 = new Topping("")
+                                };
+                                break;
+                            case 5:
+                                newPizza = new Library.Pizza
+                                {
+                                    Crust = new Crust(),
+                                    Sauce = new Sauce(),
+                                    Cheese = new Cheese(),
+                                    Topping1 = new Topping(),
+                                    Topping2 = new Topping(),
+                                    Topping3 = new Topping(),
+                                    Topping4 = new Topping(),
+                                    Topping5 = new Topping(),
+                                    Topping6 = new Topping("")
+                                };
+                                break;
+                            case 6:
+                                newPizza = new Library.Pizza
+                                {
+                                    Crust = new Crust(),
+                                    Sauce = new Sauce(),
+                                    Cheese = new Cheese(),
+                                    Topping1 = new Topping(),
+                                    Topping2 = new Topping(),
+                                    Topping3 = new Topping(),
+                                    Topping4 = new Topping(),
+                                    Topping5 = new Topping(),
+                                    Topping6 = new Topping()
+                                };
+                                break;
+                            default:
+                                newPizza = new Library.Pizza
+                                {
+                                    Crust = new Crust(),
+                                    Sauce = new Sauce(),
+                                    Cheese = new Cheese()
+                                };
+                                break;
+                        }
+                        
                         newPizza.BuildPizza();
                         Repo.AddPizza(newPizza);
                         Repo.Save();
                         newPizza.Id = lastId + i;
-                        newPizza.BuildPizza();
-                        pizzaList.Add(newPizza);
-                        Repo.UpdatePizza(newPizza);
-                        Repo.Save();
+                        
+                        pizzaList.Add(newPizza);                        
                         newOrder.AddPizza(newPizza);
                     }
                     newOrder.ProcessPizzaList(pizzaList);
                     newOrder.BuildOrder();
+
+                    // Check if order is within pizza count limit
+                    // Otherwise, redirect to error page
+                    var countCheck = true;
+                    if (newOrder.PizzaList.Count() > newOrder.OrderPizzaLimit) countCheck = false;
+                    if (countCheck == false)
+                    {
+                        // Remove pizzas from database if order fails
+                        foreach (var pizza in newOrder.PizzaList)
+                        {
+                            Repo.DeletePizza(pizza.Id);
+                        }
+                        TempData["ErrorMessage"] = $"Your order exceeds the {newOrder.OrderPizzaLimit} pizza limit.";
+                        return RedirectToAction(nameof(Index), "Order/Error");
+                    }
+
+                    // Check if order is within price limit
+                    // Otherwise, redirect to error page
+                    var priceCheck = true;
+                    if (newOrder.Price > newOrder.OrderPriceLimit) priceCheck = false;
+                    if (priceCheck == false)
+                    {
+                        TempData["ErrorMessage"] = $"Your order exceeds the ${newOrder.OrderPriceLimit} price limit.";
+                        return RedirectToAction(nameof(Index), "Order/Error");
+                    }
+
+                    // If check passes, add order to database
                     Repo.AddOrder(newOrder);
                     Repo.Save();
                     
+                    // Get the appropriate inventory
                     var libInventories = Repo.GetInventories().ToList();
                     var currentInventory = new Library.Inventory();
                     foreach (var item in libInventories)
@@ -185,18 +295,30 @@ namespace PizzaApp.WebApp.Controllers
                         if (order.LocationId == item.Id) currentInventory = item;
                     }
 
+                    // Check if order can be fulfilled by location inventory
+                    // Otherwise, redirect to error page
+                    var inventoryCheck = true;
                     foreach (var pizza in newOrder.PizzaList)
                     {
                         foreach (var ingredient in pizza.PizzaComposition)
                         {
-                            currentInventory.DeductInventoryCount(ingredient);
+                            if (currentInventory.CheckIfInventoryIsSufficient(ingredient))
+                            {
+                                currentInventory.DeductInventoryCount(ingredient);
+                            }
+                            else inventoryCheck = false;
+                            
                         }
                     }
+                    if (inventoryCheck == false)
+                    {
+                        TempData["ErrorMessage"] = "That location does not have sufficient inventory to complete your order.";
+                        return RedirectToAction(nameof(Index), "Order/Error");                        
+                    }
 
+                    // If check passes, update inventory in database
                     Repo.UpdateInventory(currentInventory);
                     Repo.Save();
-
-                    var thisUser = Repo.GetUserById(searchedUserId);
 
                     thisUser.LatestLocation = newOrder.LocationId;
                     thisUser.LatestOrderId = newOrderId;
@@ -204,13 +326,15 @@ namespace PizzaApp.WebApp.Controllers
                     Repo.UpdateUser(thisUser);
                     Repo.Save();
 
+                    TempData["OrderId"] = newOrderId;
                     return RedirectToAction(nameof(Index), "Order/Submitted");
                 }
                 return View(order);
             }
             catch
             {
-                return View();
+                TempData["ErrorMessage"] = "Please try again.";
+                return RedirectToAction(nameof(Index), "Order/Error");
             }
         }
 
@@ -499,18 +623,5 @@ namespace PizzaApp.WebApp.Controllers
 
             return View(webOrders);
         }
-
-        //// Session
-        //[HttpPost]
-        //public ActionResult Index(ImageSwapModel imageSwap)
-        //{
-        //    var oldFileFound = false;
-        //    var newFileFound = false;
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        this.HttpContext.Session["ImageSwap"] = imageSwap;
-        //    }
-        //}
     }
 }
