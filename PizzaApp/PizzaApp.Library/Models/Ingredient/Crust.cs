@@ -20,8 +20,11 @@ namespace PizzaApp.Library
         // constructors
         public Crust()
         {
-            CrustSize = CrustSizeOptions[0];
-            CrustThickness = CrustThicknessOptions[0];
+            var random = new Random();
+            int randomChoice = random.Next(CrustSizeOptions.Count);
+            CrustSize = CrustSizeOptions[randomChoice];
+            randomChoice = random.Next(CrustThicknessOptions.Count);
+            CrustThickness = CrustThicknessOptions[randomChoice];
             IngredientName = $"{CrustSize} {CrustThickness}";
             IngredientPrice = CalculateIngredientPrice(CrustSize, CrustThickness);
             IngredientInventoryCost = CalculateIngredientInventoryCost(CrustSize, CrustThickness);

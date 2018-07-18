@@ -20,8 +20,10 @@ namespace PizzaApp.Library
         // constructors
         public Cheese()
         {
+            var random = new Random();
+            int randomChoice = random.Next(CheeseThicknessOptions.Count);
+            CheeseThickness = CheeseThicknessOptions[randomChoice];
             CheeseType = CheeseTypeOptions[0];
-            CheeseThickness = CheeseThicknessOptions[0];
             IngredientName = $"{CheeseType}({CheeseThickness})";
             IngredientPrice = CalculateIngredientPrice(CheeseType, CheeseThickness);
             IngredientInventoryCost = CalculateIngredientInventoryCost(CheeseThickness);

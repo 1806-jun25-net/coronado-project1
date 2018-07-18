@@ -20,8 +20,11 @@ namespace PizzaApp.Library
         // constructors
         public Sauce()
         {
-            SauceType = SauceTypeOptions[0];
-            SauceThickness = SauceThicknessOptions[0];
+            var random = new Random();
+            int randomChoice = random.Next(SauceTypeOptions.Count);
+            SauceType = SauceTypeOptions[randomChoice];
+            randomChoice = random.Next(SauceThicknessOptions.Count);
+            SauceThickness = SauceThicknessOptions[randomChoice];
             IngredientName = $"{SauceType}({SauceThickness})";
             IngredientInventoryName = SauceType;
             IngredientPrice = CalculateIngredientPrice(SauceType, SauceThickness);

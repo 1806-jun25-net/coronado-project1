@@ -25,6 +25,9 @@ namespace PizzaApp.Library
         // constructors
         public Topping()
         {
+            var random = new Random();
+            var randomChoice = random.Next(ToppingTypeOptions.Count);
+            ToppingType = ToppingTypeOptions[randomChoice];
             IngredientName = $"{ToppingType}";
             IngredientInventoryName = $"{ToppingType}";
             IngredientPrice = CalculateIngredientPrice(ToppingType);

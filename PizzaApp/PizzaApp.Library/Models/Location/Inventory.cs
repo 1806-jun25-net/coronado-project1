@@ -98,11 +98,11 @@ namespace PizzaApp.Library
             {
                 if ((dough -= iCost) <= 0) check = false;
             }
-            else if (iName == "TomatoSauce")
+            else if (iName == "Tomato Sauce")
             {
                 if ((tomatoSauce -= iCost) <= 0) check = false;
             }
-            else if (iName == "WhiteSauce")
+            else if (iName == "White Sauce")
             {
                 if ((whiteSauce -= iCost) <= 0) check = false;
             }
@@ -138,11 +138,11 @@ namespace PizzaApp.Library
             {
                 if ((anchovies -= iCost) <= 0) check = false;
             }
-            else if (iName == "RedPeppers")
+            else if (iName == "Red Peppers")
             {
                 if ((redPeppers -= iCost) <= 0) check = false;
             }
-            else if (iName == "GreenPeppers")
+            else if (iName == "Green Peppers")
             {
                 if ((greenPeppers -= iCost) <= 0) check = false;
             }
@@ -204,11 +204,11 @@ namespace PizzaApp.Library
             {
                 Dough -= iCost;
             }
-            else if (iName == "TomatoSauce")
+            else if (iName == "Tomato Sauce")
             {
                 TomatoSauce -= iCost;
             }
-            else if (iName == "WhiteSauce")
+            else if (iName == "White Sauce")
             {
                 WhiteSauce -= iCost;
             }
@@ -244,11 +244,11 @@ namespace PizzaApp.Library
             {
                 Anchovies -= iCost;
             }
-            else if (iName == "RedPeppers")
+            else if (iName == "Red Peppers")
             {
                 RedPeppers -= iCost;
             }
-            else if (iName == "GreenPeppers")
+            else if (iName == "Green Peppers")
             {
                 GreenPeppers -= iCost;
             }

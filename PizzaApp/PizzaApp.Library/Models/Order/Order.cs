@@ -91,6 +91,26 @@ namespace PizzaApp.Library
             NameOrder();
         }
 
+        public int CountPizzas()
+        {
+            var count = 0;
+
+            if (PizzaId1 != null) count++;
+            if (PizzaId2 != null) count++;
+            if (PizzaId3 != null) count++;
+            if (PizzaId4 != null) count++;
+            if (PizzaId5 != null) count++;
+            if (PizzaId6 != null) count++;
+            if (PizzaId7 != null) count++;
+            if (PizzaId8 != null) count++;
+            if (PizzaId9 != null) count++;
+            if (PizzaId10 != null) count++;
+            if (PizzaId11 != null) count++;
+            if (PizzaId12 != null) count++;
+
+            return count;
+        }
+
         public void ProcessPizzaList(List<Pizza> pizzaList)
         {
             foreach (var item in pizzaList)

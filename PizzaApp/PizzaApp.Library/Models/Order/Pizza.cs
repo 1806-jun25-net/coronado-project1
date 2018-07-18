@@ -125,12 +125,14 @@ namespace PizzaApp.Library
         {
             Name = $"{Crust.CrustSize} {Crust.CrustThickness} Pizza with {Sauce.SauceType}({Sauce.SauceThickness}), {Cheese.CheeseType}({Cheese.CheeseThickness}), ";
             var toppingListString = "";
-            if (Topping1 != null) toppingListString += $"{Topping1.ToppingType}";
-            if (Topping2 != null) toppingListString += $"{Topping2.ToppingType}";
-            if (Topping3 != null) toppingListString += $"{Topping3.ToppingType}";
-            if (Topping4 != null) toppingListString += $"{Topping4.ToppingType}";
-            if (Topping5 != null) toppingListString += $"{Topping5.ToppingType}";
-            if (Topping6 != null) toppingListString += $"{Topping6.ToppingType}";
+            if (Topping1.ToppingType != "") toppingListString += $"{Topping1.ToppingType}, ";
+            if (Topping2.ToppingType != "") toppingListString += $"{Topping2.ToppingType}, ";
+            if (Topping3.ToppingType != "") toppingListString += $"{Topping3.ToppingType}, ";
+            if (Topping4.ToppingType != "") toppingListString += $"{Topping4.ToppingType}, ";
+            if (Topping5.ToppingType != "") toppingListString += $"{Topping5.ToppingType}, ";
+            if (Topping6.ToppingType != "") toppingListString += $"{Topping6.ToppingType}, ";
+            toppingListString = toppingListString.Trim(' ');
+            toppingListString = toppingListString.Trim(',');
             Name += toppingListString;
             Name = Name.Trim(' ');
             Name = Name.Trim(',');
@@ -143,12 +145,12 @@ namespace PizzaApp.Library
                 $"\n{Sauce.SauceType}({Sauce.SauceThickness}) " +
                 $"\n{Cheese.CheeseType}({Cheese.CheeseThickness})");
             var toppingListString = "Toppings: ";
-            if (Topping1 != null) toppingListString += $"{Topping1.ToppingType}";
-            if (Topping2 != null) toppingListString += $"{Topping2.ToppingType}";
-            if (Topping3 != null) toppingListString += $"{Topping3.ToppingType}";
-            if (Topping4 != null) toppingListString += $"{Topping4.ToppingType}";
-            if (Topping5 != null) toppingListString += $"{Topping5.ToppingType}";
-            if (Topping6 != null) toppingListString += $"{Topping6.ToppingType}";
+            if (Topping1.ToppingType != "") toppingListString += $"{Topping1.ToppingType}, ";
+            if (Topping2.ToppingType != "") toppingListString += $"{Topping2.ToppingType}, ";
+            if (Topping3.ToppingType != "") toppingListString += $"{Topping3.ToppingType}, ";
+            if (Topping4.ToppingType != "") toppingListString += $"{Topping4.ToppingType}, ";
+            if (Topping5.ToppingType != "") toppingListString += $"{Topping5.ToppingType}, ";
+            if (Topping6.ToppingType != "") toppingListString += $"{Topping6.ToppingType}, ";
             toppingListString += toppingListString;
             toppingListString = toppingListString.Trim(' ');
             toppingListString = toppingListString.Trim(',');
