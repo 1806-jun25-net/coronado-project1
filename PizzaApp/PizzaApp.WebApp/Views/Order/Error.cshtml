@@ -4,4 +4,20 @@
 
 <h2>Sorry, something went wrong!</h2>
 
+<div>
+    <img src="~/images/mominos-mama-sad.png" width="500" height="500" />
+</div>
 
+@if (TempData["ErrorMessage"] != null)
+    {
+        var errorMessage = TempData["ErrorMessage"].ToString();
+        <p>@errorMessage</p>
+    }
+    else
+    {
+        <p>An unexpected error occurred!</p>
+    }
+
+<div>
+    <a asp-area="" asp-controller="Home" asp-action="Login">Click here to try again!</a>
+</div>

@@ -5,6 +5,19 @@
 <h2>Mama's in the kitchen!</h2>
 
 <div>
+    <img src="~/images/mominos-mama-fire.png" width ="500" height ="500" />
+</div>
+
+<div>
     Your order has been submitted!
 </div>
 
+<div>
+    @if (TempData["OrderId"] != null)
+    {
+        var orderId = int.Parse(TempData["OrderId"].ToString());
+
+        @Html.ActionLink("View Order Details", "Details", new { id = orderId })
+
+    }
+</div>
