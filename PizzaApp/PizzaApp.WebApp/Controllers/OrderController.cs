@@ -26,10 +26,24 @@ namespace PizzaApp.WebApp.Controllers
             return View();
         }
 
-        // GET: Order
-        public ActionResult Index(string searchString)
+        private IEnumerable<Order> CheckSearchString(string searchString, IEnumerable<Order> webOrders)
         {
-            var libOrders = Repo.SortOrdersByLatest();
+            // SEARCH
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower(); // search is case insensitive
+                // search based on either user id or location name
+                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
+                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
+                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
+                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
+
+            }
+            return webOrders;
+        }
+
+        private IEnumerable<Order> ConvertToWebModel(IEnumerable<Library.Order> libOrders)
+        {
             var webOrders = libOrders.Select(x => new Order
             {
                 Id = x.Id,
@@ -50,18 +64,15 @@ namespace PizzaApp.WebApp.Controllers
                 PizzaId11 = x.PizzaId11,
                 PizzaId12 = x.PizzaId12
             });
+            return webOrders;
+        }
 
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search based on either user id or location name
-                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
-                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
-                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
-                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
-
-            }
+        // GET: Order
+        public ActionResult Index(string searchString)
+        {
+            var libOrders = Repo.SortOrdersByLatest();
+            var webOrders = ConvertToWebModel(libOrders);
+            webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
         }
@@ -491,38 +502,8 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByEarliest(string searchString)
         {
             var libOrders = Repo.SortOrdersByEarliest();
-            var webOrders = libOrders.Select(x => new Order
-            {
-                Id = x.Id,
-                UserId = x.UserId,
-                LocationId = x.LocationId,
-                DateTime = x.DateTime,
-                Price = x.Price,
-                PizzaId1 = x.PizzaId1,
-                PizzaId2 = x.PizzaId2,
-                PizzaId3 = x.PizzaId3,
-                PizzaId4 = x.PizzaId4,
-                PizzaId5 = x.PizzaId5,
-                PizzaId6 = x.PizzaId6,
-                PizzaId7 = x.PizzaId7,
-                PizzaId8 = x.PizzaId8,
-                PizzaId9 = x.PizzaId9,
-                PizzaId10 = x.PizzaId10,
-                PizzaId11 = x.PizzaId11,
-                PizzaId12 = x.PizzaId12
-            });
-
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search based on either user id or location name
-                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
-                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
-                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
-                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
-
-            }
+            var webOrders = ConvertToWebModel(libOrders);
+            webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
         }
@@ -531,38 +512,8 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByLatest(string searchString)
         {
             var libOrders = Repo.SortOrdersByLatest();
-            var webOrders = libOrders.Select(x => new Order
-            {
-                Id = x.Id,
-                UserId = x.UserId,
-                LocationId = x.LocationId,
-                DateTime = x.DateTime,
-                Price = x.Price,
-                PizzaId1 = x.PizzaId1,
-                PizzaId2 = x.PizzaId2,
-                PizzaId3 = x.PizzaId3,
-                PizzaId4 = x.PizzaId4,
-                PizzaId5 = x.PizzaId5,
-                PizzaId6 = x.PizzaId6,
-                PizzaId7 = x.PizzaId7,
-                PizzaId8 = x.PizzaId8,
-                PizzaId9 = x.PizzaId9,
-                PizzaId10 = x.PizzaId10,
-                PizzaId11 = x.PizzaId11,
-                PizzaId12 = x.PizzaId12
-            });
-
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search based on either user id or location name
-                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
-                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
-                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
-                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
-
-            }
+            var webOrders = ConvertToWebModel(libOrders);
+            webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
         }
@@ -570,38 +521,8 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByCheapest(string searchString)
         {
             var libOrders = Repo.SortOrdersByCheapest();
-            var webOrders = libOrders.Select(x => new Order
-            {
-                Id = x.Id,
-                UserId = x.UserId,
-                LocationId = x.LocationId,
-                DateTime = x.DateTime,
-                Price = x.Price,
-                PizzaId1 = x.PizzaId1,
-                PizzaId2 = x.PizzaId2,
-                PizzaId3 = x.PizzaId3,
-                PizzaId4 = x.PizzaId4,
-                PizzaId5 = x.PizzaId5,
-                PizzaId6 = x.PizzaId6,
-                PizzaId7 = x.PizzaId7,
-                PizzaId8 = x.PizzaId8,
-                PizzaId9 = x.PizzaId9,
-                PizzaId10 = x.PizzaId10,
-                PizzaId11 = x.PizzaId11,
-                PizzaId12 = x.PizzaId12
-            });
-
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search based on either user id or location name
-                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
-                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
-                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
-                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
-
-            }
+            var webOrders = ConvertToWebModel(libOrders);
+            webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
         }
@@ -609,38 +530,8 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByMostExpensive(string searchString)
         {
             var libOrders = Repo.SortOrdersByMostExpensive();
-            var webOrders = libOrders.Select(x => new Order
-            {
-                Id = x.Id,
-                UserId = x.UserId,
-                LocationId = x.LocationId,
-                DateTime = x.DateTime,
-                Price = x.Price,
-                PizzaId1 = x.PizzaId1,
-                PizzaId2 = x.PizzaId2,
-                PizzaId3 = x.PizzaId3,
-                PizzaId4 = x.PizzaId4,
-                PizzaId5 = x.PizzaId5,
-                PizzaId6 = x.PizzaId6,
-                PizzaId7 = x.PizzaId7,
-                PizzaId8 = x.PizzaId8,
-                PizzaId9 = x.PizzaId9,
-                PizzaId10 = x.PizzaId10,
-                PizzaId11 = x.PizzaId11,
-                PizzaId12 = x.PizzaId12
-            });
-
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search based on either user id or location name
-                if (searchString == "reston") webOrders = webOrders.Where(s => s.LocationId == 1);
-                else if (searchString == "herndon") webOrders = webOrders.Where(s => s.LocationId == 2);
-                else if (searchString == "sterling") webOrders = webOrders.Where(s => s.LocationId == 3);
-                else webOrders = webOrders.Where(s => s.UserId.ToString() == searchString);
-
-            }
+            var webOrders = ConvertToWebModel(libOrders);
+            webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
         }

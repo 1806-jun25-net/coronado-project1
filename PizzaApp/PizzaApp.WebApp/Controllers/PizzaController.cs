@@ -27,10 +27,21 @@ namespace PizzaApp.WebApp.Controllers
             return View();
         }
 
-        // GET: Pizza
-        public ActionResult Index(string searchString)
+        private IEnumerable<Pizza> CheckSearchString(string searchString, IEnumerable<Pizza> webPizzas)
         {
-            var libPizzas = Repo.SortPizzasByLatest();
+            // SEARCH
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower(); // search is case insensitive
+                // search pizza name because that contains all ingredients
+                webPizzas = webPizzas.Where(s => s.Name.ToLower().Contains(searchString));
+
+            }
+            return webPizzas;
+        }
+
+        private IEnumerable<Pizza> ConvertToWebModel(IEnumerable<Library.Pizza> libPizzas)
+        {
             var webPizzas = libPizzas.Select(x => new Pizza
             {
                 Id = x.Id,
@@ -46,15 +57,15 @@ namespace PizzaApp.WebApp.Controllers
                 Topping5 = x.Topping5.IngredientName,
                 Topping6 = x.Topping6.IngredientName
             });
+            return webPizzas;
+        }
 
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search pizza name because that contains all ingredients
-                webPizzas = webPizzas.Where(s => s.Name.ToLower().Contains(searchString));
-
-            }
+        // GET: Pizza
+        public ActionResult Index(string searchString)
+        {
+            var libPizzas = Repo.SortPizzasByLatest();
+            var webPizzas = ConvertToWebModel(libPizzas);
+            webPizzas = CheckSearchString(searchString, webPizzas);
 
             return View(webPizzas);
         }
@@ -232,30 +243,8 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByEarliest(string searchString)
         {
             var libPizzas = Repo.SortPizzasByEarliest();
-            var webPizzas = libPizzas.Select(x => new Pizza
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Price = x.Price,
-                Crust = x.Crust.IngredientName,
-                Sauce = x.Sauce.IngredientName,
-                Cheese = x.Cheese.IngredientName,
-                Topping1 = x.Topping1.IngredientName,
-                Topping2 = x.Topping2.IngredientName,
-                Topping3 = x.Topping3.IngredientName,
-                Topping4 = x.Topping4.IngredientName,
-                Topping5 = x.Topping5.IngredientName,
-                Topping6 = x.Topping6.IngredientName
-            });
-
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search pizza name because that contains all ingredients
-                webPizzas = webPizzas.Where(s => s.Name.ToLower().Contains(searchString));
-
-            }
+            var webPizzas = ConvertToWebModel(libPizzas);
+            webPizzas = CheckSearchString(searchString, webPizzas);
 
             return View(webPizzas);
         }
@@ -264,30 +253,8 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByLatest(string searchString)
         {
             var libPizzas = Repo.SortPizzasByLatest();
-            var webPizzas = libPizzas.Select(x => new Pizza
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Price = x.Price,
-                Crust = x.Crust.IngredientName,
-                Sauce = x.Sauce.IngredientName,
-                Cheese = x.Cheese.IngredientName,
-                Topping1 = x.Topping1.IngredientName,
-                Topping2 = x.Topping2.IngredientName,
-                Topping3 = x.Topping3.IngredientName,
-                Topping4 = x.Topping4.IngredientName,
-                Topping5 = x.Topping5.IngredientName,
-                Topping6 = x.Topping6.IngredientName
-            });
-
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search pizza name because that contains all ingredients
-                webPizzas = webPizzas.Where(s => s.Name.ToLower().Contains(searchString));
-
-            }
+            var webPizzas = ConvertToWebModel(libPizzas);
+            webPizzas = CheckSearchString(searchString, webPizzas);
 
             return View(webPizzas);
         }
@@ -295,30 +262,8 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByCheapest(string searchString)
         {
             var libPizzas = Repo.SortPizzasByCheapest();
-            var webPizzas = libPizzas.Select(x => new Pizza
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Price = x.Price,
-                Crust = x.Crust.IngredientName,
-                Sauce = x.Sauce.IngredientName,
-                Cheese = x.Cheese.IngredientName,
-                Topping1 = x.Topping1.IngredientName,
-                Topping2 = x.Topping2.IngredientName,
-                Topping3 = x.Topping3.IngredientName,
-                Topping4 = x.Topping4.IngredientName,
-                Topping5 = x.Topping5.IngredientName,
-                Topping6 = x.Topping6.IngredientName
-            });
-
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search pizza name because that contains all ingredients
-                webPizzas = webPizzas.Where(s => s.Name.ToLower().Contains(searchString));
-
-            }
+            var webPizzas = ConvertToWebModel(libPizzas);
+            webPizzas = CheckSearchString(searchString, webPizzas);
 
             return View(webPizzas);
         }
@@ -326,30 +271,8 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByMostExpensive(string searchString)
         {
             var libPizzas = Repo.SortPizzasByMostExpensive();
-            var webPizzas = libPizzas.Select(x => new Pizza
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Price = x.Price,
-                Crust = x.Crust.IngredientName,
-                Sauce = x.Sauce.IngredientName,
-                Cheese = x.Cheese.IngredientName,
-                Topping1 = x.Topping1.IngredientName,
-                Topping2 = x.Topping2.IngredientName,
-                Topping3 = x.Topping3.IngredientName,
-                Topping4 = x.Topping4.IngredientName,
-                Topping5 = x.Topping5.IngredientName,
-                Topping6 = x.Topping6.IngredientName
-            });
-
-            // SEARCH
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower(); // search is case insensitive
-                // search pizza name because that contains all ingredients
-                webPizzas = webPizzas.Where(s => s.Name.ToLower().Contains(searchString));
-
-            }
+            var webPizzas = ConvertToWebModel(libPizzas);
+            webPizzas = CheckSearchString(searchString, webPizzas);
 
             return View(webPizzas);
         }
