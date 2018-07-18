@@ -294,5 +294,94 @@ namespace PizzaApp.WebApp.Controllers
             }
         }
 
+        // GET: Inventory/Restock/5
+        public ActionResult Restock(int id)
+        {
+            var libInventory = Repo.GetInventoryById(id);
+            var webInventory = new Inventory
+            {
+                Id = libInventory.Id,
+                LocationId = libInventory.LocationId,
+                Dough = libInventory.Dough,
+                TomatoSauce = libInventory.TomatoSauce,
+                WhiteSauce = libInventory.WhiteSauce,
+                Cheese = libInventory.Cheese,
+                Pepperoni = libInventory.Pepperoni,
+                Ham = libInventory.Ham,
+                Chicken = libInventory.Chicken,
+                Beef = libInventory.Beef,
+                Sausage = libInventory.Sausage,
+                Bacon = libInventory.Bacon,
+                Anchovies = libInventory.Anchovies,
+                RedPeppers = libInventory.RedPeppers,
+                GreenPeppers = libInventory.GreenPeppers,
+                Pineapple = libInventory.Pineapple,
+                Olives = libInventory.Olives,
+                Mushrooms = libInventory.Mushrooms,
+                Garlic = libInventory.Garlic,
+                Onions = libInventory.Onions,
+                Tomatoes = libInventory.Tomatoes,
+                Spinach = libInventory.Spinach,
+                Basil = libInventory.Basil,
+                Ricotta = libInventory.Ricotta,
+                Parmesan = libInventory.Parmesan,
+                Feta = libInventory.Feta
+            };
+            return View(webInventory);
+        }
+
+        // POST: Inventory/Restock/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Restock([FromRoute]int id, Inventory inventory)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var libInventory = new Library.Inventory
+                    {
+                        Id = id,
+                        LocationId = id,
+                        Dough = 200.00,
+                        TomatoSauce = 100.00,
+                        WhiteSauce = 100.00,
+                        Cheese = 200.00,
+                        Pepperoni = 50.00,
+                        Ham = 50.00,
+                        Chicken = 50.00,
+                        Beef = 50.00,
+                        Sausage = 50.00,
+                        Bacon = 50.00,
+                        Anchovies = 50.00,
+                        RedPeppers = 50.00,
+                        GreenPeppers = 50.00,
+                        Pineapple = 50.00,
+                        Olives = 50.00,
+                        Mushrooms = 50.00,
+                        Garlic = 50.00,
+                        Onions = 50.00,
+                        Tomatoes = 50.00,
+                        Spinach = 50.00,
+                        Basil = 50.00,
+                        Ricotta = 50.00,
+                        Parmesan = 50.00,
+                        Feta = 50.00
+                    };
+                    Repo.UpdateInventory(libInventory);
+                    Repo.Save();
+
+                    return RedirectToAction(nameof(Index), $"Inventory/Details/{id}");
+                }
+                return View(inventory);
+            }
+            catch (Exception)
+            {
+                return View(inventory);
+            }
+        }
+
     }
 }

@@ -30,8 +30,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Order" asp-action="Create">Order</a></li>
-                    <li><a asp-area="" asp-controller="User" asp-action="Index">Users</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
                 </ul>
             </div>
         </div>
@@ -43,7 +42,6 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>@Html.ActionLink("Admin Dashboard", "Admin", "Home")</p>
             <p>&copy; 2018 - Momino's</p>
         </footer>
     </div>

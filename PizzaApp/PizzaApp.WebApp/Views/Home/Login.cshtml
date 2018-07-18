@@ -1,15 +1,14 @@
-﻿@*@model PizzaApp.WebApp.Session
-
+﻿@model PizzaApp.WebApp.Login
 @{
-    ViewData["Title"] = "Log In";
+    ViewData["Title"] = "Login";
 }
 
-<h2>Please Enter Your Name</h2>
+<h2>Please Login</h2>
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Login">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FirstName" class="control-label"></label>
@@ -22,11 +21,12 @@
                 <span asp-validation-for="LastName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Login" class="btn btn-default" />
             </div>
         </form>
     </div>
-</div>*@
+</div>
 
-
-
+<div>
+    <a asp-area="" asp-controller="User" asp-action="Create">New User? Click here to register!</a>
+</div>

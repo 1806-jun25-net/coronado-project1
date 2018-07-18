@@ -286,7 +286,6 @@ namespace PizzaApp.ConsoleApp
 
             while (retry == true && endOrder == false) // reruns until order is valid
             {
-                if (retry == false) break;
                 // loop while pizza limit is below max
                 while (currentOrder.PizzaList.Count() < currentOrder.OrderPizzaLimit)
                 {
