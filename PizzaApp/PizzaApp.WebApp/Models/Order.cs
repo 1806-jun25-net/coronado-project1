@@ -33,5 +33,7 @@ namespace PizzaApp.WebApp
 
         [Required]
         public int PizzaCount { get; set; }
+
+        public double OrderHourLimit { get; set; } = 2.0;
     }
 }

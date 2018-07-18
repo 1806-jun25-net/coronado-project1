@@ -29,7 +29,7 @@ namespace PizzaApp.WebApp.Controllers
         // GET: Order
         public ActionResult Index(string searchString)
         {
-            var libOrders = Repo.GetOrders();
+            var libOrders = Repo.SortOrdersByLatest();
             var webOrders = libOrders.Select(x => new Order
             {
                 Id = x.Id,
@@ -115,9 +115,29 @@ namespace PizzaApp.WebApp.Controllers
                     var newOrderId = lastOrderId + 1;
 
                     var userId = int.Parse(TempData["userId"].ToString());
-                    var thisUser = Repo.GetUserById(userId);
+                    var thisUser = Repo.GetUserById(userId);                  
                     
+                    var latestTime = DateTime.Parse(TempData["LatestOrderTime"].ToString());
+                    var latestLocation = int.Parse(TempData["LatestOrderLocation"].ToString());
+
                     var currentTime = DateTime.Now;
+
+                    TimeSpan timeSpan = (currentTime - latestTime);
+                    double hours = timeSpan.TotalHours;
+                    double minutes = timeSpan.TotalMinutes;
+                    int waitTime = ((int)order.OrderHourLimit * 60) - (int)minutes;
+
+                    var timeCheck = true;
+                    // check if selected location is same as last location and if it has been less than the time you have to wait between orders to the same location
+                    if (order.LocationId == latestLocation && hours < order.OrderHourLimit)
+                    {
+                        timeCheck = false;
+                    }
+                    if (timeCheck == false)
+                    {
+                        TempData["ErrorMessage"] = $"You cannot order from the same location more than once within {order.OrderHourLimit} hour(s). Please wait {waitTime} minute(s) or try another location.";
+                        return RedirectToAction(nameof(Index), "Order/Error");
+                    }
 
                     var newOrder = new Library.Order
                     {
@@ -506,7 +526,8 @@ namespace PizzaApp.WebApp.Controllers
 
             return View(webOrders);
         }
-
+        // made latest the default index
+        /*
         public ActionResult ByLatest(string searchString)
         {
             var libOrders = Repo.SortOrdersByLatest();
@@ -545,7 +566,7 @@ namespace PizzaApp.WebApp.Controllers
 
             return View(webOrders);
         }
-
+        */
         public ActionResult ByCheapest(string searchString)
         {
             var libOrders = Repo.SortOrdersByCheapest();

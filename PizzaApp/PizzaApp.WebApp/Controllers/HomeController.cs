@@ -46,7 +46,7 @@ namespace PizzaApp.WebApp.Controllers
                     int searchedUserId = 0;
                     bool found = false;
 
-                    if(login.FirstName == "MamaAdmin" && login.LastName == "Password123")
+                    if(login.FirstName == "Admin" && login.LastName == "Mama")
                     {
                         return RedirectToAction(nameof(Index), "Home/Admin");
                     }
@@ -64,8 +64,9 @@ namespace PizzaApp.WebApp.Controllers
                             {
                                 var latestOrder = Repo.GetOrderById((int)user.LatestOrderId);
                                 TempData["LatestPizzaCount"] = latestOrder.CountPizzas();
+                                TempData["LatestOrderTime"] = latestOrder.DateTime;
+                                TempData["LatestOrderLocation"] = latestOrder.LocationId;
                             }
-                            else TempData["LatestPizzaCount"] = 0;
                         }
                     }
                     if (!found)

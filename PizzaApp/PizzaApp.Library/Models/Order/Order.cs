@@ -30,6 +30,7 @@ namespace PizzaApp.Library
         public string LocationName { get; set; }
         public decimal OrderPriceLimit { get; set; } = 500.00m;
         public int OrderPizzaLimit { get; set; } = 12;
+        public double OrderHourLimit { get; set; } = 2.0;
         public List<Pizza> PizzaList { get; set; } = new List<Pizza>();
 
         // constructors
