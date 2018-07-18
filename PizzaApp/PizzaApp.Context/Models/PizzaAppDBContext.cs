@@ -23,7 +23,7 @@ namespace PizzaApp.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+            // put connection string in secrets.json
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
