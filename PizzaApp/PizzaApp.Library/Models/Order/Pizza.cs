@@ -19,7 +19,9 @@ namespace PizzaApp.Library
         public Topping Topping4 { get; set; } = new Topping();
         public Topping Topping5 { get; set; } = new Topping();
         public Topping Topping6 { get; set; } = new Topping();
-        public List<IIngredient> PizzaComposition = new List<IIngredient>();
+        public List<IIngredient> PizzaComposition { get => pizzaComposition; set => pizzaComposition = value; }
+
+        private List<IIngredient> pizzaComposition = new List<IIngredient>();
 
         // constructors
         public Pizza()
