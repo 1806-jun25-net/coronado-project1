@@ -64,104 +64,84 @@ namespace PizzaApp.Library
         {
             bool check = true;
 
-            string iName;            
+            string iName;
             iName = ingredient.IngredientInventoryName;
-
-            if (iName == "Dough")
+            switch (iName)
             {
-                if (Dough <= 0) check = false;
-            }
-            else if (iName == "Tomato Sauce")
-            {
-                if (TomatoSauce <= 0) check = false;
-            }
-            else if (iName == "White Sauce")
-            {
-                if (WhiteSauce <= 0) check = false;
-            }
-            else if (iName == "Cheese")
-            {
-                if (Cheese <= 0) check = false;
-            }
-            else if (iName == "Pepperoni")
-            {
-                if (Pepperoni <= 0) check = false;
-            }
-            else if (iName == "Ham")
-            {
-                if (Ham <= 0) check = false;
-            }
-            else if (iName == "Chicken")
-            {
-                if (Chicken <= 0) check = false;
-            }
-            else if (iName == "Beef")
-            {
-                if (Beef <= 0) check = false;
-            }
-            else if (iName == "Sausage")
-            {
-                if (Sausage <= 0) check = false;
-            }
-            else if (iName == "Bacon")
-            {
-                if (Bacon <= 0) check = false;
-            }
-            else if (iName == "Anchovies")
-            {
-                if (Anchovies <= 0) check = false;
-            }
-            else if (iName == "Red Peppers")
-            {
-                if (RedPeppers <= 0) check = false;
-            }
-            else if (iName == "Green Peppers")
-            {
-                if (GreenPeppers <= 0) check = false;
-            }
-            else if (iName == "Pineapple")
-            {
-                if (Pineapple <= 0) check = false;
-            }
-            else if (iName == "Olives")
-            {
-                if (Olives <= 0) check = false;
-            }
-            else if (iName == "Mushrooms")
-            {
-                if (Mushrooms <= 0) check = false;
-            }
-            else if (iName == "Garlic")
-            {
-                if (Garlic <= 0) check = false;
-            }
-            else if (iName == "Onions")
-            {
-                if (Onions <= 0) check = false;
-            }
-            else if (iName == "Tomatoes")
-            {
-                if (Tomatoes <= 0) check = false;
-            }
-            else if (iName == "Spinach")
-            {
-                if (Spinach <= 0) check = false;
-            }
-            else if (iName == "Basil")
-            {
-                if (Basil <= 0) check = false;
-            }
-            else if (iName == "Ricotta")
-            {
-                if (Ricotta <= 0) check = false;
-            }
-            else if (iName == "Parmesan")
-            {
-                if (Parmesan <= 0) check = false;
-            }
-            else if (iName == "Feta")
-            {
-                if (Feta <= 0) check = false;
+                case "Dough":
+                    if (Dough <= 0) check = false;
+                    break;
+                case "Tomato Sauce":
+                    if (TomatoSauce <= 0) check = false;
+                    break;
+                case "White Sauce":
+                    if (WhiteSauce <= 0) check = false;
+                    break;
+                case "Cheese":
+                    if (Cheese <= 0) check = false;
+                    break;
+                case "Pepperoni":
+                    if (Pepperoni <= 0) check = false;
+                    break;
+                case "Ham":
+                    if (Ham <= 0) check = false;
+                    break;
+                case "Chicken":
+                    if (Chicken <= 0) check = false;
+                    break;
+                case "Beef":
+                    if (Beef <= 0) check = false;
+                    break;
+                case "Sausage":
+                    if (Sausage <= 0) check = false;
+                    break;
+                case "Bacon":
+                    if (Bacon <= 0) check = false;
+                    break;
+                case "Anchovies":
+                    if (Anchovies <= 0) check = false;
+                    break;
+                case "Red Peppers":
+                    if (RedPeppers <= 0) check = false;
+                    break;
+                case "Green Peppers":
+                    if (GreenPeppers <= 0) check = false;
+                    break;
+                case "Pineapple":
+                    if (Pineapple <= 0) check = false;
+                    break;
+                case "Olives":
+                    if (Olives <= 0) check = false;
+                    break;
+                case "Mushrooms":
+                    if (Mushrooms <= 0) check = false;
+                    break;
+                case "Garlic":
+                    if (Garlic <= 0) check = false;
+                    break;
+                case "Onions":
+                    if (Onions <= 0) check = false;
+                    break;
+                case "Tomatoes":
+                    if (Tomatoes <= 0) check = false;
+                    break;
+                case "Spinach":
+                    if (Spinach <= 0) check = false;
+                    break;
+                case "Basil":
+                    if (Basil <= 0) check = false;
+                    break;
+                case "Ricotta":
+                    if (Ricotta <= 0) check = false;
+                    break;
+                case "Parmesan":
+                    if (Parmesan <= 0) check = false;
+                    break;
+                case "Feta":
+                    if (Feta <= 0) check = false;
+                    break;
+                default:
+                    break;
             }
 
             return check;
@@ -173,101 +153,82 @@ namespace PizzaApp.Library
             double iCost;
             iName = ingredient.IngredientInventoryName;
             iCost = ingredient.IngredientInventoryCost;
-            if (iName == "Dough")
+            switch (iName)
             {
-                Dough -= iCost;
-            }
-            else if (iName == "Tomato Sauce")
-            {
-                TomatoSauce -= iCost;
-            }
-            else if (iName == "White Sauce")
-            {
-                WhiteSauce -= iCost;
-            }
-            else if (iName == "Cheese")
-            {
-                Cheese -= iCost;
-            }
-            else if (iName == "Pepperoni")
-            {
-                Pepperoni -= iCost;
-            }
-            else if (iName == "Ham")
-            {
-                Ham -= iCost;
-            }
-            else if (iName == "Chicken")
-            {
-                Chicken -= iCost;
-            }
-            else if (iName == "Beef")
-            {
-                Beef -= iCost;
-            }
-            else if (iName == "Sausage")
-            {
-                Sausage -= iCost;
-            }
-            else if (iName == "Bacon")
-            {
-                Bacon -= iCost;
-            }
-            else if (iName == "Anchovies")
-            {
-                Anchovies -= iCost;
-            }
-            else if (iName == "Red Peppers")
-            {
-                RedPeppers -= iCost;
-            }
-            else if (iName == "Green Peppers")
-            {
-                GreenPeppers -= iCost;
-            }
-            else if (iName == "Pineapple")
-            {
-                Pineapple -= iCost;
-            }
-            else if (iName == "Olives")
-            {
-                Olives -= iCost;
-            }
-            else if (iName == "Mushrooms")
-            {
-                Mushrooms -= iCost;
-            }
-            else if (iName == "Garlic")
-            {
-                Garlic -= iCost;
-            }
-            else if (iName == "Onions")
-            {
-                Onions -= iCost;
-            }
-            else if (iName == "Tomatoes")
-            {
-                Tomatoes -= iCost;
-            }
-            else if (iName == "Spinach")
-            {
-                Spinach -= iCost;
-            }
-            else if (iName == "Basil")
-            {
-                Basil -= iCost;
-            }
-            else if (iName == "Ricotta")
-            {
-                Ricotta -= iCost;
-            }
-            else if (iName == "Parmesan")
-            {
-                Parmesan -= iCost;
-            }
-            else if (iName == "Feta")
-            {
-                Feta -= iCost;
+                case "Dough":
+                    Dough -= iCost;
+                    break;
+                case "Tomato Sauce":
+                    TomatoSauce -= iCost;
+                    break;
+                case "White Sauce":
+                    WhiteSauce -= iCost;
+                    break;
+                case "Cheese":
+                    Cheese -= iCost;
+                    break;
+                case "Pepperoni":
+                    Pepperoni -= iCost;
+                    break;
+                case "Ham":
+                    Ham -= iCost;
+                    break;
+                case "Chicken":
+                    Chicken -= iCost;
+                    break;
+                case "Beef":
+                    Beef -= iCost;
+                    break;
+                case "Sausage":
+                    Sausage -= iCost;
+                    break;
+                case "Bacon":
+                    Bacon -= iCost;
+                    break;
+                case "Anchovies":
+                    Anchovies -= iCost;
+                    break;
+                case "Red Peppers":
+                    RedPeppers -= iCost;
+                    break;
+                case "Green Peppers":
+                    GreenPeppers -= iCost;
+                    break;
+                case "Pineapple":
+                    Pineapple -= iCost;
+                    break;
+                case "Olives":
+                    Olives -= iCost;
+                    break;
+                case "Mushrooms":
+                    Mushrooms -= iCost;
+                    break;
+                case "Garlic":
+                    Garlic -= iCost;
+                    break;
+                case "Onions":
+                    Onions -= iCost;
+                    break;
+                case "Tomatoes":
+                    Tomatoes -= iCost;
+                    break;
+                case "Spinach":
+                    Spinach -= iCost;
+                    break;
+                case "Basil":
+                    Basil -= iCost;
+                    break;
+                case "Ricotta":
+                    Ricotta -= iCost;
+                    break;
+                case "Parmesan":
+                    Parmesan -= iCost;
+                    break;
+                case "Feta":
+                    Feta -= iCost;
+                    break;
+                default:
+                    break;
             }
         }
 
