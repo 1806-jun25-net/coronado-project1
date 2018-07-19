@@ -18,4 +18,8 @@
     <ProjectReference Include="..\PizzaApp.Library\PizzaApp.Library.csproj" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <DebugType>Full</DebugType>
+  </PropertyGroup>
+
 </Project>
