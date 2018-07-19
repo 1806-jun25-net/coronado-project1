@@ -23,73 +23,18 @@ namespace PizzaApp.WebApp.Controllers
         // GET: Inventory
         public ActionResult Index()
         {
-            var libInventorys = Repo.GetInventories();
-            var webInventorys = libInventorys.Select(x => new Inventory
-            {
-                Id = x.Id,
-                LocationId = x.LocationId,
-                Dough = x.Dough,
-                TomatoSauce = x.TomatoSauce,
-                WhiteSauce = x.WhiteSauce,
-                Cheese = x.Cheese,
-                Pepperoni = x.Pepperoni,
-                Ham = x.Ham,
-                Chicken = x.Chicken,
-                Beef = x.Beef,
-                Sausage = x.Sausage,
-                Bacon = x.Bacon,
-                Anchovies = x.Anchovies,
-                RedPeppers = x.RedPeppers,
-                GreenPeppers = x.GreenPeppers,
-                Pineapple = x.Pineapple,
-                Olives = x.Olives,
-                Mushrooms = x.Mushrooms,
-                Garlic = x.Garlic,
-                Onions = x.Onions,
-                Tomatoes = x.Tomatoes,
-                Spinach = x.Spinach,
-                Basil = x.Basil,
-                Ricotta = x.Ricotta,
-                Parmesan = x.Parmesan,
-                Feta = x.Feta
-            });
+            var libInventories = Repo.GetInventories();
+            var webInventories = ConvertModel(libInventories);
 
-            return View(webInventorys);
+            return View(webInventories);
         }
 
         // GET: Inventory/Details/5
         public ActionResult Details(int id)
         {
             var libInventory = Repo.GetInventoryById(id);
-            var webInventory = new Inventory
-            {
-                Id = libInventory.Id,
-                LocationId = libInventory.LocationId,
-                Dough = libInventory.Dough,
-                TomatoSauce = libInventory.TomatoSauce,
-                WhiteSauce = libInventory.WhiteSauce,
-                Cheese = libInventory.Cheese,
-                Pepperoni = libInventory.Pepperoni,
-                Ham = libInventory.Ham,
-                Chicken = libInventory.Chicken,
-                Beef = libInventory.Beef,
-                Sausage = libInventory.Sausage,
-                Bacon = libInventory.Bacon,
-                Anchovies = libInventory.Anchovies,
-                RedPeppers = libInventory.RedPeppers,
-                GreenPeppers = libInventory.GreenPeppers,
-                Pineapple = libInventory.Pineapple,
-                Olives = libInventory.Olives,
-                Mushrooms = libInventory.Mushrooms,
-                Garlic = libInventory.Garlic,
-                Onions = libInventory.Onions,
-                Tomatoes = libInventory.Tomatoes,
-                Spinach = libInventory.Spinach,
-                Basil = libInventory.Basil,
-                Ricotta = libInventory.Ricotta,
-                Parmesan = libInventory.Parmesan,
-                Feta = libInventory.Feta
-            };
+            var webInventory = ConvertModel(libInventory);
+
             return View(webInventory);
         }
 
@@ -110,34 +55,7 @@ namespace PizzaApp.WebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    Repo.AddInventory(new Library.Inventory
-                    {
-                        LocationId = inventory.LocationId,
-                        Dough = inventory.Dough,
-                        TomatoSauce = inventory.TomatoSauce,
-                        WhiteSauce = inventory.WhiteSauce,
-                        Cheese = inventory.Cheese,
-                        Pepperoni = inventory.Pepperoni,
-                        Ham = inventory.Ham,
-                        Chicken = inventory.Chicken,
-                        Beef = inventory.Beef,
-                        Sausage = inventory.Sausage,
-                        Bacon = inventory.Bacon,
-                        Anchovies = inventory.Anchovies,
-                        RedPeppers = inventory.RedPeppers,
-                        GreenPeppers = inventory.GreenPeppers,
-                        Pineapple = inventory.Pineapple,
-                        Olives = inventory.Olives,
-                        Mushrooms = inventory.Mushrooms,
-                        Garlic = inventory.Garlic,
-                        Onions = inventory.Onions,
-                        Tomatoes = inventory.Tomatoes,
-                        Spinach = inventory.Spinach,
-                        Basil = inventory.Basil,
-                        Ricotta = inventory.Ricotta,
-                        Parmesan = inventory.Parmesan,
-                        Feta = inventory.Feta
-                    });
+                    Repo.AddInventory(ConvertModel(inventory));
                     Repo.Save();
 
                     return RedirectToAction(nameof(Index));
@@ -155,35 +73,7 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult Edit(int id)
         {
             var libInventory = Repo.GetInventoryById(id);
-            var webInventory = new Inventory
-            {
-                Id = libInventory.Id,
-                LocationId = libInventory.LocationId,
-                Dough = libInventory.Dough,
-                TomatoSauce = libInventory.TomatoSauce,
-                WhiteSauce = libInventory.WhiteSauce,
-                Cheese = libInventory.Cheese,
-                Pepperoni = libInventory.Pepperoni,
-                Ham = libInventory.Ham,
-                Chicken = libInventory.Chicken,
-                Beef = libInventory.Beef,
-                Sausage = libInventory.Sausage,
-                Bacon = libInventory.Bacon,
-                Anchovies = libInventory.Anchovies,
-                RedPeppers = libInventory.RedPeppers,
-                GreenPeppers = libInventory.GreenPeppers,
-                Pineapple = libInventory.Pineapple,
-                Olives = libInventory.Olives,
-                Mushrooms = libInventory.Mushrooms,
-                Garlic = libInventory.Garlic,
-                Onions = libInventory.Onions,
-                Tomatoes = libInventory.Tomatoes,
-                Spinach = libInventory.Spinach,
-                Basil = libInventory.Basil,
-                Ricotta = libInventory.Ricotta,
-                Parmesan = libInventory.Parmesan,
-                Feta = libInventory.Feta
-            };
+            var webInventory = ConvertModel(libInventory);
             return View(webInventory);
         }
 
@@ -198,35 +88,7 @@ namespace PizzaApp.WebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var libInventory = new Library.Inventory
-                    {
-                        Id = id,
-                        LocationId = inventory.LocationId,
-                        Dough = inventory.Dough,
-                        TomatoSauce = inventory.TomatoSauce,
-                        WhiteSauce = inventory.WhiteSauce,
-                        Cheese = inventory.Cheese,
-                        Pepperoni = inventory.Pepperoni,
-                        Ham = inventory.Ham,
-                        Chicken = inventory.Chicken,
-                        Beef = inventory.Beef,
-                        Sausage = inventory.Sausage,
-                        Bacon = inventory.Bacon,
-                        Anchovies = inventory.Anchovies,
-                        RedPeppers = inventory.RedPeppers,
-                        GreenPeppers = inventory.GreenPeppers,
-                        Pineapple = inventory.Pineapple,
-                        Olives = inventory.Olives,
-                        Mushrooms = inventory.Mushrooms,
-                        Garlic = inventory.Garlic,
-                        Onions = inventory.Onions,
-                        Tomatoes = inventory.Tomatoes,
-                        Spinach = inventory.Spinach,
-                        Basil = inventory.Basil,
-                        Ricotta = inventory.Ricotta,
-                        Parmesan = inventory.Parmesan,
-                        Feta = inventory.Feta
-                    };
+                    var libInventory = ConvertModel(inventory);
                     Repo.UpdateInventory(libInventory);
                     Repo.Save();
 
@@ -244,35 +106,7 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult Delete(int id)
         {
             var libInventory = Repo.GetInventoryById(id);
-            var webInventory = new Inventory
-            {
-                Id = libInventory.Id,
-                LocationId = libInventory.LocationId,
-                Dough = libInventory.Dough,
-                TomatoSauce = libInventory.TomatoSauce,
-                WhiteSauce = libInventory.WhiteSauce,
-                Cheese = libInventory.Cheese,
-                Pepperoni = libInventory.Pepperoni,
-                Ham = libInventory.Ham,
-                Chicken = libInventory.Chicken,
-                Beef = libInventory.Beef,
-                Sausage = libInventory.Sausage,
-                Bacon = libInventory.Bacon,
-                Anchovies = libInventory.Anchovies,
-                RedPeppers = libInventory.RedPeppers,
-                GreenPeppers = libInventory.GreenPeppers,
-                Pineapple = libInventory.Pineapple,
-                Olives = libInventory.Olives,
-                Mushrooms = libInventory.Mushrooms,
-                Garlic = libInventory.Garlic,
-                Onions = libInventory.Onions,
-                Tomatoes = libInventory.Tomatoes,
-                Spinach = libInventory.Spinach,
-                Basil = libInventory.Basil,
-                Ricotta = libInventory.Ricotta,
-                Parmesan = libInventory.Parmesan,
-                Feta = libInventory.Feta
-            };
+            var webInventory = ConvertModel(libInventory);
             return View(webInventory);
         }
 
@@ -298,35 +132,7 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult Restock(int id)
         {
             var libInventory = Repo.GetInventoryById(id);
-            var webInventory = new Inventory
-            {
-                Id = libInventory.Id,
-                LocationId = libInventory.LocationId,
-                Dough = libInventory.Dough,
-                TomatoSauce = libInventory.TomatoSauce,
-                WhiteSauce = libInventory.WhiteSauce,
-                Cheese = libInventory.Cheese,
-                Pepperoni = libInventory.Pepperoni,
-                Ham = libInventory.Ham,
-                Chicken = libInventory.Chicken,
-                Beef = libInventory.Beef,
-                Sausage = libInventory.Sausage,
-                Bacon = libInventory.Bacon,
-                Anchovies = libInventory.Anchovies,
-                RedPeppers = libInventory.RedPeppers,
-                GreenPeppers = libInventory.GreenPeppers,
-                Pineapple = libInventory.Pineapple,
-                Olives = libInventory.Olives,
-                Mushrooms = libInventory.Mushrooms,
-                Garlic = libInventory.Garlic,
-                Onions = libInventory.Onions,
-                Tomatoes = libInventory.Tomatoes,
-                Spinach = libInventory.Spinach,
-                Basil = libInventory.Basil,
-                Ricotta = libInventory.Ricotta,
-                Parmesan = libInventory.Parmesan,
-                Feta = libInventory.Feta
-            };
+            var webInventory = ConvertModel(libInventory);
             return View(webInventory);
         }
 
@@ -381,6 +187,107 @@ namespace PizzaApp.WebApp.Controllers
             {
                 return View(inventory);
             }
+        }
+
+        private IEnumerable<Inventory> ConvertModel(IEnumerable<Library.Inventory> libInventories)
+        {
+            var webInventories = libInventories.Select(x => new Inventory
+            {
+                Id = x.Id,
+                LocationId = x.LocationId,
+                Dough = x.Dough,
+                TomatoSauce = x.TomatoSauce,
+                WhiteSauce = x.WhiteSauce,
+                Cheese = x.Cheese,
+                Pepperoni = x.Pepperoni,
+                Ham = x.Ham,
+                Chicken = x.Chicken,
+                Beef = x.Beef,
+                Sausage = x.Sausage,
+                Bacon = x.Bacon,
+                Anchovies = x.Anchovies,
+                RedPeppers = x.RedPeppers,
+                GreenPeppers = x.GreenPeppers,
+                Pineapple = x.Pineapple,
+                Olives = x.Olives,
+                Mushrooms = x.Mushrooms,
+                Garlic = x.Garlic,
+                Onions = x.Onions,
+                Tomatoes = x.Tomatoes,
+                Spinach = x.Spinach,
+                Basil = x.Basil,
+                Ricotta = x.Ricotta,
+                Parmesan = x.Parmesan,
+                Feta = x.Feta
+            });
+            return webInventories;
+        }
+
+        private Inventory ConvertModel(Library.Inventory libInventory)
+        {
+            var webInventory = new Inventory
+            {
+                Id = libInventory.Id,
+                LocationId = libInventory.LocationId,
+                Dough = libInventory.Dough,
+                TomatoSauce = libInventory.TomatoSauce,
+                WhiteSauce = libInventory.WhiteSauce,
+                Cheese = libInventory.Cheese,
+                Pepperoni = libInventory.Pepperoni,
+                Ham = libInventory.Ham,
+                Chicken = libInventory.Chicken,
+                Beef = libInventory.Beef,
+                Sausage = libInventory.Sausage,
+                Bacon = libInventory.Bacon,
+                Anchovies = libInventory.Anchovies,
+                RedPeppers = libInventory.RedPeppers,
+                GreenPeppers = libInventory.GreenPeppers,
+                Pineapple = libInventory.Pineapple,
+                Olives = libInventory.Olives,
+                Mushrooms = libInventory.Mushrooms,
+                Garlic = libInventory.Garlic,
+                Onions = libInventory.Onions,
+                Tomatoes = libInventory.Tomatoes,
+                Spinach = libInventory.Spinach,
+                Basil = libInventory.Basil,
+                Ricotta = libInventory.Ricotta,
+                Parmesan = libInventory.Parmesan,
+                Feta = libInventory.Feta
+            };
+            return webInventory;
+        }
+
+        private Library.Inventory ConvertModel(Inventory inventory)
+        {
+            var libInventory = new Library.Inventory
+            {
+                LocationId = inventory.LocationId,
+                Dough = inventory.Dough,
+                TomatoSauce = inventory.TomatoSauce,
+                WhiteSauce = inventory.WhiteSauce,
+                Cheese = inventory.Cheese,
+                Pepperoni = inventory.Pepperoni,
+                Ham = inventory.Ham,
+                Chicken = inventory.Chicken,
+                Beef = inventory.Beef,
+                Sausage = inventory.Sausage,
+                Bacon = inventory.Bacon,
+                Anchovies = inventory.Anchovies,
+                RedPeppers = inventory.RedPeppers,
+                GreenPeppers = inventory.GreenPeppers,
+                Pineapple = inventory.Pineapple,
+                Olives = inventory.Olives,
+                Mushrooms = inventory.Mushrooms,
+                Garlic = inventory.Garlic,
+                Onions = inventory.Onions,
+                Tomatoes = inventory.Tomatoes,
+                Spinach = inventory.Spinach,
+                Basil = inventory.Basil,
+                Ricotta = inventory.Ricotta,
+                Parmesan = inventory.Parmesan,
+                Feta = inventory.Feta
+            };
+            return libInventory;
         }
 
     }

@@ -42,36 +42,11 @@ namespace PizzaApp.WebApp.Controllers
             return webOrders;
         }
 
-        private IEnumerable<Order> ConvertToWebModel(IEnumerable<Library.Order> libOrders)
-        {
-            var webOrders = libOrders.Select(x => new Order
-            {
-                Id = x.Id,
-                UserId = x.UserId,
-                LocationId = x.LocationId,
-                DateTime = x.DateTime,
-                Price = x.Price,
-                PizzaId1 = x.PizzaId1,
-                PizzaId2 = x.PizzaId2,
-                PizzaId3 = x.PizzaId3,
-                PizzaId4 = x.PizzaId4,
-                PizzaId5 = x.PizzaId5,
-                PizzaId6 = x.PizzaId6,
-                PizzaId7 = x.PizzaId7,
-                PizzaId8 = x.PizzaId8,
-                PizzaId9 = x.PizzaId9,
-                PizzaId10 = x.PizzaId10,
-                PizzaId11 = x.PizzaId11,
-                PizzaId12 = x.PizzaId12
-            });
-            return webOrders;
-        }
-
         // GET: Order
         public ActionResult Index(string searchString)
         {
             var libOrders = Repo.SortOrdersByLatest();
-            var webOrders = ConvertToWebModel(libOrders);
+            var webOrders = ConvertModel(libOrders);
             webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
@@ -81,26 +56,7 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult Details(int id)
         {
             var libOrder = Repo.GetOrderById(id);
-            var webOrder = new Order
-            {
-                Id = libOrder.Id,
-                UserId = libOrder.UserId,
-                LocationId = libOrder.LocationId,
-                DateTime = libOrder.DateTime,
-                Price = libOrder.Price,
-                PizzaId1 = libOrder.PizzaId1,
-                PizzaId2 = libOrder.PizzaId2,
-                PizzaId3 = libOrder.PizzaId3,
-                PizzaId4 = libOrder.PizzaId4,
-                PizzaId5 = libOrder.PizzaId5,
-                PizzaId6 = libOrder.PizzaId6,
-                PizzaId7 = libOrder.PizzaId7,
-                PizzaId8 = libOrder.PizzaId8,
-                PizzaId9 = libOrder.PizzaId9,
-                PizzaId10 = libOrder.PizzaId10,
-                PizzaId11 = libOrder.PizzaId11,
-                PizzaId12 = libOrder.PizzaId12
-            };
+            var webOrder = ConvertModel(libOrder);
             return View(webOrder);
         }
 
@@ -126,8 +82,8 @@ namespace PizzaApp.WebApp.Controllers
                     var newOrderId = lastOrderId + 1;
 
                     var userId = int.Parse(TempData["userId"].ToString());
-                    var thisUser = Repo.GetUserById(userId);                  
-                    
+                    var thisUser = Repo.GetUserById(userId);
+
                     var latestTime = DateTime.Parse(TempData["LatestOrderTime"].ToString());
                     var latestLocation = int.Parse(TempData["LatestOrderLocation"].ToString());
 
@@ -163,127 +119,18 @@ namespace PizzaApp.WebApp.Controllers
                     var lastId = libPizzas.Last().Id;
                     var pizzaList = new List<Library.Pizza>();
                     for (int i = 1; i <= order.PizzaCount; i++)
-                    {                        
+                    {
                         // create random pizzas
                         var random = new Random();
                         var randomChoice = random.Next(6);
-                        var newPizza = new Library.Pizza();
-                        switch (randomChoice)
-                        {
-                            case 0:
-                                newPizza = new Library.Pizza
-                                {
-                                    Crust = new Crust(),
-                                    Sauce = new Sauce(),
-                                    Cheese = new Cheese(),
-                                    Topping1 = new Topping(""),
-                                    Topping2 = new Topping(""),
-                                    Topping3 = new Topping(""),
-                                    Topping4 = new Topping(""),
-                                    Topping5 = new Topping(""),
-                                    Topping6 = new Topping("")
-                                };
-                                break;
-                            case 1:
-                                newPizza = new Library.Pizza
-                                {
-                                    Crust = new Crust(),
-                                    Sauce = new Sauce(),
-                                    Cheese = new Cheese(),
-                                    Topping1 = new Topping(),
-                                    Topping2 = new Topping(""),
-                                    Topping3 = new Topping(""),
-                                    Topping4 = new Topping(""),
-                                    Topping5 = new Topping(""),
-                                    Topping6 = new Topping("")
-                                };
-                                break;
-                            case 2:
-                                newPizza = new Library.Pizza
-                                {
-                                    Crust = new Crust(),
-                                    Sauce = new Sauce(),
-                                    Cheese = new Cheese(),
-                                    Topping1 = new Topping(),
-                                    Topping2 = new Topping(),
-                                    Topping3 = new Topping(""),
-                                    Topping4 = new Topping(""),
-                                    Topping5 = new Topping(""),
-                                    Topping6 = new Topping("")
-                                };
-                                break;
-                            case 3:
-                                newPizza = new Library.Pizza
-                                {
-                                    Crust = new Crust(),
-                                    Sauce = new Sauce(),
-                                    Cheese = new Cheese(),
-                                    Topping1 = new Topping(),
-                                    Topping2 = new Topping(),
-                                    Topping3 = new Topping(),
-                                    Topping4 = new Topping(""),
-                                    Topping5 = new Topping(""),
-                                    Topping6 = new Topping("")
-                                };
-                                break;
-                            case 4:
-                                newPizza = new Library.Pizza
-                                {
-                                    Crust = new Crust(),
-                                    Sauce = new Sauce(),
-                                    Cheese = new Cheese(),
-                                    Topping1 = new Topping(),
-                                    Topping2 = new Topping(),
-                                    Topping3 = new Topping(),
-                                    Topping4 = new Topping(),
-                                    Topping5 = new Topping(""),
-                                    Topping6 = new Topping("")
-                                };
-                                break;
-                            case 5:
-                                newPizza = new Library.Pizza
-                                {
-                                    Crust = new Crust(),
-                                    Sauce = new Sauce(),
-                                    Cheese = new Cheese(),
-                                    Topping1 = new Topping(),
-                                    Topping2 = new Topping(),
-                                    Topping3 = new Topping(),
-                                    Topping4 = new Topping(),
-                                    Topping5 = new Topping(),
-                                    Topping6 = new Topping("")
-                                };
-                                break;
-                            case 6:
-                                newPizza = new Library.Pizza
-                                {
-                                    Crust = new Crust(),
-                                    Sauce = new Sauce(),
-                                    Cheese = new Cheese(),
-                                    Topping1 = new Topping(),
-                                    Topping2 = new Topping(),
-                                    Topping3 = new Topping(),
-                                    Topping4 = new Topping(),
-                                    Topping5 = new Topping(),
-                                    Topping6 = new Topping()
-                                };
-                                break;
-                            default:
-                                newPizza = new Library.Pizza
-                                {
-                                    Crust = new Crust(),
-                                    Sauce = new Sauce(),
-                                    Cheese = new Cheese()
-                                };
-                                break;
-                        }
-                        
+                        var newPizza = CreateRandomPizza(randomChoice);
+
                         newPizza.BuildPizza();
                         Repo.AddPizza(newPizza);
                         Repo.Save();
                         newPizza.Id = lastId + i;
-                        
-                        pizzaList.Add(newPizza);                        
+
+                        pizzaList.Add(newPizza);
                         newOrder.AddPizza(newPizza);
                     }
                     newOrder.ProcessPizzaList(pizzaList);
@@ -317,7 +164,7 @@ namespace PizzaApp.WebApp.Controllers
                     // If check passes, add order to database
                     Repo.AddOrder(newOrder);
                     Repo.Save();
-                    
+
                     // Get the appropriate inventory
                     var libInventories = Repo.GetInventories().ToList();
                     var currentInventory = new Library.Inventory();
@@ -338,13 +185,13 @@ namespace PizzaApp.WebApp.Controllers
                                 currentInventory.DeductInventoryCount(ingredient);
                             }
                             else inventoryCheck = false;
-                            
+
                         }
                     }
                     if (inventoryCheck == false)
                     {
                         TempData["ErrorMessage"] = "That location does not have sufficient inventory to complete your order.";
-                        return RedirectToAction(nameof(Index), "Order/Error");                        
+                        return RedirectToAction(nameof(Index), "Order/Error");
                     }
 
                     // If check passes, update inventory in database
@@ -386,26 +233,7 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult Edit(int id)
         {
             var libOrder = Repo.GetOrderById(id);
-            var webOrder = new Order
-            {
-                Id = libOrder.Id,
-                UserId = libOrder.UserId,
-                LocationId = libOrder.LocationId,
-                DateTime = libOrder.DateTime,
-                Price = libOrder.Price,
-                PizzaId1 = libOrder.PizzaId1,
-                PizzaId2 = libOrder.PizzaId2,
-                PizzaId3 = libOrder.PizzaId3,
-                PizzaId4 = libOrder.PizzaId4,
-                PizzaId5 = libOrder.PizzaId5,
-                PizzaId6 = libOrder.PizzaId6,
-                PizzaId7 = libOrder.PizzaId7,
-                PizzaId8 = libOrder.PizzaId8,
-                PizzaId9 = libOrder.PizzaId9,
-                PizzaId10 = libOrder.PizzaId10,
-                PizzaId11 = libOrder.PizzaId11,
-                PizzaId12 = libOrder.PizzaId12
-            };
+            var webOrder = ConvertModel(libOrder);
             return View(webOrder);
         }
 
@@ -420,26 +248,7 @@ namespace PizzaApp.WebApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var libOrder = new Library.Order
-                    {
-                        Id = id,
-                        UserId = order.UserId,
-                        LocationId = order.LocationId,
-                        DateTime = order.DateTime,
-                        Price = order.Price,
-                        PizzaId1 = order.PizzaId1,
-                        PizzaId2 = order.PizzaId2,
-                        PizzaId3 = order.PizzaId3,
-                        PizzaId4 = order.PizzaId4,
-                        PizzaId5 = order.PizzaId5,
-                        PizzaId6 = order.PizzaId6,
-                        PizzaId7 = order.PizzaId7,
-                        PizzaId8 = order.PizzaId8,
-                        PizzaId9 = order.PizzaId9,
-                        PizzaId10 = order.PizzaId10,
-                        PizzaId11 = order.PizzaId11,
-                        PizzaId12 = order.PizzaId12
-                    };
+                    var libOrder = ConvertModel(id, order);
                     Repo.UpdateOrder(libOrder);
                     Repo.Save();
 
@@ -457,26 +266,7 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult Delete(int id)
         {
             var libOrder = Repo.GetOrderById(id);
-            var webOrder = new Order
-            {
-                Id = libOrder.Id,
-                UserId = libOrder.UserId,
-                LocationId = libOrder.LocationId,
-                DateTime = libOrder.DateTime,
-                Price = libOrder.Price,
-                PizzaId1 = libOrder.PizzaId1,
-                PizzaId2 = libOrder.PizzaId2,
-                PizzaId3 = libOrder.PizzaId3,
-                PizzaId4 = libOrder.PizzaId4,
-                PizzaId5 = libOrder.PizzaId5,
-                PizzaId6 = libOrder.PizzaId6,
-                PizzaId7 = libOrder.PizzaId7,
-                PizzaId8 = libOrder.PizzaId8,
-                PizzaId9 = libOrder.PizzaId9,
-                PizzaId10 = libOrder.PizzaId10,
-                PizzaId11 = libOrder.PizzaId11,
-                PizzaId12 = libOrder.PizzaId12
-            };
+            var webOrder = ConvertModel(libOrder);
             return View(webOrder);
         }
 
@@ -502,7 +292,7 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByEarliest(string searchString)
         {
             var libOrders = Repo.SortOrdersByEarliest();
-            var webOrders = ConvertToWebModel(libOrders);
+            var webOrders = ConvertModel(libOrders);
             webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
@@ -521,7 +311,7 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByCheapest(string searchString)
         {
             var libOrders = Repo.SortOrdersByCheapest();
-            var webOrders = ConvertToWebModel(libOrders);
+            var webOrders = ConvertModel(libOrders);
             webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
@@ -530,10 +320,200 @@ namespace PizzaApp.WebApp.Controllers
         public ActionResult ByMostExpensive(string searchString)
         {
             var libOrders = Repo.SortOrdersByMostExpensive();
-            var webOrders = ConvertToWebModel(libOrders);
+            var webOrders = ConvertModel(libOrders);
             webOrders = CheckSearchString(searchString, webOrders);
 
             return View(webOrders);
+        }
+
+        private IEnumerable<Order> ConvertModel(IEnumerable<Library.Order> libOrders)
+        {
+            var webOrders = libOrders.Select(x => new Order
+            {
+                Id = x.Id,
+                UserId = x.UserId,
+                LocationId = x.LocationId,
+                DateTime = x.DateTime,
+                Price = x.Price,
+                PizzaId1 = x.PizzaId1,
+                PizzaId2 = x.PizzaId2,
+                PizzaId3 = x.PizzaId3,
+                PizzaId4 = x.PizzaId4,
+                PizzaId5 = x.PizzaId5,
+                PizzaId6 = x.PizzaId6,
+                PizzaId7 = x.PizzaId7,
+                PizzaId8 = x.PizzaId8,
+                PizzaId9 = x.PizzaId9,
+                PizzaId10 = x.PizzaId10,
+                PizzaId11 = x.PizzaId11,
+                PizzaId12 = x.PizzaId12
+            });
+            return webOrders;
+        }
+
+        private Order ConvertModel(Library.Order libOrder)
+        {
+            var webOrder = new Order
+            {
+                Id = libOrder.Id,
+                UserId = libOrder.UserId,
+                LocationId = libOrder.LocationId,
+                DateTime = libOrder.DateTime,
+                Price = libOrder.Price,
+                PizzaId1 = libOrder.PizzaId1,
+                PizzaId2 = libOrder.PizzaId2,
+                PizzaId3 = libOrder.PizzaId3,
+                PizzaId4 = libOrder.PizzaId4,
+                PizzaId5 = libOrder.PizzaId5,
+                PizzaId6 = libOrder.PizzaId6,
+                PizzaId7 = libOrder.PizzaId7,
+                PizzaId8 = libOrder.PizzaId8,
+                PizzaId9 = libOrder.PizzaId9,
+                PizzaId10 = libOrder.PizzaId10,
+                PizzaId11 = libOrder.PizzaId11,
+                PizzaId12 = libOrder.PizzaId12
+            };
+            return webOrder;
+        }
+
+        private Library.Order ConvertModel(int id, Order order)
+        {
+            var libOrder = new Library.Order
+            {
+                Id = id,
+                UserId = order.UserId,
+                LocationId = order.LocationId,
+                DateTime = order.DateTime,
+                Price = order.Price,
+                PizzaId1 = order.PizzaId1,
+                PizzaId2 = order.PizzaId2,
+                PizzaId3 = order.PizzaId3,
+                PizzaId4 = order.PizzaId4,
+                PizzaId5 = order.PizzaId5,
+                PizzaId6 = order.PizzaId6,
+                PizzaId7 = order.PizzaId7,
+                PizzaId8 = order.PizzaId8,
+                PizzaId9 = order.PizzaId9,
+                PizzaId10 = order.PizzaId10,
+                PizzaId11 = order.PizzaId11,
+                PizzaId12 = order.PizzaId12
+            };
+            return libOrder;
+        }
+
+        private Library.Pizza CreateRandomPizza(int randomChoice)
+        {
+            var newPizza = new Library.Pizza();
+            switch (randomChoice)
+            {
+                case 0:
+                    newPizza = new Library.Pizza
+                    {
+                        Crust = new Crust(),
+                        Sauce = new Sauce(),
+                        Cheese = new Cheese(),
+                        Topping1 = new Topping(""),
+                        Topping2 = new Topping(""),
+                        Topping3 = new Topping(""),
+                        Topping4 = new Topping(""),
+                        Topping5 = new Topping(""),
+                        Topping6 = new Topping("")
+                    };
+                    break;
+                case 1:
+                    newPizza = new Library.Pizza
+                    {
+                        Crust = new Crust(),
+                        Sauce = new Sauce(),
+                        Cheese = new Cheese(),
+                        Topping1 = new Topping(),
+                        Topping2 = new Topping(""),
+                        Topping3 = new Topping(""),
+                        Topping4 = new Topping(""),
+                        Topping5 = new Topping(""),
+                        Topping6 = new Topping("")
+                    };
+                    break;
+                case 2:
+                    newPizza = new Library.Pizza
+                    {
+                        Crust = new Crust(),
+                        Sauce = new Sauce(),
+                        Cheese = new Cheese(),
+                        Topping1 = new Topping(),
+                        Topping2 = new Topping(),
+                        Topping3 = new Topping(""),
+                        Topping4 = new Topping(""),
+                        Topping5 = new Topping(""),
+                        Topping6 = new Topping("")
+                    };
+                    break;
+                case 3:
+                    newPizza = new Library.Pizza
+                    {
+                        Crust = new Crust(),
+                        Sauce = new Sauce(),
+                        Cheese = new Cheese(),
+                        Topping1 = new Topping(),
+                        Topping2 = new Topping(),
+                        Topping3 = new Topping(),
+                        Topping4 = new Topping(""),
+                        Topping5 = new Topping(""),
+                        Topping6 = new Topping("")
+                    };
+                    break;
+                case 4:
+                    newPizza = new Library.Pizza
+                    {
+                        Crust = new Crust(),
+                        Sauce = new Sauce(),
+                        Cheese = new Cheese(),
+                        Topping1 = new Topping(),
+                        Topping2 = new Topping(),
+                        Topping3 = new Topping(),
+                        Topping4 = new Topping(),
+                        Topping5 = new Topping(""),
+                        Topping6 = new Topping("")
+                    };
+                    break;
+                case 5:
+                    newPizza = new Library.Pizza
+                    {
+                        Crust = new Crust(),
+                        Sauce = new Sauce(),
+                        Cheese = new Cheese(),
+                        Topping1 = new Topping(),
+                        Topping2 = new Topping(),
+                        Topping3 = new Topping(),
+                        Topping4 = new Topping(),
+                        Topping5 = new Topping(),
+                        Topping6 = new Topping("")
+                    };
+                    break;
+                case 6:
+                    newPizza = new Library.Pizza
+                    {
+                        Crust = new Crust(),
+                        Sauce = new Sauce(),
+                        Cheese = new Cheese(),
+                        Topping1 = new Topping(),
+                        Topping2 = new Topping(),
+                        Topping3 = new Topping(),
+                        Topping4 = new Topping(),
+                        Topping5 = new Topping(),
+                        Topping6 = new Topping()
+                    };
+                    break;
+                default:
+                    newPizza = new Library.Pizza
+                    {
+                        Crust = new Crust(),
+                        Sauce = new Sauce(),
+                        Cheese = new Cheese()
+                    };
+                    break;
+            }
+            return newPizza;
         }
     }
 }
