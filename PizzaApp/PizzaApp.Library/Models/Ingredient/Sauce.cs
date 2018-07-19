@@ -14,8 +14,11 @@ namespace PizzaApp.Library
         public string IngredientInventoryName { get; set; }
         public decimal IngredientPrice { get; set; } = 0.00m;
         public double IngredientInventoryCost { get; set; }
-        public List<string> SauceTypeOptions = new List<string> { "Tomato Sauce", "White Sauce" };
-        public List<string> SauceThicknessOptions = new List<string> { "Light", "Regular", "Extra" };
+        public List<string> SauceTypeOptions { get => sauceTypeOptions; set => sauceTypeOptions = value; }
+        public List<string> SauceThicknessOptions { get => sauceThicknessOptions; set => sauceThicknessOptions = value; }
+
+        private List<string> sauceTypeOptions = new List<string> { "Tomato Sauce", "White Sauce" };
+        private List<string> sauceThicknessOptions = new List<string> { "Light", "Regular", "Extra" };
 
         // constructors
         public Sauce()
