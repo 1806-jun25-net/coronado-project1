@@ -3,7 +3,6 @@ using System.Linq;
 using Xunit;
 using PizzaApp.Library;
 using System.Collections.Generic;
-using PizzaApp.ConsoleApp;
 
 namespace PizzaApp.Test
 {

@@ -3,15 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2042
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaApp.ConsoleApp", "PizzaApp.ConsoleApp\PizzaApp.ConsoleApp.csproj", "{09C3BDCE-77F2-43B1-A267-534ABC2631E9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaApp.Library", "PizzaApp.Library\PizzaApp.Library.csproj", "{1C28F59E-E534-443C-A1A0-54639BD478F9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaApp.Test", "PizzaApp.Test\PizzaApp.Test.csproj", "{91D84C0C-6719-4008-BA12-0619054FCABB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaApp.Context", "PizzaApp.Context\PizzaApp.Context.csproj", "{681CF382-0E13-4C12-A578-2600382C91DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaApp.WebApp", "PizzaApp.WebApp\PizzaApp.WebApp.csproj", "{02DF7650-BDA2-4C11-A558-351FA5758986}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PizzaApp.WebApp", "PizzaApp.WebApp\PizzaApp.WebApp.csproj", "{02DF7650-BDA2-4C11-A558-351FA5758986}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{09C3BDCE-77F2-43B1-A267-534ABC2631E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09C3BDCE-77F2-43B1-A267-534ABC2631E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09C3BDCE-77F2-43B1-A267-534ABC2631E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09C3BDCE-77F2-43B1-A267-534ABC2631E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1C28F59E-E534-443C-A1A0-54639BD478F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1C28F59E-E534-443C-A1A0-54639BD478F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C28F59E-E534-443C-A1A0-54639BD478F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
