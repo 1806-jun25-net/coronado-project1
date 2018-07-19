@@ -63,132 +63,105 @@ namespace PizzaApp.Library
         public bool CheckIfInventoryIsSufficient(IIngredient ingredient)
         {
             bool check = true;
-            // create temp inventory values to decrement for the check
-            var dough = Dough;
-            var tomatoSauce = TomatoSauce;
-            var whiteSauce = WhiteSauce;
-            var cheese = Cheese;
-            var pepperoni = Pepperoni;
-            var ham = Ham;
-            var chicken = Chicken;
-            var beef = Beef;
-            var sausage = Sausage;
-            var bacon = Bacon;
-            var anchovies = Anchovies;
-            var redPeppers = RedPeppers;
-            var greenPeppers = GreenPeppers;
-            var pineapple = Pineapple;
-            var olives = Olives;
-            var mushrooms = Mushrooms;
-            var garlic = Garlic;
-            var onions = Onions;
-            var tomatoes = Tomatoes;
-            var spinach = Spinach;
-            var basil = Basil;
-            var ricotta = Ricotta;
-            var parmesan = Parmesan;
-            var feta = Feta;
 
-            string iName;
-            double iCost;
-
+            string iName;            
             iName = ingredient.IngredientInventoryName;
-            iCost = ingredient.IngredientInventoryCost;
+
             if (iName == "Dough")
             {
-                if ((dough -= iCost) <= 0) check = false;
+                if (Dough <= 0) check = false;
             }
             else if (iName == "Tomato Sauce")
             {
-                if ((tomatoSauce -= iCost) <= 0) check = false;
+                if (TomatoSauce <= 0) check = false;
             }
             else if (iName == "White Sauce")
             {
-                if ((whiteSauce -= iCost) <= 0) check = false;
+                if (WhiteSauce <= 0) check = false;
             }
             else if (iName == "Cheese")
             {
-                if ((cheese -= iCost) <= 0) check = false;
+                if (Cheese <= 0) check = false;
             }
             else if (iName == "Pepperoni")
             {
-                if ((pepperoni -= iCost) <= 0) check = false;
+                if (Pepperoni <= 0) check = false;
             }
             else if (iName == "Ham")
             {
-                if ((ham -= iCost) <= 0) check = false;
+                if (Ham <= 0) check = false;
             }
             else if (iName == "Chicken")
             {
-                if ((chicken -= iCost) <= 0) check = false;
+                if (Chicken <= 0) check = false;
             }
             else if (iName == "Beef")
             {
-                if ((beef -= iCost) <= 0) check = false;
+                if (Beef <= 0) check = false;
             }
             else if (iName == "Sausage")
             {
-                if ((sausage -= iCost) <= 0) check = false;
+                if (Sausage <= 0) check = false;
             }
             else if (iName == "Bacon")
             {
-                if ((bacon -= iCost) <= 0) check = false;
+                if (Bacon <= 0) check = false;
             }
             else if (iName == "Anchovies")
             {
-                if ((anchovies -= iCost) <= 0) check = false;
+                if (Anchovies <= 0) check = false;
             }
             else if (iName == "Red Peppers")
             {
-                if ((redPeppers -= iCost) <= 0) check = false;
+                if (RedPeppers <= 0) check = false;
             }
             else if (iName == "Green Peppers")
             {
-                if ((greenPeppers -= iCost) <= 0) check = false;
+                if (GreenPeppers <= 0) check = false;
             }
             else if (iName == "Pineapple")
             {
-                if ((pineapple -= iCost) <= 0) check = false;
+                if (Pineapple <= 0) check = false;
             }
             else if (iName == "Olives")
             {
-                if ((olives -= iCost) <= 0) check = false;
+                if (Olives <= 0) check = false;
             }
             else if (iName == "Mushrooms")
             {
-                if ((mushrooms -= iCost) <= 0) check = false;
+                if (Mushrooms <= 0) check = false;
             }
             else if (iName == "Garlic")
             {
-                if ((garlic -= iCost) <= 0) check = false;
+                if (Garlic <= 0) check = false;
             }
             else if (iName == "Onions")
             {
-                if ((onions -= iCost) <= 0) check = false;
+                if (Onions <= 0) check = false;
             }
             else if (iName == "Tomatoes")
             {
-                if ((tomatoes -= iCost) <= 0) check = false;
+                if (Tomatoes <= 0) check = false;
             }
             else if (iName == "Spinach")
             {
-                if ((spinach -= iCost) <= 0) check = false;
+                if (Spinach <= 0) check = false;
             }
             else if (iName == "Basil")
             {
-                if ((basil -= iCost) <= 0) check = false;
+                if (Basil <= 0) check = false;
             }
             else if (iName == "Ricotta")
             {
-                if ((ricotta -= iCost) <= 0) check = false;
+                if (Ricotta <= 0) check = false;
             }
             else if (iName == "Parmesan")
             {
-                if ((parmesan -= iCost) <= 0) check = false;
+                if (Parmesan <= 0) check = false;
             }
             else if (iName == "Feta")
             {
-                if ((feta -= iCost) <= 0) check = false;
+                if (Feta <= 0) check = false;
             }
 
             return check;
